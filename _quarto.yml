@@ -6,8 +6,7 @@ execute:
   echo: true
 
 book:
-  title: "Explaining Text Classification Models with LIME:
-Stability and Interpretability in NLP"
+  title: "Explaining Text Classification Models with LIME:Stability and Interpretability in NLP"
   author:
     - AUTHOR1 (js6605)
     - AUTHOR2 (xm2335)

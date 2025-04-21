@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Explaining Text Classification Models with LIME: Stability and Interpretability in NLP",
+    "title": "Explaining Text Classification Models with LIME:Stability and Interpretability in NLP",
     "section": "",
     "text": "1 Introduction",
     "crumbs": [
@@ -12,21 +12,81 @@
   {
     "objectID": "data.html",
     "href": "data.html",
-    "title": "2  Data",
+    "title": "2  Dataset Overview",
     "section": "",
-    "text": "2.1 Description",
+    "text": "2.1 Dataset Description\nThis project uses the Twitter Entity Sentiment Analysis dataset. It consists of two files:\nEach row contains: - an ID - a target entity - the sentiment label: Positive, Neutral, or Negative - a tweet",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
     ]
   },
   {
-    "objectID": "data.html#missing-value-analysis",
-    "href": "data.html#missing-value-analysis",
-    "title": "2  Data",
-    "section": "2.2 Missing value analysis",
-    "text": "2.2 Missing value analysis",
+    "objectID": "data.html#dataset-description",
+    "href": "data.html#dataset-description",
+    "title": "2  Dataset Overview",
+    "section": "",
+    "text": "twitter_training.csv: Main training dataset\n\ntwitter_validation.csv: Validation dataset",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#load-data",
+    "href": "data.html#load-data",
+    "title": "2  Dataset Overview",
+    "section": "2.2 Load Data",
+    "text": "2.2 Load Data\n\n\nCode\nimport pandas as pd\n\n# Define column names\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\n\n# Load CSVs with no header row\ntrain = pd.read_csv(\"data/twitter_training.csv\", header=None, names=col_names)\nvalid = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=col_names)\n\n# Remove rows with missing or empty tweets\ntrain = train.dropna(subset=[\"tweet\"])\ntrain = train[train[\"tweet\"].str.strip().astype(bool)]",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#basic-statistics",
+    "href": "data.html#basic-statistics",
+    "title": "2  Dataset Overview",
+    "section": "2.3 Basic Statistics",
+    "text": "2.3 Basic Statistics\n\n\nCode\nprint(\"Training set shape:\", train.shape)\nprint(\"Validation set shape:\", valid.shape)\ntrain.columns\n\n\nTraining set shape: (73824, 4)\nValidation set shape: (1000, 4)\n\n\nIndex(['id', 'entity', 'sentiment', 'tweet'], dtype='object')",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#sample-records-training-set",
+    "href": "data.html#sample-records-training-set",
+    "title": "2  Dataset Overview",
+    "section": "2.4 Sample Records (Training Set)",
+    "text": "2.4 Sample Records (Training Set)\n\n\nCode\ntrain.sample(5)[[\"tweet\", \"entity\", \"sentiment\"]]\n\n\n\n\n\n\n\n\n\ntweet\nentity\nsentiment\n\n\n\n\n18327\nThis is incredible first look at PS5 graphics ...\nPlayStation5(PS5)\nPositive\n\n\n44165\nWell like is not to be stopped due to exams.. ...\nPlayerUnknownsBattlegrounds(PUBG)\nNeutral\n\n\n34905\niPhones that banned Fortnite installed buy fro...\nFortnite\nIrrelevant\n\n\n10803\nWtf?\nXbox(Xseries)\nNegative\n\n\n3039\nThis may be a Unpopular Opinion...) Black Ops ...\nCallOfDutyBlackopsColdWar\nNegative",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#check-missing-values",
+    "href": "data.html#check-missing-values",
+    "title": "2  Dataset Overview",
+    "section": "2.5 Check Missing Values",
+    "text": "2.5 Check Missing Values\n\n\nCode\ntrain.isnull().sum()\n\n\nid           0\nentity       0\nsentiment    0\ntweet        0\ndtype: int64",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#sentiment-distribution-train-vs-validation",
+    "href": "data.html#sentiment-distribution-train-vs-validation",
+    "title": "2  Dataset Overview",
+    "section": "2.6 Sentiment Distribution (Train vs Validation)",
+    "text": "2.6 Sentiment Distribution (Train vs Validation)\n\n\nCode\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\nfig, axes = plt.subplots(1, 2, figsize=(12, 5))\n\nsns.countplot(data=train, x=\"sentiment\", ax=axes[0])\naxes[0].set_title(\"Training Sentiment Distribution\")\n\nsns.countplot(data=valid, x=\"sentiment\", ax=axes[1])\naxes[1].set_title(\"Validation Sentiment Distribution\")\n\nplt.tight_layout()\nplt.show()",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#summary",
+    "href": "data.html#summary",
+    "title": "2  Dataset Overview",
+    "section": "2.7 Summary",
+    "text": "2.7 Summary\n\nThe training set has ~74k records, and the validation set has ~1k.\n686 rows with missing or empty tweets were removed from the training set.\nThe sentiment distribution is imbalanced, with Neutral being the most common label.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
     ]
   },
   {
