@@ -6,11 +6,12 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Explaining Text Classification Models with LIME:
+Stability and Interpretability in NLP"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
+    - AUTHOR1 (js6605)
+    - AUTHOR2 (xm2335)
+  repo-url: https://github.com/Rain-Shi/lime-nlp-stability.git
   date: today
   page-footer:
     right: |
@@ -19,9 +20,12 @@ book:
   chapters:
     - index.qmd
     - data.qmd
-    - results.qmd
-    - d3graph.qmd
+    - modeling.qmd
+    - lime.qmd
+    - perturbation.qmd
+    - visualization.qmd
     - conclusion.qmd
+
 
 format:
   html:
