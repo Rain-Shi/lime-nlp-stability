@@ -1,5 +1,58 @@
-# Data
+---
+title: "Dataset Overview"
+format: html
+jupyter: python3
+---
 
-## Description
+## Dataset Description
 
-## Missing value analysis
+We use the **Twitter Entity Sentiment Analysis** dataset from Kaggle. Each row contains:
+
+- a tweet
+- a target **entity**
+- a **sentiment label** (Positive, Neutral, or Negative)
+
+The task is to predict the sentiment expressed toward the entity.
+
+```{python}
+import pandas as pd
+
+df = pd.read_csv("data/twitter_entity_sentiment.csv")
+df.head()
+```
+
+## Data Shape and Columns
+
+```{python}
+df.shape, df.columns.tolist()
+```
+
+## Missing Values
+
+```{python}
+df.isnull().sum()
+```
+
+## Label Distribution
+
+```{python}
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.countplot(data=df, x="sentiment")
+plt.title("Distribution of Sentiment Labels")
+plt.show()
+```
+
+## Sample Tweets
+
+```{python}
+df[["tweet", "entity", "sentiment"]].sample(5)
+```
+
+---
+
+## Notes
+
+- No missing values were found.
+- The dataset is imbalanced — this will be considered during modeling.
