@@ -17,6 +17,8 @@ Each row contains:
 - the **sentiment label**: `Positive`, `Neutral`, or `Negative`
 - a **tweet**
 
+The task is to predict the sentiment expressed toward the entity.
+
 ---
 
 ## Load Data
@@ -32,40 +34,31 @@ train = pd.read_csv("data/twitter_training.csv", header=None, names=col_names)
 valid = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
 
 # Remove rows with missing or empty tweets
+print(train.isnull().sum())
+
 train = train.dropna(subset=["tweet"])
 train = train[train["tweet"].str.strip().astype(bool)]
 ```
 
----
-
 ## Basic Statistics
-
 ```{python}
 print("Training set shape:", train.shape)
 print("Validation set shape:", valid.shape)
 train.columns
 ```
 
----
-
-## Sample Records (Training Set)
-
+##Sample Records (Training Set)
 ```{python}
 train.sample(5)[["tweet", "entity", "sentiment"]]
 ```
 
----
-
-## Check Missing Values
-
+##Check Missing Values
 ```{python}
 train.isnull().sum()
+
 ```
 
----
-
-## Sentiment Distribution (Train vs Validation)
-
+##Sentiment Distribution (Train vs Validation)
 ```{python}
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -80,12 +73,12 @@ axes[1].set_title("Validation Sentiment Distribution")
 
 plt.tight_layout()
 plt.show()
+
 ```
 
----
+##Summary
+The training set has ~74k records, and the validation set has ~1k.
 
-## Summary
+686 rows with missing or empty tweets were removed from the training set.
 
-- The training set has ~74k records, and the validation set has ~1k.
-- **686 rows with missing or empty tweets were removed** from the training set.
-- The sentiment distribution is **imbalanced**, with `Neutral` being the most common label.
+The sentiment distribution is imbalanced, with Neutral being the most common label.

@@ -1,1 +1,32 @@
-# Introduction
+---
+title: "Explaining Text Classification Models with LIME"
+format: html
+---
+
+## Background and Motivation
+
+As natural language processing (NLP) models are increasingly deployed in areas such as sentiment analysis and public opinion monitoring, **interpretability** has become a critical concern. In particular, when working with **short, informal text** like tweets, it is often difficult to understand the decisions made by complex black-box models.
+
+This project explores the use of **LIME (Local Interpretable Model-agnostic Explanations)** to explain NLP model predictions and evaluates the **stability** and **usefulness** of these explanations.
+
+## Research Questions
+
+We focus on the following key questions:
+
+- How stable are LIME explanations for short and noisy texts like tweets?
+- How sensitive are the explanations to minor text perturbations (e.g., synonyms, punctuation)?
+- Can enhanced visualizations improve human understanding of model decisions?
+
+## Dataset
+
+We use the **[Twitter Entity Sentiment Analysis dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis)** from Kaggle. Each example includes a tweet, a referenced entity, and a sentiment label (Positive, Neutral, or Negative) that reflects the opinion expressed toward the entity.
+
+## Authors
+
+- **Shi Jinze** (js6605)  
+- **Mao Xiyin** (xm2335)
+
+## Date
+
+April 2025
+
