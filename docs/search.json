@@ -1,95 +1,5 @@
 [
   {
-    "objectID": "perturbation.html",
-    "href": "perturbation.html",
-    "title": "5  perturbation",
-    "section": "",
-    "text": "5.1 Text Perturbation for LIME Stability\nIn this section, we evaluate how robust LIME explanations are when the input text is slightly changed.",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>perturbation</span>"
-    ]
-  },
-  {
-    "objectID": "perturbation.html#define-perturbation-functions",
-    "href": "perturbation.html#define-perturbation-functions",
-    "title": "5  perturbation",
-    "section": "5.2 1. Define Perturbation Functions",
-    "text": "5.2 1. Define Perturbation Functions\n\n\nCode\nimport pandas as pd\nfrom lime.lime_text import LimeTextExplainer\nimport random\nrandom.seed(42)\nexplainer = LimeTextExplainer(class_names=[\"negative\", \"neutral\", \"positive\"])\n\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.linear_model import LogisticRegression\n\nimport pandas as pd\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\nvalid = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=col_names)\n\nX = valid[\"tweet\"]\ny = valid[\"sentiment\"]\n\nmodel = make_pipeline(TfidfVectorizer(), LogisticRegression())\nmodel.fit(X, y)\n\ndef jaccard(set1, set2):\n    return len(set1 & set2) / len(set1 | set2)\n\n\ndef random_deletion(text, p=0.1):\n    words = text.split()\n    if len(words) &lt;= 1:\n        return text\n    new_words = [word for word in words if random.random() &gt; p]\n    if len(new_words) == 0:\n        new_words = [random.choice(words)]\n    return \" \".join(new_words)\n\ndef random_insertion(text, p=0.1):\n    words = text.split()\n    new_words = words.copy()\n    for i in range(len(words)):\n        if random.random() &lt; p:\n            insert_idx = random.randint(0, len(new_words))\n            new_words.insert(insert_idx, random.choice(words))\n    return \" \".join(new_words)\n\n\n##2. Generate Perturbed Versions\n\n\nCode\nexample = valid.sample(1).iloc[0]\ntweet_text = example[\"tweet\"]\n\nnum_perturbations = 5\nperturbed_texts = []\n\nfor _ in range(num_perturbations):\n    text = random_deletion(tweet_text, p=0.2)\n    perturbed_texts.append(text)\n\n\n##Re-run LIME on Perturbed Samples\n\n\nCode\nperturbed_exps = []\n\nfor p_text in perturbed_texts:\n    p_exp = explainer.explain_instance(p_text, model.predict_proba, num_features=10, top_labels=1)\n    perturbed_exps.append(p_exp)\n\n\n##Measure Similarity (Jaccard Overlap)\n\n\nCode\n# 原始 tweet 文本\ntweet_text = example[\"tweet\"]\n\n# 原始解释器输出\noriginal_exp = explainer.explain_instance(\n    tweet_text,\n    model.predict_proba,\n    num_features=10,\n    top_labels=1\n)\n\n# 获取解释用的分类 label（转为 int）\nlabel = int(original_exp.top_labels[0])\n\n# 提取重要词\noriginal_words = set([w for w, _ in original_exp.as_list(label=label)])\nstability_scores = []\n\n# 遍历每个扰动样本的解释对象\nfor exp in perturbed_exps:\n    # 如果当前解释对象中没有这个 label 的解释，就跳过\n    if label not in exp.available_labels():\n        continue\n    perturbed_words = set([w for w, _ in exp.as_list(label=label)])\n    score = jaccard(original_words, perturbed_words)\n    stability_scores.append(score)\n\nstability_scores\n\n\n[1.0,\n 0.8181818181818182,\n 0.6666666666666666,\n 0.8181818181818182,\n 0.6666666666666666]\n\n\n##Summary We perturbed the input by deleting some words.\nWe evaluated how much the top LIME tokens changed (Jaccard similarity).\nNext: visualize how those changes look.",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>perturbation</span>"
-    ]
-  },
-  {
-    "objectID": "visualization.html",
-    "href": "visualization.html",
-    "title": "6  visualization",
-    "section": "",
-    "text": "6.1 Visualize Stability Scores\nCode\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nstability_scores = [0.8, 0.8, 1.0, 0.8, 0.8, 1.0, 0.8]\n\nplt.figure(figsize=(10, 5))\nsns.barplot(x=list(range(1, len(stability_scores)+1)), y=stability_scores)\nplt.xlabel(\"Perturbation Sample #\")\nplt.ylabel(\"Jaccard Similarity with Original Explanation\")\nplt.title(\"Stability of LIME Explanations under Perturbations\")\nplt.ylim(0, 1.05)\nplt.show()",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>visualization</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html",
-    "href": "conclusion.html",
-    "title": "7  Conclusion",
-    "section": "",
-    "text": "7.1 Project Summary\nIn this project, we explored the stability of LIME explanations for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.\nWe implemented the following key components:",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html#project-summary",
-    "href": "conclusion.html#project-summary",
-    "title": "7  Conclusion",
-    "section": "",
-    "text": "Built a baseline text classifier to predict sentiment (Positive, Neutral, Negative) based on tweets.\nApplied LIME (Local Interpretable Model-Agnostic Explanations) to interpret model predictions at the instance level.\nGenerated perturbed versions of input texts to assess how LIME explanations change under slight modifications.\nUsed Jaccard similarity to quantify the overlap in top important words across perturbed samples.\nVisualized stability scores across perturbations.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html#key-findings",
-    "href": "conclusion.html#key-findings",
-    "title": "7  Conclusion",
-    "section": "7.2 Key Findings",
-    "text": "7.2 Key Findings\n\nLIME explanations are reasonably stable under minor perturbations (average Jaccard scores &gt; 0.8).\nImportant tokens such as named entities or sentiment-laden words tend to remain consistent across versions.\nHowever, in some cases, a small change in wording can lead to shifts in important features, especially when:\n\nThe prediction confidence is low;\nThe tweet is short or ambiguous.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html#limitations",
-    "href": "conclusion.html#limitations",
-    "title": "7  Conclusion",
-    "section": "7.3 Limitations",
-    "text": "7.3 Limitations\n\nLIME relies on bag-of-words perturbations, which may not preserve sentence fluency or semantic coherence.\nExplanations vary depending on the classifier’s confidence and sensitivity to input noise.\nOur current model is relatively simple; stability might differ on deeper or more contextual models.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html#future-work",
-    "href": "conclusion.html#future-work",
-    "title": "7  Conclusion",
-    "section": "7.4 Future Work",
-    "text": "7.4 Future Work\n\nCompare LIME vs SHAP on the same dataset to assess differences in explanation quality and robustness.\nExperiment with more diverse perturbation strategies (e.g., synonym substitution, contextual masking).\nUse a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.\nisualize word importance trajectories over increasing perturbation intensity.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
-    "objectID": "conclusion.html#final-note",
-    "href": "conclusion.html#final-note",
-    "title": "7  Conclusion",
-    "section": "7.5 Final Note",
-    "text": "7.5 Final Note\nLIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand when we can trust an explanation — and when we should be cautious.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
-    ]
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Explaining Text Classification Models with LIME:Stability and Interpretability in NLP",
@@ -174,7 +84,7 @@
     "href": "data.html#basic-statistics",
     "title": "2  Dataset Overview",
     "section": "2.3 Basic Statistics",
-    "text": "2.3 Basic Statistics\n\n\nCode\nprint(\"Training set shape:\", train.shape)\nprint(\"Validation set shape:\", valid.shape)\ntrain.columns\n\n\nTraining set shape: (73824, 4)\nValidation set shape: (1000, 4)\n\n\nIndex(['id', 'entity', 'sentiment', 'tweet'], dtype='object')\n\n\n##Sample Records (Training Set)\n\n\nCode\ntrain.sample(5)[[\"tweet\", \"entity\", \"sentiment\"]]\n\n\n\n\n\n\n\n\n\ntweet\nentity\nsentiment\n\n\n\n\n27462\nBest Assasin Creed Black Flag offers in ebay. ...\nAssassinsCreed\nNeutral\n\n\n40023\nA beta for Battlefield 4 user toileGANGGANG ha...\nBattlefield\nIrrelevant\n\n\n25824\nfinally completed assassin's creed odyssey so ...\nAssassinsCreed\nPositive\n\n\n55922\nI Hate When the Duty Calls\nCallOfDuty\nNegative\n\n\n39095\nI think tonight was the worst single day under...\nHearthstone\nNegative\n\n\n\n\n\n\n\n##Check Missing Values\n\n\nCode\ntrain.isnull().sum()\n\n\nid           0\nentity       0\nsentiment    0\ntweet        0\ndtype: int64\n\n\n##Sentiment Distribution (Train vs Validation)\n\n\nCode\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\nfig, axes = plt.subplots(1, 2, figsize=(12, 5))\n\nsns.countplot(data=train, x=\"sentiment\", ax=axes[0])\naxes[0].set_title(\"Training Sentiment Distribution\")\n\nsns.countplot(data=valid, x=\"sentiment\", ax=axes[1])\naxes[1].set_title(\"Validation Sentiment Distribution\")\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n##Summary The training set has ~74k records, and the validation set has ~1k.\n686 rows with missing or empty tweets were removed from the training set.\nThe sentiment distribution is imbalanced, with Neutral being the most common label.",
+    "text": "2.3 Basic Statistics\n\n\nCode\nprint(\"Training set shape:\", train.shape)\nprint(\"Validation set shape:\", valid.shape)\nprint(train.columns)\nprint(train['sentiment'].value_counts())\n\n\nTraining set shape: (73824, 4)\nValidation set shape: (1000, 4)\nIndex(['id', 'entity', 'sentiment', 'tweet'], dtype='object')\nsentiment\nNegative      22312\nPositive      20619\nNeutral       18051\nIrrelevant    12842\nName: count, dtype: int64\n\n\n##Sample Records (Training Set)\n\n\nCode\ntrain.sample(5)[[\"tweet\", \"entity\", \"sentiment\"]]\n\n\n\n\n\n\n\n\n\ntweet\nentity\nsentiment\n\n\n\n\n13290\nWale not being on a nba 2k sound track is crim...\nNBA2K\nNegative\n\n\n33347\nis\nFortnite\nPositive\n\n\n3673\nI'm sorry I can't imagine doing a shit in this...\nCallOfDutyBlackopsColdWar\nNegative\n\n\n18035\nFlowers is played out and them guys die anyway\nPlayStation5(PS5)\nIrrelevant\n\n\n49952\nAre EA servers down? Apex Legends & FIFA playe...\nFIFA\nNegative\n\n\n\n\n\n\n\n##Check Missing Values\n\n\nCode\ntrain.isnull().sum()\n\n\nid           0\nentity       0\nsentiment    0\ntweet        0\ndtype: int64\n\n\n##Sentiment Distribution (Train vs Validation)\n\n\nCode\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\nfig, axes = plt.subplots(1, 2, figsize=(12, 5))\n\nsns.countplot(data=train, x=\"sentiment\", ax=axes[0])\naxes[0].set_title(\"Training Sentiment Distribution\")\n\nsns.countplot(data=valid, x=\"sentiment\", ax=axes[1])\naxes[1].set_title(\"Validation Sentiment Distribution\")\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n##Summary The training set has ~74k records, and the validation set has ~1k.\n686 rows with missing or empty tweets were removed from the training set.\nThe sentiment distribution is imbalanced, with Neutral being the most common label.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
     ]
@@ -217,6 +127,96 @@
     "text": "4.2 Load Model and Data\n\n\nCode\nimport joblib\nimport pandas as pd\n\n# Load pipeline (TF-IDF + LogisticRegression)\nmodel = joblib.load(\"scripts/baseline_pipeline.pkl\")\n\n# Load data and drop missing\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\ntrain = pd.read_csv(\"data/twitter_training.csv\", header=None, names=col_names)\ntrain = train.dropna(subset=[\"tweet\"])\ntrain = train[train[\"tweet\"].str.strip().astype(bool)]\n\n\n##Select a Sample for Explanation\n\n\nCode\nimport numpy as np\n\n# Sample a random row\nsample_idx = 42  # you can change this\nexample = train.iloc[sample_idx]\nprint(\"Tweet:\", example[\"tweet\"])\nprint(\"True Sentiment:\", example[\"sentiment\"])\n\n\nTweet: Check out this epic streamer!.  \nTrue Sentiment: Neutral\n\n\n##Apply LIME\n\n\nCode\nfrom lime.lime_text import LimeTextExplainer\n\nclass_names = [\"Negative\", \"Neutral\", \"Positive\"]\nexplainer = LimeTextExplainer(class_names=class_names)\n\n# Use model's predict_proba function\ntweet_text = example[\"tweet\"]\nexplanation = explainer.explain_instance(\n    tweet_text,\n    model.predict_proba,\n    num_features=10,\n    top_labels=1\n)\n\n\n##Visualize Explanation\n\n\nCode\nfrom IPython.display import display,HTML\ndisplay(HTML(explanation.as_html()))\nwith open(\"lime_output.html\", \"w\", encoding=\"utf-8\") as f:\n    f.write(explanation.as_html())\n\n\n\n        \n        \n        \n        \n        \n        \n\n\n##Summary LIME helps identify which words contributed most to the predicted label.\nInterpretation is local and may vary with different samples.\nIn the next section, we can test stability: e.g. slight changes in text → similar explanations?",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>LIME Interpretation</span>"
+    ]
+  },
+  {
+    "objectID": "perturbation.html",
+    "href": "perturbation.html",
+    "title": "5  perturbation",
+    "section": "",
+    "text": "5.1 Text Perturbation for LIME Stability\nIn this section, we evaluate how robust LIME explanations are when the input text is slightly changed.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>perturbation</span>"
+    ]
+  },
+  {
+    "objectID": "perturbation.html#define-perturbation-functions",
+    "href": "perturbation.html#define-perturbation-functions",
+    "title": "5  perturbation",
+    "section": "5.2 1. Define Perturbation Functions",
+    "text": "5.2 1. Define Perturbation Functions\n\n\nCode\nimport pandas as pd\nfrom lime.lime_text import LimeTextExplainer\nimport random\nrandom.seed(42)\nexplainer = LimeTextExplainer(class_names=[\"negative\", \"neutral\", \"positive\"])\n\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.linear_model import LogisticRegression\n\nimport pandas as pd\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\nvalid = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=col_names)\n\nX = valid[\"tweet\"]\ny = valid[\"sentiment\"]\n\nmodel = make_pipeline(TfidfVectorizer(), LogisticRegression())\nmodel.fit(X, y)\n\ndef jaccard(set1, set2):\n    return len(set1 & set2) / len(set1 | set2)\n\n\ndef random_deletion(text, p=0.1):\n    words = text.split()\n    if len(words) &lt;= 1:\n        return text\n    new_words = [word for word in words if random.random() &gt; p]\n    if len(new_words) == 0:\n        new_words = [random.choice(words)]\n    return \" \".join(new_words)\n\ndef random_insertion(text, p=0.1):\n    words = text.split()\n    new_words = words.copy()\n    for i in range(len(words)):\n        if random.random() &lt; p:\n            insert_idx = random.randint(0, len(new_words))\n            new_words.insert(insert_idx, random.choice(words))\n    return \" \".join(new_words)\n\n\n##2. Generate Perturbed Versions\n\n\nCode\nexample = valid.sample(1).iloc[0]\ntweet_text = example[\"tweet\"]\n\nnum_perturbations = 5\nperturbed_texts = []\n\nfor _ in range(num_perturbations):\n    text = random_deletion(tweet_text, p=0.2)\n    perturbed_texts.append(text)\n\n\n##Re-run LIME on Perturbed Samples\n\n\nCode\nperturbed_exps = []\n\nfor p_text in perturbed_texts:\n    p_exp = explainer.explain_instance(p_text, model.predict_proba, num_features=10, top_labels=1)\n    perturbed_exps.append(p_exp)\n\n\n##Measure Similarity (Jaccard Overlap)\n\n\nCode\n# 原始 tweet 文本\ntweet_text = example[\"tweet\"]\n\n# 原始解释器输出\noriginal_exp = explainer.explain_instance(\n    tweet_text,\n    model.predict_proba,\n    num_features=10,\n    top_labels=1\n)\n\n# 获取解释用的分类 label（转为 int）\nlabel = int(original_exp.top_labels[0])\n\n# 提取重要词\noriginal_words = set([w for w, _ in original_exp.as_list(label=label)])\nstability_scores = []\n\n# 遍历每个扰动样本的解释对象\nfor exp in perturbed_exps:\n    # 如果当前解释对象中没有这个 label 的解释，就跳过\n    if label not in exp.available_labels():\n        continue\n    perturbed_words = set([w for w, _ in exp.as_list(label=label)])\n    score = jaccard(original_words, perturbed_words)\n    stability_scores.append(score)\n\nstability_scores\n\n\n[0.8181818181818182,\n 0.6666666666666666,\n 0.8181818181818182,\n 0.42857142857142855,\n 0.6666666666666666]\n\n\n##Summary We perturbed the input by deleting some words.\nWe evaluated how much the top LIME tokens changed (Jaccard similarity).\nNext: visualize how those changes look.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>perturbation</span>"
+    ]
+  },
+  {
+    "objectID": "visualization.html",
+    "href": "visualization.html",
+    "title": "6  visualization",
+    "section": "",
+    "text": "6.1 Visualize Stability Scores\nCode\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nstability_scores = [0.8, 0.8, 1.0, 0.8, 0.8, 1.0, 0.8]\n\nplt.figure(figsize=(10, 5))\nsns.barplot(x=list(range(1, len(stability_scores)+1)), y=stability_scores)\nplt.xlabel(\"Perturbation Sample #\")\nplt.ylabel(\"Jaccard Similarity with Original Explanation\")\nplt.title(\"Stability of LIME Explanations under Perturbations\")\nplt.ylim(0, 1.05)\nplt.show()",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>visualization</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html",
+    "href": "conclusion.html",
+    "title": "7  Conclusion",
+    "section": "",
+    "text": "7.1 Project Summary\nIn this project, we explored the stability of LIME explanations for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.\nWe implemented the following key components:",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#project-summary",
+    "href": "conclusion.html#project-summary",
+    "title": "7  Conclusion",
+    "section": "",
+    "text": "Built a baseline text classifier to predict sentiment (Positive, Neutral, Negative) based on tweets.\nApplied LIME (Local Interpretable Model-Agnostic Explanations) to interpret model predictions at the instance level.\nGenerated perturbed versions of input texts to assess how LIME explanations change under slight modifications.\nUsed Jaccard similarity to quantify the overlap in top important words across perturbed samples.\nVisualized stability scores across perturbations.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#key-findings",
+    "href": "conclusion.html#key-findings",
+    "title": "7  Conclusion",
+    "section": "7.2 Key Findings",
+    "text": "7.2 Key Findings\n\nLIME explanations are reasonably stable under minor perturbations (average Jaccard scores &gt; 0.8).\nImportant tokens such as named entities or sentiment-laden words tend to remain consistent across versions.\nHowever, in some cases, a small change in wording can lead to shifts in important features, especially when:\n\nThe prediction confidence is low;\nThe tweet is short or ambiguous.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#limitations",
+    "href": "conclusion.html#limitations",
+    "title": "7  Conclusion",
+    "section": "7.3 Limitations",
+    "text": "7.3 Limitations\n\nLIME relies on bag-of-words perturbations, which may not preserve sentence fluency or semantic coherence.\nExplanations vary depending on the classifier’s confidence and sensitivity to input noise.\nOur current model is relatively simple; stability might differ on deeper or more contextual models.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#future-work",
+    "href": "conclusion.html#future-work",
+    "title": "7  Conclusion",
+    "section": "7.4 Future Work",
+    "text": "7.4 Future Work\n\nCompare LIME vs SHAP on the same dataset to assess differences in explanation quality and robustness.\nExperiment with more diverse perturbation strategies (e.g., synonym substitution, contextual masking).\nUse a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.\nisualize word importance trajectories over increasing perturbation intensity.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "conclusion.html#final-note",
+    "href": "conclusion.html#final-note",
+    "title": "7  Conclusion",
+    "section": "7.5 Final Note",
+    "text": "7.5 Final Note\nLIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand when we can trust an explanation — and when we should be cautious.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
     ]
   }
 ]

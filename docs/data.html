@@ -104,10 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
-
-
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
 
 
 </head>
@@ -243,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.2</span> Load Data</h2>
-<div id="3eaaed7f" class="cell" data-execution_count="1">
+<div id="ab4bb79c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -272,26 +269,31 @@ dtype: int64</code></pre>
 </section>
 <section id="basic-statistics" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="basic-statistics"><span class="header-section-number">2.3</span> Basic Statistics</h2>
-<div id="b4d96192" class="cell" data-execution_count="2">
+<div id="e0e26148" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, train.shape)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Validation set shape:"</span>, valid.shape)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train.columns)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train[<span class="st">'sentiment'</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Training set shape: (73824, 4)
-Validation set shape: (1000, 4)</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>Index(['id', 'entity', 'sentiment', 'tweet'], dtype='object')</code></pre>
+Validation set shape: (1000, 4)
+Index(['id', 'entity', 'sentiment', 'tweet'], dtype='object')
+sentiment
+Negative      22312
+Positive      20619
+Neutral       18051
+Irrelevant    12842
+Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>##Sample Records (Training Set)</p>
-<div id="b911867f" class="cell" data-execution_count="3">
+<div id="590083ee" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train.sample(<span class="dv">5</span>)[[<span class="st">"tweet"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>train.sample(<span class="dv">5</span>)[[<span class="st">"tweet"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
@@ -308,33 +310,33 @@ Validation set shape: (1000, 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">27462</td>
-<td>Best Assasin Creed Black Flag offers in ebay. ...</td>
-<td>AssassinsCreed</td>
-<td>Neutral</td>
+<td data-quarto-table-cell-role="th">13290</td>
+<td>Wale not being on a nba 2k sound track is crim...</td>
+<td>NBA2K</td>
+<td>Negative</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">40023</td>
-<td>A beta for Battlefield 4 user toileGANGGANG ha...</td>
-<td>Battlefield</td>
+<td data-quarto-table-cell-role="th">33347</td>
+<td>is</td>
+<td>Fortnite</td>
+<td>Positive</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3673</td>
+<td>I'm sorry I can't imagine doing a shit in this...</td>
+<td>CallOfDutyBlackopsColdWar</td>
+<td>Negative</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18035</td>
+<td>Flowers is played out and them guys die anyway</td>
+<td>PlayStation5(PS5)</td>
 <td>Irrelevant</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25824</td>
-<td>finally completed assassin's creed odyssey so ...</td>
-<td>AssassinsCreed</td>
-<td>Positive</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">55922</td>
-<td>I Hate When the Duty Calls</td>
-<td>CallOfDuty</td>
-<td>Negative</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">39095</td>
-<td>I think tonight was the worst single day under...</td>
-<td>Hearthstone</td>
+<td data-quarto-table-cell-role="th">49952</td>
+<td>Are EA servers down? Apex Legends &amp; FIFA playe...</td>
+<td>FIFA</td>
 <td>Negative</td>
 </tr>
 </tbody>
@@ -344,10 +346,10 @@ Validation set shape: (1000, 4)</code></pre>
 </div>
 </div>
 <p>##Check Missing Values</p>
-<div id="f686a581" class="cell" data-execution_count="4">
+<div id="00b12898" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>train.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>id           0
@@ -358,22 +360,22 @@ dtype: int64</code></pre>
 </div>
 </div>
 <p>##Sentiment Distribution (Train vs Validation)</p>
-<div id="0d7b984d" class="cell" data-execution_count="5">
+<div id="9eb6c91b" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>

@@ -104,10 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
-
-
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
 
 
 </head>
@@ -235,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-model-and-data" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="load-model-and-data"><span class="header-section-number">4.2</span> Load Model and Data</h2>
-<div id="e4301eef" class="cell" data-execution_count="1">
+<div id="6e2e64d7" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
@@ -252,7 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>##Select a Sample for Explanation</p>
-<div id="5f2a2ae3" class="cell" data-execution_count="2">
+<div id="8eb4e8e7" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -269,7 +266,7 @@ True Sentiment: Neutral</code></pre>
 </div>
 </div>
 <p>##Apply LIME</p>
-<div id="dbf69540" class="cell" data-execution_count="3">
+<div id="c331b7a3" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_text <span class="im">import</span> LimeTextExplainer</span>
@@ -288,7 +285,7 @@ True Sentiment: Neutral</code></pre>
 </details>
 </div>
 <p>##Visualize Explanation</p>
-<div id="034b14fd" class="cell" data-execution_count="4">
+<div id="7d7569b2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display,HTML</span>
@@ -37388,10 +37385,10 @@ True Sentiment: Neutral</code></pre>
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script>
-        <div class="lime top_div" id="top_divI3B1ELBAUAVBRI2"></div>
+        <div class="lime top_div" id="top_divRMGGQN2U8JJVROJ"></div>
         
         <script>
-        var top_div = d3.select('#top_divI3B1ELBAUAVBRI2').classed('lime top_div', true);
+        var top_div = d3.select('#top_divRMGGQN2U8JJVROJ').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
@@ -37403,10 +37400,10 @@ True Sentiment: Neutral</code></pre>
             var exp = new lime.Explanation(["Negative", "Neutral", "Positive"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["out", 0.4075982263987627], ["streamer", -0.24434757101785343], ["Check", 0.20597503777793108], ["this", 0.11523153183998304], ["epic", -0.0038953426354134406]], 2, exp_div);
+                exp.show([["out", 0.4009585233738418], ["streamer", -0.23887343048128568], ["Check", 0.20967775177387984], ["this", 0.1215474700356707], ["epic", -0.004976115357806671]], 2, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["out", 6, 0.4075982263987627], ["streamer", 20, -0.24434757101785343], ["Check", 0, 0.20597503777793108], ["this", 10, 0.11523153183998304], ["epic", 15, -0.0038953426354134406]], 2, "Check out this epic streamer!.  ", raw_div, true);
+            exp.show_raw_text([["out", 6, 0.4009585233738418], ["streamer", 20, -0.23887343048128568], ["Check", 0, 0.20967775177387984], ["this", 10, 0.1215474700356707], ["epic", 15, -0.004976115357806671]], 2, "Check out this epic streamer!.  ", raw_div, true);
             
         </script>
         

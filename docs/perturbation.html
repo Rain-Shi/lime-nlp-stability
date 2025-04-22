@@ -229,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="define-perturbation-functions" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="define-perturbation-functions"><span class="header-section-number">5.2</span> 1. Define Perturbation Functions</h2>
-<div id="2ef876e6" class="cell" data-execution_count="1">
+<div id="f21ed1f5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -276,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>##2. Generate Perturbed Versions</p>
-<div id="99e5af34" class="cell" data-execution_count="2">
+<div id="11123f85" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>example <span class="op">=</span> valid.sample(<span class="dv">1</span>).iloc[<span class="dv">0</span>]</span>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>##Re-run LIME on Perturbed Samples</p>
-<div id="593e1d6c" class="cell" data-execution_count="3">
+<div id="1b25fb46" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>perturbed_exps <span class="op">=</span> []</span>
@@ -302,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>##Measure Similarity (Jaccard Overlap)</p>
-<div id="71d68e08" class="cell" data-execution_count="4">
+<div id="a11e5138" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 原始 tweet 文本</span></span>
@@ -335,10 +335,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>stability_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>[1.0,
- 0.8181818181818182,
+<pre><code>[0.8181818181818182,
  0.6666666666666666,
  0.8181818181818182,
+ 0.42857142857142855,
  0.6666666666666666]</code></pre>
 </div>
 </div>
