@@ -44,7 +44,8 @@ train = train[train["tweet"].str.strip().astype(bool)]
 ```{python}
 print("Training set shape:", train.shape)
 print("Validation set shape:", valid.shape)
-train.columns
+print(train.columns)
+print(train['sentiment'].value_counts())
 ```
 
 ##Sample Records (Training Set)
