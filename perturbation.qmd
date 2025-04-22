@@ -36,6 +36,7 @@ def random_insertion(text, p=0.1):
 
 ##2. Generate Perturbed Versions
 ```{python}
+example = valid.sample(1).iloc[0]
 tweet_text = example["tweet"]
 
 num_perturbations = 5
