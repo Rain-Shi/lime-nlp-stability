@@ -14,9 +14,27 @@ In this section, we evaluate how robust LIME explanations are when the input tex
 
 ```{python}
 import pandas as pd
+from lime.lime_text import LimeTextExplainer
+random.seed(42)
+explainer = LimeTextExplainer(class_names=["negative", "neutral", "positive"])
 
+from sklearn.pipeline import make_pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+
+import pandas as pd
 col_names = ["id", "entity", "sentiment", "tweet"]
 valid = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
+
+X = valid["tweet"]
+y = valid["sentiment"]
+
+model = make_pipeline(TfidfVectorizer(), LogisticRegression())
+model.fit(X, y)
+
+def jaccard(set1, set2):
+    return len(set1 & set2) / len(set1 | set2)
+
 import random
 
 def random_deletion(text, p=0.1):
