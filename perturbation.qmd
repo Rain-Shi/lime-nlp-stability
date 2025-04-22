@@ -56,18 +56,37 @@ for p_text in perturbed_texts:
 
 ##Measure Similarity (Jaccard Overlap)
 ```{python}
-def jaccard(set1, set2):
-    return len(set1 & set2) / len(set1 | set2)
+# 原始 tweet 文本
+tweet_text = example["tweet"]
 
-original_words = set([w for w, _ in original_exp.as_list()])
+# 原始解释器输出
+original_exp = explainer.explain_instance(
+    tweet_text,
+    model.predict_proba,
+    num_features=10,
+    top_labels=1
+)
+
+# 获取解释用的分类 label（转为 int）
+label = int(original_exp.top_labels[0])
+
+# 提取重要词
+original_words = set([w for w, _ in original_exp.as_list(label=label)])
 stability_scores = []
 
+# 遍历每个扰动样本的解释对象
 for exp in perturbed_exps:
-    perturbed_words = set([w for w, _ in exp.as_list()])
+    # 如果当前解释对象中没有这个 label 的解释，就跳过
+    if label not in exp.available_labels():
+        continue
+    perturbed_words = set([w for w, _ in exp.as_list(label=label)])
     score = jaccard(original_words, perturbed_words)
     stability_scores.append(score)
 
 stability_scores
+
+
+
 ```
 
 ##Summary
