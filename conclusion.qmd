@@ -1,1 +1,50 @@
-# Conclusion
+---
+title: "Conclusion"
+format: html
+---
+
+## Project Summary
+
+In this project, we explored the **stability of LIME explanations** for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.
+
+We implemented the following key components:
+
+- Built a baseline **text classifier** to predict sentiment (`Positive`, `Neutral`, `Negative`) based on tweets.
+- Applied **LIME (Local Interpretable Model-Agnostic Explanations)** to interpret model predictions at the instance level.
+- Generated **perturbed versions** of input texts to assess how LIME explanations change under slight modifications.
+- Used **Jaccard similarity** to quantify the overlap in top important words across perturbed samples.
+- Visualized **stability scores** across perturbations.
+
+---
+
+## Key Findings
+
+- LIME explanations are **reasonably stable** under minor perturbations (average Jaccard scores > 0.8).
+- Important tokens such as named entities or sentiment-laden words tend to remain consistent across versions.
+- However, in some cases, a small change in wording can lead to **shifts in important features**, especially when:
+  - The prediction confidence is low;
+  - The tweet is short or ambiguous.
+
+---
+
+##  Limitations
+
+- LIME relies on **bag-of-words perturbations**, which may not preserve sentence fluency or semantic coherence.
+- Explanations vary depending on the classifier’s **confidence and sensitivity to input noise**.
+- Our current model is relatively simple; stability might differ on **deeper or more contextual models**.
+
+---
+
+## Future Work
+
+- **Compare LIME vs SHAP** on the same dataset to assess differences in explanation quality and robustness.
+- Experiment with more **diverse perturbation strategies** (e.g., synonym substitution, contextual masking).
+- Use a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.
+- isualize **word importance trajectories** over increasing perturbation intensity.
+
+---
+
+##  Final Note
+
+LIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand **when we can trust an explanation** — and when we should be cautious.
+
