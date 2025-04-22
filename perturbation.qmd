@@ -1,5 +1,79 @@
 ---
 title: "perturbation"
 format: html
+jupyter: python3
 ---
+
+## Text Perturbation for LIME Stability
+
+In this section, we evaluate how robust LIME explanations are when the input text is slightly changed.
+
+---
+
+## 1. Define Perturbation Functions
+
+```{python}
+import random
+
+def random_deletion(text, p=0.1):
+    words = text.split()
+    if len(words) <= 1:
+        return text
+    new_words = [word for word in words if random.random() > p]
+    if len(new_words) == 0:
+        new_words = [random.choice(words)]
+    return " ".join(new_words)
+
+def random_insertion(text, p=0.1):
+    words = text.split()
+    new_words = words.copy()
+    for i in range(len(words)):
+        if random.random() < p:
+            insert_idx = random.randint(0, len(new_words))
+            new_words.insert(insert_idx, random.choice(words))
+    return " ".join(new_words)
+```
+
+##2. Generate Perturbed Versions
+```{python}
+num_perturbations = 5
+perturbed_texts = []
+
+for _ in range(num_perturbations):
+    text = random_deletion(tweet_text, p=0.2)
+    perturbed_texts.append(text)
+```
+
+##Re-run LIME on Perturbed Samples
+```{python}
+perturbed_exps = []
+
+for p_text in perturbed_texts:
+    p_exp = explainer.explain_instance(p_text, model.predict_proba, num_features=10, top_labels=1)
+    perturbed_exps.append(p_exp)
+
+```
+
+##Measure Similarity (Jaccard Overlap)
+```{python}
+def jaccard(set1, set2):
+    return len(set1 & set2) / len(set1 | set2)
+
+original_words = set([w for w, _ in original_exp.as_list()])
+stability_scores = []
+
+for exp in perturbed_exps:
+    perturbed_words = set([w for w, _ in exp.as_list()])
+    score = jaccard(original_words, perturbed_words)
+    stability_scores.append(score)
+
+stability_scores
+```
+
+##Summary
+We perturbed the input by deleting some words.
+
+We evaluated how much the top LIME tokens changed (Jaccard similarity).
+
+Next: visualize how those changes look.
 
