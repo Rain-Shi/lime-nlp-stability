@@ -1,4 +1,123 @@
-This repo contains a [Quarto book](https://quarto.org/docs/books/) template for the EDAV final project.
+ **Twitter Entity Sentiment Analysis with LIME** 
+---
+
+```markdown
+# 🧠 Explaining Text Classification Models with LIME  
+_A study on Stability and Interpretability in NLP_
+
+[![Quarto Book](https://img.shields.io/badge/Quarto-Book-blue?logo=quarto)](https://rain-shi.github.io/lime-nlp-stability/)
+
+## 📘 Project Overview
+
+This project explores **local model interpretability** using **LIME** (Local Interpretable Model-Agnostic Explanations) on the [Twitter Entity Sentiment Analysis](https://www.kaggle.com/competitions/twitter-entity-sentiment-analysis) dataset.
+
+We aim to answer:
+- How does LIME explain predictions made by text classifiers?
+- How stable are explanations under small input perturbations?
+
+---
+
+## 📁 Dataset
+
+The dataset consists of two CSV files:
+
+- `twitter_training.csv`: Main training set (~74k records)
+- `twitter_validation.csv`: Validation set (~1k records)
+
+Each row includes:
+- `id`: Identifier
+- `entity`: Entity name (e.g. company, person)
+- `sentiment`: One of `Positive`, `Neutral`, `Negative`
+- `tweet`: The full tweet text
+
+---
+
+## 🛠 Tech Stack
+
+- **Python 3.11**
+- **pandas**, **scikit-learn**, **lime**
+- **Seaborn / Matplotlib** for visualization
+- **Quarto + RStudio** for publishing interactive analysis
+- **Git + GitHub** for version control
+- **Virtual environment** managed via `.venv/`
+
+---
+
+## 🧪 Key Files
+
+| File                | Description |
+|---------------------|-------------|
+| `data.qmd`          | Dataset loading, cleaning, and summary statistics |
+| `modeling.qmd`      | Text classification model and evaluation |
+| `lime.qmd`          | LIME explanation and visualization |
+| `perturbation.qmd`  | Analysis of explanation stability |
+| `visualization.qmd` | Custom plots and distributions |
+| `conclusion.qmd`    | Final remarks and findings |
+| `_quarto.yml`       | Quarto navigation and configuration |
+| `data/`             | Contains the CSV files |
+| `docs/`             | Rendered HTML outputs for deployment |
+
+---
+
+## 🚀 How to Reproduce
+
+1. Clone this repo  
+   ```bash
+   git clone https://github.com/Rain-Shi/lime-nlp-stability.git
+   cd lime-nlp-stability
+   ```
+
+2. Create and activate a virtual environment  
+   ```bash
+   python -m venv .venv
+   .\.venv\Scripts\activate  # on Windows
+   ```
+
+3. Install dependencies  
+   ```bash
+   pip install -r requirements.txt  # or install manually
+   ```
+
+4. Launch RStudio or VSCode with Quarto and run  
+   ```bash
+   quarto render
+   ```
+
+5. Open in browser (if deployed):  
+   [https://rain-shi.github.io/lime-nlp-stability](https://rain-shi.github.io/lime-nlp-stability)
+
+---
+
+## 📌 Status
+
+✅ Data cleaned  
+✅ Model trained  
+✅ LIME applied  
+✅ Git conflict resolved  
+🚧 Explanation stability in progress  
+🚧 Final evaluation coming next...
+
+---
+
+## 🤝 Acknowledgements
+
+- [LIME by Ribeiro et al.](https://arxiv.org/abs/1602.04938)  
+- [Quarto for publishing](https://quarto.org/)  
+- [Twitter dataset on Kaggle](https://www.kaggle.com/competitions/twitter-entity-sentiment-analysis)
+
+---
+
+## 📬 Contact
+
+Feel free to reach out by [opening an issue](https://github.com/Rain-Shi/lime-nlp-stability/issues) or connecting via GitHub.
+
+---
+
+_This repo was built as part of the final project for EDAV @ Columbia._
+```
+
+---
+
 
 ## Follow these instructions carefully
 
