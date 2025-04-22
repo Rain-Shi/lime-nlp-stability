@@ -1,6 +1,62 @@
 ---
 title: "Modeling"
+format: html
+jupyter: python3
 ---
 
-# Modeling Approach
+## Objective
+
+We aim to build a **baseline text classification model** that predicts the **sentiment** toward a given **entity** in a tweet. This sets the stage for applying **LIME** to explain individual predictions.
+
+---
+
+## Load & Preprocess Data
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+col_names = ["id", "entity", "sentiment", "tweet"]
+
+train = pd.read_csv("data/twitter_training.csv", header=None, names=col_names)
+train = train.dropna(subset=["tweet"])
+train = train[train["tweet"].str.strip().astype(bool)]
+X = train["tweet"]
+y = train["sentiment"]
+```
+
+##Baseline: Logistic Regression with TF-IDF
+```{python}
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import classification_report
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+model = make_pipeline(
+    TfidfVectorizer(max_features=10000, ngram_range=(1,2)),
+    LogisticRegression(max_iter=1000)
+)
+
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+```
+
+##Save Model & Vectorizer for LIME
+```{python}
+
+import joblib
+
+# Save pipeline
+joblib.dump(model, "scripts/baseline_pipeline.pkl")
+```
+
+##Summary
+We trained a baseline logistic regression model using TF-IDF features.
+
+Performance will serve as a reference when we apply interpretation methods.
+
+Next: Apply LIME to explain predictions.
 
