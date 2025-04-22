@@ -104,7 +104,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
+
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
 
 
 </head>
@@ -149,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -167,7 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lime.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">lime</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LIME Interpretation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -201,10 +204,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#dataset-description" id="toc-dataset-description" class="nav-link active" data-scroll-target="#dataset-description"><span class="header-section-number">2.1</span> Dataset Description</a></li>
   <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">2.2</span> Load Data</a></li>
   <li><a href="#basic-statistics" id="toc-basic-statistics" class="nav-link" data-scroll-target="#basic-statistics"><span class="header-section-number">2.3</span> Basic Statistics</a></li>
-  <li><a href="#sample-records-training-set" id="toc-sample-records-training-set" class="nav-link" data-scroll-target="#sample-records-training-set"><span class="header-section-number">2.4</span> Sample Records (Training Set)</a></li>
-  <li><a href="#check-missing-values" id="toc-check-missing-values" class="nav-link" data-scroll-target="#check-missing-values"><span class="header-section-number">2.5</span> Check Missing Values</a></li>
-  <li><a href="#sentiment-distribution-train-vs-validation" id="toc-sentiment-distribution-train-vs-validation" class="nav-link" data-scroll-target="#sentiment-distribution-train-vs-validation"><span class="header-section-number">2.6</span> Sentiment Distribution (Train vs Validation)</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.7</span> Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -239,11 +238,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>twitter_validation.csv</code>: Validation dataset</li>
 </ul>
 <p>Each row contains: - an <strong>ID</strong> - a <strong>target entity</strong> - the <strong>sentiment label</strong>: <code>Positive</code>, <code>Neutral</code>, or <code>Negative</code> - a <strong>tweet</strong></p>
+<p>The task is to predict the sentiment expressed toward the entity.</p>
 <hr>
 </section>
 <section id="load-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.2</span> Load Data</h2>
-<div id="1bf41aae" class="cell" data-execution_count="1">
+<div id="3eaaed7f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -256,20 +256,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_validation.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with missing or empty tweets</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train.isnull().<span class="bu">sum</span>())</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>id             0
+entity         0
+sentiment      0
+tweet        686
+dtype: int64</code></pre>
 </div>
-<hr>
+</div>
 </section>
 <section id="basic-statistics" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="basic-statistics"><span class="header-section-number">2.3</span> Basic Statistics</h2>
-<div id="8951996b" class="cell" data-execution_count="2">
+<div id="b4d96192" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, train.shape)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Validation set shape:"</span>, valid.shape)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>train.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, train.shape)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Validation set shape:"</span>, valid.shape)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Training set shape: (73824, 4)
@@ -279,14 +287,11 @@ Validation set shape: (1000, 4)</code></pre>
 <pre><code>Index(['id', 'entity', 'sentiment', 'tweet'], dtype='object')</code></pre>
 </div>
 </div>
-<hr>
-</section>
-<section id="sample-records-training-set" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="sample-records-training-set"><span class="header-section-number">2.4</span> Sample Records (Training Set)</h2>
-<div id="53be5d6c" class="cell" data-execution_count="3">
+<p>##Sample Records (Training Set)</p>
+<div id="b911867f" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>train.sample(<span class="dv">5</span>)[[<span class="st">"tweet"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train.sample(<span class="dv">5</span>)[[<span class="st">"tweet"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
@@ -303,33 +308,33 @@ Validation set shape: (1000, 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">18327</td>
-<td>This is incredible first look at PS5 graphics ...</td>
-<td>PlayStation5(PS5)</td>
+<td data-quarto-table-cell-role="th">27462</td>
+<td>Best Assasin Creed Black Flag offers in ebay. ...</td>
+<td>AssassinsCreed</td>
+<td>Neutral</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">40023</td>
+<td>A beta for Battlefield 4 user toileGANGGANG ha...</td>
+<td>Battlefield</td>
+<td>Irrelevant</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25824</td>
+<td>finally completed assassin's creed odyssey so ...</td>
+<td>AssassinsCreed</td>
 <td>Positive</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">44165</td>
-<td>Well like is not to be stopped due to exams.. ...</td>
-<td>PlayerUnknownsBattlegrounds(PUBG)</td>
-<td>Neutral</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">34905</td>
-<td>iPhones that banned Fortnite installed buy fro...</td>
-<td>Fortnite</td>
-<td>Irrelevant</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">10803</td>
-<td>Wtf?</td>
-<td>Xbox(Xseries)</td>
+<td data-quarto-table-cell-role="th">55922</td>
+<td>I Hate When the Duty Calls</td>
+<td>CallOfDuty</td>
 <td>Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">3039</td>
-<td>This may be a Unpopular Opinion...) Black Ops ...</td>
-<td>CallOfDutyBlackopsColdWar</td>
+<td data-quarto-table-cell-role="th">39095</td>
+<td>I think tonight was the worst single day under...</td>
+<td>Hearthstone</td>
 <td>Negative</td>
 </tr>
 </tbody>
@@ -338,14 +343,11 @@ Validation set shape: (1000, 4)</code></pre>
 </div>
 </div>
 </div>
-<hr>
-</section>
-<section id="check-missing-values" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="check-missing-values"><span class="header-section-number">2.5</span> Check Missing Values</h2>
-<div id="d70ed0e8" class="cell" data-execution_count="4">
+<p>##Check Missing Values</p>
+<div id="f686a581" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>train.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>id           0
@@ -355,26 +357,23 @@ tweet        0
 dtype: int64</code></pre>
 </div>
 </div>
-<hr>
-</section>
-<section id="sentiment-distribution-train-vs-validation" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="sentiment-distribution-train-vs-validation"><span class="header-section-number">2.6</span> Sentiment Distribution (Train vs Validation)</h2>
-<div id="2f6956e5" class="cell" data-execution_count="5">
+<p>##Sentiment Distribution (Train vs Validation)</p>
+<div id="0d7b984d" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -384,15 +383,9 @@ dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<hr>
-</section>
-<section id="summary" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.7</span> Summary</h2>
-<ul>
-<li>The training set has ~74k records, and the validation set has ~1k.</li>
-<li><strong>686 rows with missing or empty tweets were removed</strong> from the training set.</li>
-<li>The sentiment distribution is <strong>imbalanced</strong>, with <code>Neutral</code> being the most common label.</li>
-</ul>
+<p>##Summary The training set has ~74k records, and the validation set has ~1k.</p>
+<p>686 rows with missing or empty tweets were removed from the training set.</p>
+<p>The sentiment distribution is imbalanced, with Neutral being the most common label.</p>
 
 
 </section>
@@ -820,8 +813,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./index.html" class="pagination-link" aria-label="Explaining Text Classification Models with LIME">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

@@ -15,6 +15,7 @@ In this section, we evaluate how robust LIME explanations are when the input tex
 ```{python}
 import pandas as pd
 from lime.lime_text import LimeTextExplainer
+import random
 random.seed(42)
 explainer = LimeTextExplainer(class_names=["negative", "neutral", "positive"])
 
@@ -35,7 +36,6 @@ model.fit(X, y)
 def jaccard(set1, set2):
     return len(set1 & set2) / len(set1 | set2)
 
-import random
 
 def random_deletion(text, p=0.1):
     words = text.split()

@@ -111,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -129,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lime.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">lime</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LIME Interpretation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -155,8 +155,18 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#project-summary" id="toc-project-summary" class="nav-link active" data-scroll-target="#project-summary"><span class="header-section-number">7.1</span> Project Summary</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings"><span class="header-section-number">7.2</span> Key Findings</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">7.3</span> Limitations</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">7.4</span> Future Work</a></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note"><span class="header-section-number">7.5</span> Final Note</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -180,8 +190,57 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="project-summary" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="project-summary"><span class="header-section-number">7.1</span> Project Summary</h2>
+<p>In this project, we explored the <strong>stability of LIME explanations</strong> for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.</p>
+<p>We implemented the following key components:</p>
+<ul>
+<li>Built a baseline <strong>text classifier</strong> to predict sentiment (<code>Positive</code>, <code>Neutral</code>, <code>Negative</code>) based on tweets.</li>
+<li>Applied <strong>LIME (Local Interpretable Model-Agnostic Explanations)</strong> to interpret model predictions at the instance level.</li>
+<li>Generated <strong>perturbed versions</strong> of input texts to assess how LIME explanations change under slight modifications.</li>
+<li>Used <strong>Jaccard similarity</strong> to quantify the overlap in top important words across perturbed samples.</li>
+<li>Visualized <strong>stability scores</strong> across perturbations.</li>
+</ul>
+<hr>
+</section>
+<section id="key-findings" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="key-findings"><span class="header-section-number">7.2</span> Key Findings</h2>
+<ul>
+<li>LIME explanations are <strong>reasonably stable</strong> under minor perturbations (average Jaccard scores &gt; 0.8).</li>
+<li>Important tokens such as named entities or sentiment-laden words tend to remain consistent across versions.</li>
+<li>However, in some cases, a small change in wording can lead to <strong>shifts in important features</strong>, especially when:
+<ul>
+<li>The prediction confidence is low;</li>
+<li>The tweet is short or ambiguous.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="limitations" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="limitations"><span class="header-section-number">7.3</span> Limitations</h2>
+<ul>
+<li>LIME relies on <strong>bag-of-words perturbations</strong>, which may not preserve sentence fluency or semantic coherence.</li>
+<li>Explanations vary depending on the classifier’s <strong>confidence and sensitivity to input noise</strong>.</li>
+<li>Our current model is relatively simple; stability might differ on <strong>deeper or more contextual models</strong>.</li>
+</ul>
+<hr>
+</section>
+<section id="future-work" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="future-work"><span class="header-section-number">7.4</span> Future Work</h2>
+<ul>
+<li><strong>Compare LIME vs SHAP</strong> on the same dataset to assess differences in explanation quality and robustness.</li>
+<li>Experiment with more <strong>diverse perturbation strategies</strong> (e.g., synonym substitution, contextual masking).</li>
+<li>Use a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.</li>
+<li>isualize <strong>word importance trajectories</strong> over increasing perturbation intensity.</li>
+</ul>
+<hr>
+</section>
+<section id="final-note" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="final-note"><span class="header-section-number">7.5</span> Final Note</h2>
+<p>LIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand <strong>when we can trust an explanation</strong> — and when we should be cautious.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -621,7 +680,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

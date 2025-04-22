@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div1DJ87NHR9CV6C1C"></div>
+        <div class="lime top_div" id="top_divFV80OYDPPBZF4FK"></div>
         
         <script>
-        var top_div = d3.select('#top_div1DJ87NHR9CV6C1C').classed('lime top_div', true);
+        var top_div = d3.select('#top_divFV80OYDPPBZF4FK').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Negative", "Neutral", "Positive"], [0.25514951043795536, 0.021518411600596973, 0.6975749636058787, 0.025757114355568853]);
+            var pp = new lime.PredictProba(pp_svg, ["Negative", "Neutral", "Positive"], [0.24497919228174356, 0.019692866851087683, 0.7108587144047648, 0.02446922646240402]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Negative", "Neutral", "Positive"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["out", 0.40190143851499244], ["streamer", -0.2461152700125953], ["Check", 0.20287137491634116], ["this", 0.11983546301088722], ["epic", 0.002622816484115696]], 2, exp_div);
+                exp.show([["out", 0.4075982263987627], ["streamer", -0.24434757101785343], ["Check", 0.20597503777793108], ["this", 0.11523153183998304], ["epic", -0.0038953426354134406]], 2, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["out", 6, 0.40190143851499244], ["streamer", 20, -0.2461152700125953], ["Check", 0, 0.20287137491634116], ["this", 10, 0.11983546301088722], ["epic", 15, 0.002622816484115696]], 2, "Check out this epic streamer!.  ", raw_div, true);
+            exp.show_raw_text([["out", 6, 0.4075982263987627], ["streamer", 20, -0.24434757101785343], ["Check", 0, 0.20597503777793108], ["this", 10, 0.11523153183998304], ["epic", 15, -0.0038953426354134406]], 2, "Check out this epic streamer!.  ", raw_div, true);
             
         </script>
         </body></html>
