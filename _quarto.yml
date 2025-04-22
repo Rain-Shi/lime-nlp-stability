@@ -8,8 +8,8 @@ execute:
 book:
   title: "Explaining Text Classification Models with LIME:Stability and Interpretability in NLP"
   author:
-    - AUTHOR1 (js6605)
-    - AUTHOR2 (xm2335)
+    - Jinze Shi (js6605)
+    - Xiying  Mao (xm2335)
   repo-url: https://github.com/Rain-Shi/lime-nlp-stability.git
   date: today
   page-footer:
