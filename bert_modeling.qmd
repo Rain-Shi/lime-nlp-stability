@@ -1,0 +1,114 @@
+---
+title: "bert_modeling"
+format: html
+---
+
+---
+title: "BERT Modeling"
+format: html
+jupyter: python3
+---
+
+## Objective
+
+We fine-tune a **BERT model** for entity-level sentiment classification on tweets.
+
+This serves as the **primary model** to compare with our baseline and explain using LIME.
+
+---
+
+## Load Dataset and Preprocess
+
+```{python}
+import pandas as pd
+
+df = pd.read_csv("data/twitter_training.csv", header=None, names=["id", "entity", "sentiment", "tweet"])
+df = df.dropna(subset=["tweet"])
+df = df[df["tweet"].str.strip().astype(bool)]
+
+# Only keep sentiment labels that are valid
+df = df[df["sentiment"].isin(["Positive", "Neutral", "Negative"])]
+
+df["label"] = df["sentiment"].map({"Positive": 0, "Neutral": 1, "Negative": 2})
+df = df.reset_index(drop=True)
+```
+
+
+##Tokenization with HuggingFace
+```{python}
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+def tokenize(batch):
+    return tokenizer(batch["tweet"], padding="max_length", truncation=True, max_length=128)
+
+from datasets import Dataset
+
+dataset = Dataset.from_pandas(df[["tweet", "label"]])
+dataset = dataset.train_test_split(test_size=0.2, stratify_by_column="label")
+dataset = dataset.map(tokenize, batched=True)
+dataset.set_format(type="torch", columns=["input_ids", "attention_mask", "label"])
+```
+
+##Model Setup: BERT + Classification Head
+```{python}
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=3)
+```
+
+##Training with Trainer API
+```{python}
+from transformers import TrainingArguments, Trainer, EvalPrediction
+from sklearn.metrics import classification_report
+
+def compute_metrics(eval_pred: EvalPrediction):
+    logits, labels = eval_pred
+    preds = logits.argmax(axis=-1)
+    report = classification_report(labels, preds, target_names=["Positive", "Neutral", "Negative"], output_dict=True)
+    return {
+        "accuracy": report["accuracy"],
+        "f1_positive": report["Positive"]["f1-score"],
+        "f1_neutral": report["Neutral"]["f1-score"],
+        "f1_negative": report["Negative"]["f1-score"],
+    }
+
+training_args = TrainingArguments(
+    output_dir="./bert_model",
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=16,
+    num_train_epochs=3,
+    weight_decay=0.01,
+    logging_dir='./logs',
+    load_best_model_at_end=True,
+    metric_for_best_model="accuracy"
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=dataset["train"],
+    eval_dataset=dataset["test"],
+    compute_metrics=compute_metrics,
+    tokenizer=tokenizer
+)
+
+trainer.train()
+```
+
+##Evaluate & Save Model
+```{python}
+trainer.evaluate()
+
+# Save model and tokenizer
+model.save_pretrained("scripts/bert_model")
+tokenizer.save_pretrained("scripts/bert_model")
+```
+
+##Summary
+We fine-tuned a BERT model for entity-level sentiment classification.
+
+This model will be used with LIME to compare interpretability and stability against our TF-IDF baseline.

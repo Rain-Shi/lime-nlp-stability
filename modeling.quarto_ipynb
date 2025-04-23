@@ -1,0 +1,122 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Modeling\"\n",
+        "format: html\n",
+        "jupyter: python3\n",
+        "---\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "## Objective\n",
+        "\n",
+        "We aim to build a **baseline text classification model** that predicts the **sentiment** toward a given **entity** in a tweet. This sets the stage for applying **LIME** to explain individual predictions.\n",
+        "\n",
+        "---\n",
+        "\n",
+        "## Load & Preprocess Data\n"
+      ],
+      "id": "cf193f54"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "col_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\n",
+        "\n",
+        "train = pd.read_csv(\"data/twitter_training.csv\", header=None, names=col_names)\n",
+        "train = train.dropna(subset=[\"tweet\"])\n",
+        "train = train[train[\"tweet\"].str.strip().astype(bool)]\n",
+        "X = train[\"tweet\"]\n",
+        "y = train[\"sentiment\"]"
+      ],
+      "id": "9bad4b19",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "##Baseline: Logistic Regression with TF-IDF\n"
+      ],
+      "id": "a728fa91"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.pipeline import make_pipeline\n",
+        "from sklearn.metrics import classification_report\n",
+        "\n",
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)\n",
+        "\n",
+        "model = make_pipeline(\n",
+        "    TfidfVectorizer(max_features=10000, ngram_range=(1,2)),\n",
+        "    LogisticRegression(max_iter=1000)\n",
+        ")\n",
+        "\n",
+        "model.fit(X_train, y_train)\n",
+        "y_pred = model.predict(X_test)\n",
+        "\n",
+        "print(classification_report(y_test, y_pred))"
+      ],
+      "id": "b8f75ce4",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "##Save Model & Vectorizer for LIME\n"
+      ],
+      "id": "9c5d2539"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import joblib\n",
+        "\n",
+        "# Save pipeline\n",
+        "joblib.dump(model, \"scripts/baseline_pipeline.pkl\")"
+      ],
+      "id": "e9c9781f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "##Summary\n",
+        "We trained a baseline logistic regression model using TF-IDF features.\n",
+        "\n",
+        "Performance will serve as a reference when we apply interpretation methods.\n",
+        "\n",
+        "Next: Apply LIME to explain predictions.\n"
+      ],
+      "id": "8fc45c01"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
