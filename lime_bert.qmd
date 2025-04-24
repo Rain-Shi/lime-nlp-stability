@@ -1,0 +1,89 @@
+---
+title: "LIME Interpretation for BERT"
+format: html
+jupyter: python3
+---
+
+## Goal
+
+Use **LIME (Local Interpretable Model-agnostic Explanations)** to interpret why our **fine-tuned BERT model** predicts a specific sentiment for a given tweet.
+
+---
+
+## Load BERT Model and Tokenizer
+
+```{python}
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+# Load model and tokenizer
+model = AutoModelForSequenceClassification.from_pretrained("scripts/bert_modeling")
+tokenizer = AutoTokenizer.from_pretrained("scripts/bert_modeling")
+model.eval();  # Set model to evaluation mode
+
+class_names = ["Positive", "Neutral", "Negative"]  # Update based on your label mapping
+```
+
+##Load Dataset and Select a Tweet
+```{python}
+import pandas as pd
+
+# Load dataset
+col_names = ["id", "entity", "sentiment", "tweet"]
+train = pd.read_csv("data/twitter_training.csv", header=None, names=col_names)
+train = train.dropna(subset=["tweet"])
+train = train[train["tweet"].str.strip().astype(bool)]
+train = train[train["sentiment"].isin(class_names)].reset_index(drop=True)
+
+# Select a sample for interpretation
+sample_idx = 42  # you can change this index
+example = train.iloc[sample_idx]
+tweet_text = example["tweet"]
+print("Tweet:", tweet_text)
+print("True Sentiment:", example["sentiment"])
+```
+
+##Define BERT Prediction Wrapper for LIME
+```{python}
+import numpy as np
+
+def bert_predict_proba(texts):
+    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=128)
+    with torch.no_grad():
+        outputs = model(**inputs)
+    probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
+    return probs.numpy()
+```
+
+##Apply LIME for BERT
+```{python}
+from lime.lime_text import LimeTextExplainer
+
+explainer = LimeTextExplainer(class_names=class_names)
+
+explanation = explainer.explain_instance(
+    tweet_text,
+    bert_predict_proba,
+    num_features=10,
+    top_labels=1
+)
+```
+
+##Visualize Explanation
+```{python}
+from IPython.display import display, HTML
+
+display(HTML(explanation.as_html()))
+
+# Save HTML version to file
+with open("lime_bert_output.html", "w", encoding="utf-8") as f:
+    f.write(explanation.as_html())
+print("Explanation saved to lime_bert_output.html")
+```
+
+##Summary
+We applied LIME to our BERT sentiment classifier and identified the top contributing words for a single prediction.
+
+This local explanation reveals what the model relied on to classify this specific tweet.
+
+In the next step, we can analyze how small changes (e.g., synonyms or punctuation) affect the explanation to evaluate stability.
