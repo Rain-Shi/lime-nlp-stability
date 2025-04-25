@@ -1,7 +1,10 @@
 .Rproj.user
-.Rhistory
+.RHistory
 .RData
 .Ruserdata
 
 /.quarto/
 .venv/
+venv_bert/
+venv_clean/
+bert_model/
