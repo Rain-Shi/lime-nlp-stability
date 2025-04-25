@@ -2,9 +2,11 @@
 .RHistory
 .RData
 .Ruserdata
-
 /.quarto/
 .venv/
 venv_bert/
 venv_clean/
 bert_model/
+lime-cleaned/
+venv_bert_backup/
+scripts/bert_model_backup/
