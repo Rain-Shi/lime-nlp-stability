@@ -20,6 +20,7 @@ book:
     - index.qmd
     - data.qmd
     - modeling.qmd
+    - bert_modeling.qmd
     - lime.qmd
     - perturbation.qmd
     - visualization.qmd
