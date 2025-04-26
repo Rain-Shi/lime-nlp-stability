@@ -71,7 +71,7 @@ dataset.set_format(type="torch", columns=["input_ids", "attention_mask", "label"
 ```{python}
 #| cache: true
 from transformers import AutoModelForSequenceClassification
-
+import torch
 model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=4)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -126,7 +126,7 @@ trainer = Trainer(
 )
 
 # 启动训练
-trainer.train()
+#trainer.train()
 
 
 
@@ -135,25 +135,29 @@ trainer.train()
 
 ##Evaluate & Save Model
 ```{python}
-trainer.evaluate()
+#trainer.evaluate()
 
 # Save model and tokenizer
-model.save_pretrained("scripts/bert_model4")
-tokenizer.save_pretrained("scripts/bert_model4")
+#trainer.save_pretrained("scripts/bert_model4")           # 等价于 model.save_pretrained + config
+#tokenizer.save_pretrained("scripts/bert_model4")
 
 ```
 
 ##After saving  your  model Render  this
 ```{python}
 #| cache: true
-from transformers import AutoModelForSequenceClassification
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-model = AutoModelForSequenceClassification.from_pretrained("scripts/bert_model_backup")
-tokenizer = AutoTokenizer.from_pretrained("scripts/bert_model_backup")
+model = AutoModelForSequenceClassification.from_pretrained(
+    "scripts/bert_model4", local_files_only=True
+)
+tokenizer = AutoTokenizer.from_pretrained("scripts/bert_model4", local_files_only=True)
+
+model.to("cuda")
 
 trainer = Trainer(
     model=model,
-    args=training_args, 
+    args=training_args,           # TrainingArguments
     train_dataset=dataset["train"],
     eval_dataset=dataset["test"],
     compute_metrics=compute_metrics,
@@ -161,6 +165,7 @@ trainer = Trainer(
 )
 
 trainer.evaluate()
+
 ```
 
 ##Summary
