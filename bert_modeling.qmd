@@ -1,25 +1,22 @@
 ---
-title: "bert_modeling"
+title: "Fine-tuned BERT Model for Sentiment Classification
+"
 format: html
 freeze: auto
----
-
----
-title: "BERT Modeling"
-format: html
 jupyter: python3
 ---
 
+
 ## Objective
 
-We fine-tune a **BERT model** for entity-level sentiment classification on tweets.
+In this section,  we fine-tune a **BERT model** for **entity-level sentiment classification** on tweets.
 
-This serves as the **primary model** to compare with our baseline and explain using LIME.
+This model serves as our primary benchmark for comparison with the logistic regression baseline and for subsequent interpretability analysis using **LIME**.
 
 ---
 
 ## Load Dataset and Preprocess
-
+In this section, we load the training and validation datasets, remove empty tweets, and map sentiment labels to integers: Positive → 0, Neutral → 1, Negative → 2, Irrelevant → 3. This prepares the data for model training.
 ```{python}
 #| cache: true
 import pandas as pd
@@ -48,7 +45,8 @@ val_df["label"] = val_df["sentiment"].map(label_map)
 ```
 
 
-##Tokenization with HuggingFace
+## Tokenization with HuggingFace
+We use Hugging Face’s AutoTokenizer to tokenize tweets into model-ready inputs, including input_ids and attention_mask. The dataset is split and preprocessed in batches using the datasets library.
 ```{python}
 #| cache: true
 from transformers import AutoTokenizer
@@ -67,7 +65,8 @@ dataset.set_format(type="torch", columns=["input_ids", "attention_mask", "label"
 
 ```
 
-##Model Setup: BERT + Classification Head
+## Model Setup: BERT + Classification Head
+We load a pretrained bert-base-uncased model with a classification head (AutoModelForSequenceClassification) to perform four-class sentiment prediction. The model is moved to GPU or CPU depending on availability.
 ```{python}
 #| cache: true
 from transformers import AutoModelForSequenceClassification
@@ -79,7 +78,8 @@ model.to(device)
 
 ```
 
-##Training with Trainer API
+## Training with Trainer API
+The model is fine-tuned using Hugging Face’s Trainer API, which simplifies training and evaluation by managing data loading, loss computation, gradient updates, and metric reporting.
 ```{python}
 #| cache: true
 from transformers import TrainingArguments, Trainer, EvalPrediction 
@@ -133,7 +133,7 @@ trainer = Trainer(
 
 ```
 
-##Evaluate & Save Model
+## Save Model
 ```{python}
 #trainer.evaluate()
 
@@ -143,7 +143,7 @@ trainer = Trainer(
 
 ```
 
-##After saving  your  model Render  this
+## Evaluate & Save Model
 ```{python}
 #| cache: true
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -167,14 +167,37 @@ trainer = Trainer(
 trainer.evaluate()
 
 ```
+Here is a comparison of the BERT model vs. the Logistic Regression (TF-IDF) baseline mode
+```{python}
+import matplotlib.pyplot as plt
 
-##Summary
-In this experiment, we fine-tuned a BERT-based model for entity-level sentiment classification on a cleaned Twitter dataset. The original tweets were labeled as Positive, Neutral, Negative, or Irrelevant, and the model was trained to distinguish these categories with high accuracy.
+# Metrics and values
+metrics = ["Accuracy", "Precision", "Recall", "F1-score"]
+logreg_scores = [0.74, 0.74, 0.74, 0.74]
+bert_scores = [0.968, 0.969, 0.967, 0.968]
 
-We preprocessed the data, tokenized it using HuggingFace's bert-base-uncased tokenizer, and applied the Trainer API for training and evaluation. The training was conducted for 3 epochs with batch size = 16, and the best-performing model was automatically saved using load_best_model_at_end=True.
+x = range(len(metrics))
+bar_width = 0.35
 
-After training, the model achieved an evaluation accuracy of 92.4%, with strong F1-scores across all sentiment classes (F1_positive ≈ 0.935, F1_neutral ≈ 0.932, F1_negative ≈ 0.931, F1_irrelevant ≈ 0.931), indicating excellent generalization to unseen data.
+# Plot
+plt.figure(figsize=(8, 5))
+plt.bar([i - bar_width/2 for i in x], logreg_scores, width=bar_width, label="Logistic Regression (TF-IDF)")
+plt.bar([i + bar_width/2 for i in x], bert_scores, width=bar_width, label="BERT (Fine-Tuned)")
 
-This BERT model will be used in downstream experiments involving LIME to assess and compare interpretability and stability, benchmarked against a traditional TF-IDF + Logistic Regression baseline.
+plt.xticks(x, metrics)
+plt.ylabel("Score")
+plt.ylim(0.6, 1.0)
+plt.title("Performance Comparison: Logistic Regression vs. BERT")
+plt.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show()
+```
+Key Findings:
+  Significant Accuracy Gain: BERT achieves a ~23% improvement in accuracy   compared to the baseline, indicating better overall predictions.
+
+  Balanced Precision and Recall: BERT maintains both high precision and    recall, suggesting it not only makes correct predictions but also        captures more relevant instances.
+
+  Superior F1-score: The improvement in F1-score demonstrates better       generalization and balance between false positives and false negatives.
 
 
