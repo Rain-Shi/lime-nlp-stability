@@ -21,7 +21,8 @@ book:
     - data.qmd
     - modeling.qmd
     - bert_modeling.qmd
-    - lime.qmd
+    - lime_bert.qmd
+    - shap_bert.qmd
     - perturbation.qmd
     - visualization.qmd
     - conclusion.qmd
