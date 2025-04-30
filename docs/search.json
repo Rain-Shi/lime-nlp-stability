@@ -52,31 +52,31 @@
   {
     "objectID": "data.html",
     "href": "data.html",
-    "title": "2  Dataset Overview",
+    "title": "2  📊 Dataset Overview",
     "section": "",
-    "text": "2.1 Dataset Description\nThis project uses the Twitter Entity Sentiment Analysis dataset. It consists of two files:\nEach row contains: - an ID - a target entity - the sentiment label: Positive, Neutral, or Negative - a tweet\nThe task is to predict the sentiment expressed toward the entity.",
+    "text": "2.1 📂 Dataset Description\nThis project uses the Twitter Entity Sentiment Analysis dataset, composed of:\nEach row contains: - id: unique identifier\n- entity: the target subject\n- sentiment: one of Positive, Neutral, Negative, or Irrelevant\n- tweet: the tweet content\n🎯 Task: Predict the sentiment expressed toward the entity.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
     ]
   },
   {
     "objectID": "data.html#dataset-description",
     "href": "data.html#dataset-description",
-    "title": "2  Dataset Overview",
+    "title": "2  📊 Dataset Overview",
     "section": "",
     "text": "twitter_training.csv: Main training dataset\n\ntwitter_validation.csv: Validation dataset",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
     ]
   },
   {
     "objectID": "data.html#load-data",
     "href": "data.html#load-data",
-    "title": "2  Dataset Overview",
-    "section": "2.2 Load Data",
-    "text": "2.2 Load Data\n\n\nCode\nimport pandas as pd\n\n# Define column names\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\n\n# Load CSVs with no header row\ntrain = pd.read_csv(\"data/twitter_training.csv\", header=None, names=col_names)\nvalid = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=col_names)\n\n# Remove rows with missing or empty tweets\nprint(train.isnull().sum())\n\ntrain = train.dropna(subset=[\"tweet\"])\ntrain = train[train[\"tweet\"].str.strip().astype(bool)]\n\n\nid             0\nentity         0\nsentiment      0\ntweet        686\ndtype: int64",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.2 📥 Load Data",
+    "text": "2.2 📥 Load Data\n\n\nCode\nimport pandas as pd\n\ncol_names = [\"id\", \"entity\", \"sentiment\", \"tweet\"]\n\ntrain = pd.read_csv(\"data/twitter_training.csv\", header=None, names=col_names)\nvalid = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=col_names)\n\n# Remove missing/empty tweets\ntrain = train.dropna(subset=[\"tweet\"])\ntrain = train[train[\"tweet\"].str.strip().astype(bool)]",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Dataset Overview</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
     ]
   },
   {
@@ -217,6 +217,76 @@
     "text": "7.5 Final Note\nLIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand when we can trust an explanation — and when we should be cautious.",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Conclusion</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#dataset-dimensions",
+    "href": "data.html#dataset-dimensions",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.3 📐 Dataset Dimensions",
+    "text": "2.3 📐 Dataset Dimensions\n\n\nCode\nshape_df = pd.DataFrame({\n    \"Dataset\": [\"Training Set\", \"Validation Set\"],\n    \"Rows\": [train.shape[0], valid.shape[0]],\n    \"Columns\": [train.shape[1], valid.shape[1]]\n})\nshape_df\n\n\n\n\n\n\n\n\n\nDataset\nRows\nColumns\n\n\n\n\n0\nTraining Set\n73824\n4\n\n\n1\nValidation Set\n1000\n4",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#column-names",
+    "href": "data.html#column-names",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.4 📋 Column Names",
+    "text": "2.4 📋 Column Names\n\n\nCode\npd.DataFrame({\"Columns\": train.columns})\n\n\n\n\n\n\n\n\n\nColumns\n\n\n\n\n0\nid\n\n\n1\nentity\n\n\n2\nsentiment\n\n\n3\ntweet",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#sentiment-label-counts",
+    "href": "data.html#sentiment-label-counts",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.5 📊 Sentiment Label Counts",
+    "text": "2.5 📊 Sentiment Label Counts\n\n\nCode\nsentiment_df = train['sentiment'].value_counts().sort_values(ascending=False).reset_index()\nsentiment_df.columns = [\"Sentiment\", \"Count\"]\nsentiment_df\n\n\n\n\n\n\n\n\n\nSentiment\nCount\n\n\n\n\n0\nNegative\n22312\n\n\n1\nPositive\n20619\n\n\n2\nNeutral\n18051\n\n\n3\nIrrelevant\n12842",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#sample-records",
+    "href": "data.html#sample-records",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.6 🧪 Sample Records",
+    "text": "2.6 🧪 Sample Records\n\n\nCode\ntrain.sample(5)[[\"tweet\", \"entity\", \"sentiment\"]]\n\n\n\n\n\n\n\n\n\ntweet\nentity\nsentiment\n\n\n\n\n64094\n@ EAMaddenNFL servers down?\nMaddenNFL\nNegative\n\n\n35122\nmy dick is one microsoft\nMicrosoft\nNegative\n\n\n23536\nahh... copy pasting from the text google doc f...\nGoogle\nNegative\n\n\n60375\nFear is prime\nFacebook\nIrrelevant\n\n\n6873\nPpl dead be rude to me just cuz i&lt;unk&gt; a amazo...\nAmazon\nPositive",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#missing-value-check",
+    "href": "data.html#missing-value-check",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.7 🚨 Missing Value Check",
+    "text": "2.7 🚨 Missing Value Check\n\n\nCode\nmissing_df = train.isnull().sum().reset_index()\nmissing_df.columns = [\"Column\", \"Missing Values\"]\nmissing_df\n\n\n\n\n\n\n\n\n\nColumn\nMissing Values\n\n\n\n\n0\nid\n0\n\n\n1\nentity\n0\n\n\n2\nsentiment\n0\n\n\n3\ntweet\n0",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#sentiment-distribution",
+    "href": "data.html#sentiment-distribution",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.8 📉 Sentiment Distribution",
+    "text": "2.8 📉 Sentiment Distribution\n\n\nCode\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\nsns.set_theme(style=\"whitegrid\")\npalette = sns.color_palette(\"Set2\")\n\nfig, axes = plt.subplots(1, 2, figsize=(13, 5))\n\nsns.countplot(data=train, x=\"sentiment\", \n              order=[\"Positive\", \"Neutral\", \"Negative\", \"Irrelevant\"],\n              palette=palette, ax=axes[0])\naxes[0].set_title(\"Training Sentiment Distribution\", fontsize=13)\naxes[0].set_ylabel(\"Count\")\n\nsns.countplot(data=valid, x=\"sentiment\", \n              order=[\"Positive\", \"Neutral\", \"Negative\", \"Irrelevant\"],\n              palette=palette, ax=axes[1])\naxes[1].set_title(\"Validation Sentiment Distribution\", fontsize=13)\naxes[1].set_ylabel(\"\")\n\nplt.tight_layout()\nplt.show()\n\n\n/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:9: FutureWarning: \n\nPassing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.\n\n  sns.countplot(data=train, x=\"sentiment\",\n/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:9: UserWarning: The palette list has more values (8) than needed (4), which may not be intended.\n  sns.countplot(data=train, x=\"sentiment\",\n/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:15: FutureWarning: \n\nPassing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.\n\n  sns.countplot(data=valid, x=\"sentiment\",\n/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:15: UserWarning: The palette list has more values (8) than needed (4), which may not be intended.\n  sns.countplot(data=valid, x=\"sentiment\",",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#summary",
+    "href": "data.html#summary",
+    "title": "2  📊 Dataset Overview",
+    "section": "2.9 ✅ Summary",
+    "text": "2.9 ✅ Summary\n\nThe training set has ~74,000 records; validation has ~1,000\n686 empty tweets were removed from training\nNeutral is the most common label — indicating an imbalanced distribution",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>📊 Dataset Overview</span>"
     ]
   }
 ]
