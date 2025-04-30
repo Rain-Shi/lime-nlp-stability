@@ -22,7 +22,9 @@ book:
     - modeling.qmd
     - bert_modeling.qmd
     - lime_bert.qmd
+    - lime_logistics.qmd
     - shap_bert.qmd
+    - shap_logistics.qmd
     - perturbation.qmd
     - visualization.qmd
     - conclusion.qmd
