@@ -1,0 +1,313 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Fine-tuned BERT Model for Sentiment Classification\n",
+        "\"\n",
+        "format: html\n",
+        "freeze: auto\n",
+        "jupyter: python3\n",
+        "---\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "## Objective\n",
+        "\n",
+        "In this section,  we fine-tune a **BERT model** for **entity-level sentiment classification** on tweets.\n",
+        "\n",
+        "This model serves as our primary benchmark for comparison with the logistic regression baseline and for subsequent interpretability analysis using **LIME**.\n",
+        "\n",
+        "---\n",
+        "\n",
+        "## Load Dataset and Preprocess\n",
+        "In this section, we load the training and validation datasets, remove empty tweets, and map sentiment labels to integers: Positive → 0, Neutral → 1, Negative → 2, Irrelevant → 3. This prepares the data for model training.\n"
+      ],
+      "id": "7f9e45e8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "import pandas as pd\n",
+        "import pandas as pd\n",
+        "\n",
+        "train_df = pd.read_csv(\"data/twitter_training.csv\", header=None, names=[\"id\", \"entity\", \"sentiment\", \"tweet\"])\n",
+        "val_df = pd.read_csv(\"data/twitter_validation.csv\", header=None, names=[\"id\", \"entity\", \"sentiment\", \"tweet\"])\n",
+        "\n",
+        "# Ensure no missing tweets\n",
+        "train_df = train_df.dropna(subset=[\"tweet\"])\n",
+        "val_df = val_df.dropna(subset=[\"tweet\"])\n",
+        "\n",
+        "train_df = train_df[train_df[\"tweet\"].str.strip().astype(bool)]\n",
+        "val_df = val_df[val_df[\"tweet\"].str.strip().astype(bool)]\n",
+        "\n",
+        "# Map sentiment to label\n",
+        "label_map = {\n",
+        "    \"Positive\": 0,\n",
+        "    \"Neutral\": 1,\n",
+        "    \"Negative\": 2,\n",
+        "    \"Irrelevant\": 3\n",
+        "}\n",
+        "\n",
+        "train_df[\"label\"] = train_df[\"sentiment\"].map(label_map)\n",
+        "val_df[\"label\"] = val_df[\"sentiment\"].map(label_map)"
+      ],
+      "id": "28f59763",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Tokenization with HuggingFace\n",
+        "We use Hugging Face’s AutoTokenizer to tokenize tweets into model-ready inputs, including input_ids and attention_mask. The dataset is split and preprocessed in batches using the datasets library.\n"
+      ],
+      "id": "30ad9953"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "from transformers import AutoTokenizer\n",
+        "tokenizer = AutoTokenizer.from_pretrained(\"bert-base-uncased\")\n",
+        "\n",
+        "def tokenize(batch):\n",
+        "    return tokenizer(batch[\"tweet\"], padding=\"max_length\", truncation=True, max_length=128)\n",
+        "\n",
+        "from datasets import Dataset\n",
+        "dataset = Dataset.from_pandas(train_df[[\"tweet\", \"label\"]])\n",
+        "dataset = dataset.train_test_split(test_size=0.2)\n",
+        "dataset = dataset.map(tokenize, batched=True)\n",
+        "dataset = dataset.map(lambda x: {\"label\": int(x[\"label\"])})\n",
+        "dataset.set_format(type=\"torch\", columns=[\"input_ids\", \"attention_mask\", \"label\"])\n"
+      ],
+      "id": "15910009",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Model Setup: BERT + Classification Head\n",
+        "We load a pretrained bert-base-uncased model with a classification head (AutoModelForSequenceClassification) to perform four-class sentiment prediction. The model is moved to GPU or CPU depending on availability.\n"
+      ],
+      "id": "82df9c25"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "from transformers import AutoModelForSequenceClassification\n",
+        "import torch\n",
+        "model = AutoModelForSequenceClassification.from_pretrained(\"bert-base-uncased\", num_labels=4)\n",
+        "\n",
+        "device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n",
+        "model.to(device)"
+      ],
+      "id": "51437971",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Training with Trainer API\n",
+        "The model is fine-tuned using Hugging Face’s Trainer API, which simplifies training and evaluation by managing data loading, loss computation, gradient updates, and metric reporting.\n"
+      ],
+      "id": "9b84ffef"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "from transformers import TrainingArguments, Trainer, EvalPrediction \n",
+        "from  sklearn.metrics import accuracy_score, precision_recall_fscore_support\n",
+        "from sklearn.metrics import classification_report\n",
+        "\n",
+        "\n",
+        "def compute_metrics(pred):\n",
+        "    preds = pred.predictions.argmax(axis=-1)\n",
+        "    labels = pred.label_ids\n",
+        "    acc = accuracy_score(labels, preds)\n",
+        "    prf = precision_recall_fscore_support(labels, preds, average='macro')\n",
+        "    return {\n",
+        "        \"accuracy\": acc,\n",
+        "        \"precision\": prf[0],\n",
+        "        \"recall\": prf[1],\n",
+        "        \"f1\": prf[2]\n",
+        "    }\n",
+        "\n",
+        "\n",
+        "training_args = TrainingArguments(\n",
+        "    output_dir=\"./bert_model\",\n",
+        "    eval_strategy=\"epoch\", \n",
+        "    save_strategy=\"epoch\",\n",
+        "    per_device_train_batch_size=16,\n",
+        "    per_device_eval_batch_size=16,\n",
+        "    num_train_epochs=3,\n",
+        "    weight_decay=0.01,\n",
+        "    logging_dir=\"./logs\",\n",
+        "    load_best_model_at_end=True,\n",
+        "    metric_for_best_model=\"accuracy\"\n",
+        ")\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "trainer = Trainer(\n",
+        "    model=model,\n",
+        "    args=training_args,\n",
+        "    train_dataset=dataset[\"train\"],\n",
+        "    eval_dataset=dataset[\"test\"],\n",
+        "    compute_metrics=compute_metrics,\n",
+        "    tokenizer=tokenizer\n",
+        ")\n",
+        "\n",
+        "\n",
+        "#trainer.train()\n"
+      ],
+      "id": "d1dc7595",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Save Model\n"
+      ],
+      "id": "10e5f327"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#trainer.evaluate()\n",
+        "\n",
+        "# Save model and tokenizer\n",
+        "#trainer.save_pretrained(\"scripts/bert_model4\")           \n",
+        "#tokenizer.save_pretrained(\"scripts/bert_model4\")"
+      ],
+      "id": "612c97df",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Evaluate & Save Model\n"
+      ],
+      "id": "c736c8f0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "cache": true
+      },
+      "source": [
+        "from transformers import AutoModelForSequenceClassification, AutoTokenizer\n",
+        "\n",
+        "model = AutoModelForSequenceClassification.from_pretrained(\n",
+        "    \"scripts/bert_model4\", local_files_only=True\n",
+        ")\n",
+        "tokenizer = AutoTokenizer.from_pretrained(\"scripts/bert_model4\", local_files_only=True)\n",
+        "\n",
+        "model.to(\"cuda\")\n",
+        "\n",
+        "trainer = Trainer(\n",
+        "    model=model,\n",
+        "    args=training_args,           # TrainingArguments\n",
+        "    train_dataset=dataset[\"train\"],\n",
+        "    eval_dataset=dataset[\"test\"],\n",
+        "    compute_metrics=compute_metrics,\n",
+        "    tokenizer=tokenizer\n",
+        ")\n",
+        "\n",
+        "trainer.evaluate()"
+      ],
+      "id": "29e330ca",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Here is a comparison of the BERT model vs. the Logistic Regression (TF-IDF) baseline mode\n"
+      ],
+      "id": "04614753"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "# Metrics and values\n",
+        "metrics = [\"Accuracy\", \"Precision\", \"Recall\", \"F1-score\"]\n",
+        "logreg_scores = [0.74, 0.74, 0.74, 0.74]\n",
+        "bert_scores = [0.968, 0.969, 0.967, 0.968]\n",
+        "\n",
+        "x = range(len(metrics))\n",
+        "bar_width = 0.35\n",
+        "\n",
+        "# Plot\n",
+        "plt.figure(figsize=(8, 5))\n",
+        "plt.bar([i - bar_width/2 for i in x], logreg_scores, width=bar_width, label=\"Logistic Regression (TF-IDF)\")\n",
+        "plt.bar([i + bar_width/2 for i in x], bert_scores, width=bar_width, label=\"BERT (Fine-Tuned)\")\n",
+        "\n",
+        "plt.xticks(x, metrics)\n",
+        "plt.ylabel(\"Score\")\n",
+        "plt.ylim(0.6, 1.0)\n",
+        "plt.title(\"Performance Comparison: Logistic Regression vs. BERT\")\n",
+        "plt.legend()\n",
+        "plt.grid(axis='y', linestyle='--', alpha=0.7)\n",
+        "plt.tight_layout()\n",
+        "plt.show()"
+      ],
+      "id": "50521549",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Key Findings:\n",
+        "  Significant Accuracy Gain: BERT achieves a ~23% improvement in accuracy   compared to the baseline, indicating better overall predictions.\n",
+        "\n",
+        "  Balanced Precision and Recall: BERT maintains both high precision and    recall, suggesting it not only makes correct predictions but also        captures more relevant instances.\n",
+        "\n",
+        "  Superior F1-score: The improvement in F1-score demonstrates better       generalization and balance between false positives and false negatives.\n"
+      ],
+      "id": "7b3a017f"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/Xii_iim/lime-nlp-stability/.venv/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

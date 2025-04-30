@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jinze Shi (js6605)">
 <meta name="author" content="Xiying Mao (xm2335)">
-<meta name="dcterms.date" content="2025-04-23">
+<meta name="dcterms.date" content="2025-04-30">
 
 <title>Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -114,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -131,26 +131,50 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lime.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LIME Interpretation</span></span></a>
+  <a href="./bert_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fine-tuned BERT Model for Sentiment Classification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LIME Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LIME Interpretability for Logistic Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SHAP Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">SHAP Interpretability for Logistic Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
     </ul>
@@ -163,11 +187,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation"><span class="header-section-number">0.1</span> Background and Motivation</a></li>
-  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">0.2</span> Research Questions</a></li>
-  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">0.3</span> Dataset</a></li>
-  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">0.4</span> Authors</a></li>
-  <li><a href="#date" id="toc-date" class="nav-link" data-scroll-target="#date"><span class="header-section-number">0.5</span> Date</a></li>
+  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation"><span class="header-section-number">0.1</span> 🎯 Background and Motivation</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">0.2</span> ❓ Research Questions</a></li>
+  <li><a href="#methodology-overview" id="toc-methodology-overview" class="nav-link" data-scroll-target="#methodology-overview"><span class="header-section-number">0.3</span> 🔍 Methodology Overview</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">0.4</span> 🗂️ Dataset</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">0.5</span> 👥 Authors</a></li>
+  <li><a href="#date" id="toc-date" class="nav-link" data-scroll-target="#date"><span class="header-section-number">0.6</span> 🗓️ Date</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -194,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 23, 2025</p>
+      <p class="date">April 30, 2025</p>
     </div>
   </div>
   
@@ -207,33 +232,65 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="background-and-motivation" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="background-and-motivation"><span class="header-section-number">0.1</span> Background and Motivation</h2>
-<p>As natural language processing (NLP) models are increasingly deployed in areas such as sentiment analysis and public opinion monitoring, <strong>interpretability</strong> has become a critical concern. In particular, when working with <strong>short, informal text</strong> like tweets, it is often difficult to understand the decisions made by complex black-box models.</p>
-<p>This project explores the use of <strong>LIME (Local Interpretable Model-agnostic Explanations)</strong> to explain NLP model predictions and evaluates the <strong>stability</strong> and <strong>usefulness</strong> of these explanations.</p>
+<h2 data-number="0.1" class="anchored" data-anchor-id="background-and-motivation"><span class="header-section-number">0.1</span> 🎯 Background and Motivation</h2>
+<p>As NLP models are increasingly deployed in applications such as <strong>sentiment analysis</strong> and <strong>public opinion tracking</strong>, understanding the <strong>reasoning behind their predictions</strong> has become critical—especially for short, informal, and noisy text like tweets.</p>
+<p>In this project, we explore two widely used interpretability techniques—<strong>LIME</strong> and <strong>SHAP</strong>—to explain predictions made by two fundamentally different models:</p>
+<ul>
+<li>A <strong>linear model</strong> based on TF-IDF and Logistic Regression<br>
+</li>
+<li>A <strong>deep learning model</strong> based on fine-tuned <strong>BERT</strong></li>
+</ul>
+<p>By comparing the <strong>explanations across models and methods</strong>, we aim to uncover how model complexity affects interpretability, and whether simpler models offer more stable and human-understandable explanations.</p>
 </section>
 <section id="research-questions" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="research-questions"><span class="header-section-number">0.2</span> Research Questions</h2>
-<p>We focus on the following key questions:</p>
+<h2 data-number="0.2" class="anchored" data-anchor-id="research-questions"><span class="header-section-number">0.2</span> ❓ Research Questions</h2>
+<p>We seek to address the following questions:</p>
 <ul>
-<li>How stable are LIME explanations for short and noisy texts like tweets?</li>
-<li>How sensitive are the explanations to minor text perturbations (e.g., synonyms, punctuation)?</li>
-<li>Can enhanced visualizations improve human understanding of model decisions?</li>
+<li>💬 How do LIME and SHAP differ in their explanation behavior for text classification?</li>
+<li>🔁 Are the explanations stable when the input is slightly perturbed?</li>
+<li>🧠 Do more complex models (like BERT) produce less interpretable outputs?</li>
+<li>📊 How can visualization help highlight key differences in interpretability?</li>
 </ul>
 </section>
-<section id="dataset" class="level2" data-number="0.3">
-<h2 data-number="0.3" class="anchored" data-anchor-id="dataset"><span class="header-section-number">0.3</span> Dataset</h2>
-<p>We use the <strong><a href="https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis">Twitter Entity Sentiment Analysis dataset</a></strong> from Kaggle. Each example includes a tweet, a referenced entity, and a sentiment label (Positive, Neutral, or Negative) that reflects the opinion expressed toward the entity.</p>
+<section id="methodology-overview" class="level2" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="methodology-overview"><span class="header-section-number">0.3</span> 🔍 Methodology Overview</h2>
+<p>Our analysis is organized into six parts:</p>
+<ol type="1">
+<li><strong>LIME Explanation for the Linear Model</strong><br>
+</li>
+<li><strong>LIME Explanation for the BERT Model</strong><br>
+</li>
+<li><strong>Comparison of LIME Explanations across Models</strong><br>
+</li>
+<li><strong>SHAP Explanation for the Linear Model</strong><br>
+</li>
+<li><strong>SHAP Explanation for the BERT Model</strong><br>
+</li>
+<li><strong>Comparison of SHAP Explanations across Models</strong></li>
+</ol>
+<p>Each section analyzes feature importance, visualizes word-level influence, and evaluates explanation stability under controlled perturbations.</p>
 </section>
-<section id="authors" class="level2" data-number="0.4">
-<h2 data-number="0.4" class="anchored" data-anchor-id="authors"><span class="header-section-number">0.4</span> Authors</h2>
+<section id="dataset" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="dataset"><span class="header-section-number">0.4</span> 🗂️ Dataset</h2>
+<p>We use the <a href="https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis"><strong>Twitter Entity Sentiment Analysis</strong> dataset</a>, which includes:</p>
+<ul>
+<li>A tweet<br>
+</li>
+<li>A named entity mentioned in the tweet<br>
+</li>
+<li>A sentiment label (<strong>Positive</strong>, <strong>Neutral</strong>, or <strong>Negative</strong>) reflecting public opinion</li>
+</ul>
+</section>
+<section id="authors" class="level2" data-number="0.5">
+<h2 data-number="0.5" class="anchored" data-anchor-id="authors"><span class="header-section-number">0.5</span> 👥 Authors</h2>
 <ul>
 <li><strong>Shi Jinze</strong> (js6605)<br>
 </li>
-<li><strong>Mao Xiyin</strong> (xm2335)</li>
+<li><strong>Mao Xiying</strong> (xm2335)</li>
 </ul>
 </section>
-<section id="date" class="level2" data-number="0.5">
-<h2 data-number="0.5" class="anchored" data-anchor-id="date"><span class="header-section-number">0.5</span> Date</h2>
+<section id="date" class="level2" data-number="0.6">
+<h2 data-number="0.6" class="anchored" data-anchor-id="date"><span class="header-section-number">0.6</span> 🗓️ Date</h2>
 <p>April 2025</p>
 
 
