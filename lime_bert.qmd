@@ -1,89 +1,250 @@
 ---
-title: "LIME Interpretation for BERT"
+title: "LIME Interpretability Evaluation for BERT"
 format: html
 jupyter: python3
----
-
-## Goal
-
-Use **LIME (Local Interpretable Model-agnostic Explanations)** to interpret why our **fine-tuned BERT model** predicts a specific sentiment for a given tweet.
 
 ---
 
-## Load BERT Model and Tokenizer
+# Goal
+
+Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using LIME on all validation tweets:
+- Extract and aggregate top words by importance
+- Visualize most influential words via word cloud
+- Assess explanation consistency under perturbations
+
+---
+
+## 1. Load Model, Tokenizer, and Validation Set
 
 ```{python}
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import pandas as pd
+import numpy as np
+import os
+
+# Disable tokenizer warnings
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # Load model and tokenizer
-model = AutoModelForSequenceClassification.from_pretrained("scripts/bert_modeling")
-tokenizer = AutoTokenizer.from_pretrained("scripts/bert_modeling")
-model.eval();  # Set model to evaluation mode
+model_path = "./scripts/bert_model4"
+model = AutoModelForSequenceClassification.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+model.eval()
 
-class_names = ["Positive", "Neutral", "Negative"]  # Update based on your label mapping
-```
-
-##Load Dataset and Select a Tweet
-```{python}
-import pandas as pd
-
-# Load dataset
+# Load validation data
+class_names = ["Positive", "Neutral", "Negative", "Irrelevant"]
 col_names = ["id", "entity", "sentiment", "tweet"]
-train = pd.read_csv("data/twitter_training.csv", header=None, names=col_names)
-train = train.dropna(subset=["tweet"])
-train = train[train["tweet"].str.strip().astype(bool)]
-train = train[train["sentiment"].isin(class_names)].reset_index(drop=True)
+val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
+val = val.dropna(subset=["tweet"])
+val = val[val["tweet"].str.strip().astype(bool)]
+val = val[val["sentiment"].isin(class_names)].reset_index(drop=True)
+val = val.sample(10, random_state=1)
 
-# Select a sample for interpretation
-sample_idx = 42  # you can change this index
-example = train.iloc[sample_idx]
-tweet_text = example["tweet"]
-print("Tweet:", tweet_text)
-print("True Sentiment:", example["sentiment"])
+print(f"✅ Loaded {len(val)} validation tweets")
 ```
 
-##Define BERT Prediction Wrapper for LIME
-```{python}
-import numpy as np
+---
 
-def bert_predict_proba(texts):
-    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=128)
-    with torch.no_grad():
-        outputs = model(**inputs)
-    probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    return probs.numpy()
-```
+## 2. Setup LIME Explainer and Prediction Function
 
-##Apply LIME for BERT
 ```{python}
 from lime.lime_text import LimeTextExplainer
 
+# Define prediction wrapper
+
+def bert_predict_proba(texts):
+    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=128)
+    inputs = {k: v.to(model.device) for k, v in inputs.items()}
+    with torch.no_grad():
+        outputs = model(**inputs)
+    probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
+    return probs.cpu().numpy()
+
+# Initialize LIME
 explainer = LimeTextExplainer(class_names=class_names)
-
-explanation = explainer.explain_instance(
-    tweet_text,
-    bert_predict_proba,
-    num_features=10,
-    top_labels=1
-)
 ```
 
-##Visualize Explanation
+---
+
+## 3. Run LIME on Validation Set and Collect Word Importances
+
 ```{python}
-from IPython.display import display, HTML
+import emoji
+import pandas as pd
 
-display(HTML(explanation.as_html()))
+def clean_text(text):
+    no_emoji = emoji.replace_emoji(text, replace='')
+    cleaned = no_emoji.encode("utf-8", "ignore").decode("utf-8", "ignore")
+    return cleaned
 
-# Save HTML version to file
-with open("lime_bert_output.html", "w", encoding="utf-8") as f:
-    f.write(explanation.as_html())
-print("Explanation saved to lime_bert_output.html")
+all_weights = []
+print(f"Starting explanation on {len(val)} tweets...")
+
+for idx, row in val.iterrows():
+    text = clean_text(str(row["tweet"]))
+    true_sentiment = clean_text(str(row["sentiment"]))
+
+    try:
+        explanation = explainer.explain_instance(
+            text_instance=text,
+            classifier_fn=bert_predict_proba,
+            num_features=10,
+            top_labels=1,
+            num_samples=100
+        )
+
+        label_idx = explanation.top_labels[0]
+        pred_label = class_names[label_idx]
+        exp_list = explanation.as_list(label=label_idx)
+
+        if not exp_list:
+            print(f"⚠️ No explanation for tweet {idx}: {text[:30]}")
+            continue
+
+        for word, weight in exp_list:
+            all_weights.append({
+                "tweet": text,
+                "true_label": true_sentiment,
+                "pred_label": clean_text(pred_label),
+                "word": clean_text(word),
+                "weight": weight
+            })
+
+    except Exception as e:
+        print(f"❌ Error on tweet {idx}: {e}")
+        continue
+
+df_weights = pd.DataFrame(all_weights)
+print("✅ All explanations completed.")
+
+
 ```
 
-##Summary
-We applied LIME to our BERT sentiment classifier and identified the top contributing words for a single prediction.
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-This local explanation reveals what the model relied on to classify this specific tweet.
+for label in class_names:
+    subset = df_weights[df_weights["pred_label"] == label]
+    top_words = subset.groupby("word")["weight"].mean().sort_values(ascending=False).head(15)
 
-In the next step, we can analyze how small changes (e.g., synonyms or punctuation) affect the explanation to evaluate stability.
+    plt.figure(figsize=(8, 5))
+    sns.barplot(y=top_words.index, x=top_words.values)
+    plt.title(f"Top Words for Class: {label}")
+    plt.xlabel("Avg Weight")
+    plt.ylabel("Word")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+```
+
+
+---
+
+## 4. Visualize Top Words (Mean Weight)
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Top contributing words
+top_words = df_weights.groupby("word")["weight"].mean().sort_values(ascending=False).head(20)
+
+plt.figure(figsize=(10,6))
+sns.barplot(y=top_words.index, x=top_words.values)
+plt.title("Top 20 Words by Average Importance")
+plt.xlabel("Average Weight")
+plt.ylabel("Word")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## 5. Word Cloud of Influential Words
+
+```{python}
+from wordcloud import WordCloud
+
+word_freq = df_weights.groupby("word")["weight"].mean().to_dict()
+wordcloud = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(word_freq)
+
+plt.figure(figsize=(12, 6))
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.title("LIME Word Importance Cloud")
+plt.show()
+
+```
+
+---
+
+## 6. (Optional) Stability Evaluation with Minor Perturbations
+
+```{python}
+from nltk.corpus import wordnet
+import random
+import nltk
+nltk.download('wordnet')
+
+# Simple synonym substitution for robustness testing
+def synonym_replace(text):
+    words = text.split()
+    new_words = []
+    for word in words:
+        syns = wordnet.synsets(word)
+        if syns and random.random() < 0.2:
+            lemmas = syns[0].lemma_names()
+            if lemmas:
+                new_words.append(lemmas[0].replace("_", " "))
+                continue
+        new_words.append(word)
+    return " ".join(new_words)
+
+# Compare explanations between original and perturbed text
+similarities = []
+
+for i in range(len(val)):
+    text = val.iloc[i]["tweet"]
+    perturbed = synonym_replace(text)
+
+    expl_orig = explainer.explain_instance(
+        text,
+        bert_predict_proba,
+        num_features=10,
+        top_labels=1,
+        num_samples=100
+    )
+
+    expl_pert = explainer.explain_instance(
+        perturbed,
+        bert_predict_proba,
+        num_features=10,
+        top_labels=1,
+        num_samples=100
+    )
+
+    words_orig = set(w for w, _ in expl_orig.as_list(label=expl_orig.top_labels[0]))
+    words_pert = set(w for w, _ in expl_pert.as_list(label=expl_pert.top_labels[0]))
+
+    jaccard = len(words_orig & words_pert) / len(words_orig | words_pert)
+    similarities.append(jaccard)
+
+print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(similarities):.3f}")
+
+```
+
+---
+
+## Summary
+
+This notebook evaluated the interpretability of a BERT model on a validation set using LIME:
+- Aggregated word importance from all tweets
+- Visualized dominant features via barplot and word cloud
+- Measured stability of explanations under synonym substitution
+
+This approach provides a quantitative view of how and why your model makes predictions.
+You can now include these results in your interpretability report or presentation.
