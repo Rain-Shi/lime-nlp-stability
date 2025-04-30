@@ -1,0 +1,181 @@
+---
+title: "SHAP Interpretability for Logistic Regression"
+format: html
+jupyter: python3
+---
+
+## Objective
+
+Evaluate the interpretability of the Logistic Regression baseline model using SHAP. Visualize top contributing words and measure stability under input perturbation.
+
+---
+
+## 1. Load Model and Validation Set
+
+```{python}
+import pandas as pd
+import joblib
+import shap
+import emoji
+
+# Load saved pipeline model
+model = joblib.load("scripts/baseline_pipeline.pkl")
+vectorizer = model.named_steps["tfidfvectorizer"]
+
+# Load validation set
+col_names = ["id", "entity", "sentiment", "tweet"]
+val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
+val = val.dropna(subset=["tweet"])
+val = val[val["tweet"].str.strip().astype(bool)]
+val = val.sample(10, random_state=42)
+```
+
+#2. Create SHAP Explainer using KernelExplainer (black-box)
+```{python}
+# Step 1: Clean validation tweets
+def clean_text(text):
+    no_emoji = emoji.replace_emoji(text, replace='')
+    return no_emoji.encode("utf-8", errors="ignore").decode("utf-8", errors="ignore")
+
+texts = [clean_text(t) for t in val["tweet"].tolist()]
+
+X_val = vectorizer.transform(texts).toarray()
+all_zero_rows = np.all(X_val == 0, axis=1)
+
+# 输出结果
+for i, is_zero in enumerate(all_zero_rows):
+    print(f"Sample {i}: {'ALL ZERO' if is_zero else 'OK'}")
+background = X_val[:5]
+
+# 4. 构造 SHAP explainer（使用数值背景）
+explainer = shap.KernelExplainer(model.predict_proba, background)
+
+# 5. 计算 SHAP 值（传入模型向量输入）
+shap_values = explainer.shap_values(X_val)
+
+# 6. 获取特征名并可视化
+feature_names = vectorizer.get_feature_names_out()
+shap.summary_plot(shap_values, X_val, feature_names=feature_names)
+
+```
+
+#3. Clean and Transform Text
+```{python}
+def clean_text(text):
+    no_emoji = emoji.replace_emoji(text, replace='')
+    return no_emoji.encode("utf-8", errors="ignore").decode("utf-8", errors="ignore")
+
+texts = [clean_text(t) for t in val["tweet"].tolist()]
+```
+
+#4. Compute SHAP Values
+```{python}
+shap_values = explainer(texts)
+
+```
+
+#5. Collect SHAP Word Importances
+```{python}
+all_shap = []
+
+for i, row in enumerate(shap_values.data):
+    label_idx = shap_values[i].values.argmax()
+    pred_label = model.classes_[label_idx]
+    true_label = val.iloc[i]["sentiment"]
+
+    for word, value in zip(row, shap_values[i].values):
+        all_shap.append({
+            "tweet": texts[i],
+            "true_label": true_label,
+            "pred_label": pred_label,
+            "word": word,
+            "shap_value": value
+        })
+
+df_shap = pd.DataFrame(all_shap)
+print("✅ SHAP word attributions collected.")
+```
+
+#6. Top Words Bar Plot
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+top_words = df_shap.groupby("word")["shap_value"].mean().sort_values(ascending=False).head(20)
+
+plt.figure(figsize=(10, 6))
+sns.barplot(y=top_words.index, x=top_words.values)
+plt.title("Top 20 Words by Average SHAP Value")
+plt.xlabel("Average SHAP Value")
+plt.ylabel("Word")
+plt.tight_layout()
+plt.grid(True)
+plt.show()
+```
+#7. Word Cloud
+```{python}
+from wordcloud import WordCloud
+
+word_freq = df_shap.groupby("word")["shap_value"].mean().to_dict()
+wordcloud = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(word_freq)
+
+plt.figure(figsize=(12, 6))
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.title("SHAP Word Importance Cloud")
+plt.show()
+```
+
+8. Stability Evaluation via Synonym Substitution
+```{python}
+from nltk.corpus import wordnet
+import nltk
+import random
+import numpy as np
+
+nltk.download("wordnet")
+
+def synonym_replace(text):
+    words = text.split()
+    new_words = []
+    for word in words:
+        syns = wordnet.synsets(word)
+        if syns and random.random() < 0.2:
+            lemmas = syns[0].lemma_names()
+            if lemmas:
+                new_words.append(lemmas[0].replace("_", " "))
+                continue
+        new_words.append(word)
+    return " ".join(new_words)
+
+stability_scores = []
+
+for i in range(len(texts)):
+    try:
+        orig = texts[i]
+        pert = synonym_replace(orig)
+
+        shap_orig = explainer([orig])
+        shap_pert = explainer([pert])
+
+        words_orig = set(shap_orig[0].data)
+        words_pert = set(shap_pert[0].data)
+
+        jaccard = len(words_orig & words_pert) / len(words_orig | words_pert)
+        stability_scores.append(jaccard)
+    except Exception as e:
+        print(f"Error on sample {i}: {e}")
+        continue
+
+if stability_scores:
+    print(f"✅ Average Jaccard similarity over {len(stability_scores)} samples: {np.mean(stability_scores):.3f}")
+else:
+    print("❌ No valid stability scores computed.")
+```
+#Summary
+We used SHAP to explain a Logistic Regression model's decisions on validation tweets.
+
+Top contributing words were visualized through barplots and word clouds.
+
+We measured the stability of SHAP explanations under synonym-based perturbations.
+
