@@ -24,7 +24,7 @@ We use the **[Twitter Entity Sentiment Analysis dataset](https://www.kaggle.com/
 ## Authors
 
 - **Shi Jinze** (js6605)  
-- **Mao Xiyin** (xm2335)
+- **Mao Xiying** (xm2335)
 
 ## Date
 
