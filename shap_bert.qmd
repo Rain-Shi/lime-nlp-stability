@@ -47,7 +47,6 @@ print(f"✅ Loaded {len(val)} validation tweets")
 import shap
 
 def shap_predict(texts):
-    # 自动处理 SHAP maskers 传入的 List[List[str]] 格式（有时是 np.array）
     if isinstance(texts, np.ndarray):
         is_pre_tokenized = isinstance(texts[0], (list, np.ndarray))
         texts = texts.tolist()
@@ -72,8 +71,6 @@ def shap_predict(texts):
 
 
 
-
-# ✅ 直接用 transformers 的 tokenizer 构造 masker
 masker = shap.maskers.Text(tokenizer)
 explainer = shap.Explainer(shap_predict, masker)
 
@@ -121,13 +118,12 @@ print("SHAP explanations complete.")
 ```{python}
 import matplotlib.pyplot as plt
 import seaborn as sns
-# 更宽松，允许包含英文字母、部分标点
-df_shap_clean = df_shap[df_shap["word"].str.len() > 1]
+df_shap_clean = df_shap[df_shap["word"].str.len() > 3]
 df_shap_clean = df_shap_clean[df_shap_clean["word"].str[0].str.isalpha()]
 
 top_words = df_shap_clean.groupby("word")["shap_value"].mean().sort_values(ascending=False).head(20)
 
-plt.figure(figsize=(10,6))
+plt.figure(figsize=(7,4))
 sns.barplot(y=top_words.index, x=top_words.values)
 plt.title("Top 20 Words by Average SHAP Value")
 plt.xlabel("Average SHAP Value")
