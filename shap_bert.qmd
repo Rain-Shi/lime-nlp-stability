@@ -1,0 +1,201 @@
+---
+title: "SHAP Interpretability Evaluation for BERT"
+format: html
+jupyter: python3
+---
+
+# Goal
+
+Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets:
+- Extract and aggregate top words by SHAP value
+- Visualize most influential words via word cloud
+- Assess explanation consistency under perturbations
+
+---
+
+## 1. Load Model, Tokenizer, and Validation Set
+
+```{python}
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import pandas as pd
+import numpy as np
+import os
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+model_path = "./scripts/bert_model4"
+model = AutoModelForSequenceClassification.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+model.eval()
+model.to("cuda")
+
+class_names = ["Positive", "Neutral", "Negative", "Irrelevant"]
+col_names = ["id", "entity", "sentiment", "tweet"]
+val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
+val = val.dropna(subset=["tweet"])
+val = val[val["tweet"].str.strip().astype(bool)]
+val = val[val["sentiment"].isin(class_names)].reset_index(drop=True)
+val = val.sample(10, random_state=42)
+
+print(f"✅ Loaded {len(val)} validation tweets")
+```
+
+
+#2. Define SHAP Explainer and Prediction Function
+```{python}
+import shap
+
+def shap_predict(texts):
+    # 自动处理 SHAP maskers 传入的 List[List[str]] 格式（有时是 np.array）
+    if isinstance(texts, np.ndarray):
+        is_pre_tokenized = isinstance(texts[0], (list, np.ndarray))
+        texts = texts.tolist()
+    else:
+        is_pre_tokenized = isinstance(texts[0], list)
+
+    inputs = tokenizer(
+        texts,
+        return_tensors="pt",
+        padding=True,
+        truncation=True,
+        max_length=128,
+        is_split_into_words=is_pre_tokenized
+    )
+
+    inputs = {k: v.to(model.device) for k, v in inputs.items()}
+
+    with torch.no_grad():
+        output = model(**inputs).logits
+
+    return torch.nn.functional.softmax(output, dim=-1).cpu().numpy()
+
+
+
+
+# ✅ 直接用 transformers 的 tokenizer 构造 masker
+masker = shap.maskers.Text(tokenizer)
+explainer = shap.Explainer(shap_predict, masker)
+
+
+
+
+```
+
+#3. Run SHAP on Validation Set and Collect Word Importances
+```{python}
+import emoji
+import pandas as pd
+
+def clean_text(text):
+    no_emoji = emoji.replace_emoji(text, replace='')
+    cleaned = no_emoji.encode("utf-8", "ignore").decode("utf-8", "ignore")
+    return cleaned
+
+all_shap = []
+print("Running SHAP on validation samples...")
+
+for idx, row in val.iterrows():
+    text = clean_text(str(row["tweet"]))
+    sentiment = row["sentiment"]
+    print(f"Explaining tweet {idx+1}: {text[:50]}...")
+
+    shap_values = explainer([text])
+    pred_label = class_names[np.argmax(shap_values.values[0].sum(axis=0))]
+
+    for word, value in zip(shap_values.data[0], shap_values.values[0][np.argmax(shap_values.values[0].sum(axis=0))]):
+        all_shap.append({
+            "tweet": text,
+            "true_label": sentiment,
+            "pred_label": pred_label,
+            "word": word,
+            "shap_value": value
+        })
+
+df_shap = pd.DataFrame(all_shap)
+print("SHAP explanations complete.")
+
+```
+
+#4. Visualize Top Words by Mean SHAP Value
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+# 更宽松，允许包含英文字母、部分标点
+df_shap_clean = df_shap[df_shap["word"].str.len() > 1]
+df_shap_clean = df_shap_clean[df_shap_clean["word"].str[0].str.isalpha()]
+
+top_words = df_shap_clean.groupby("word")["shap_value"].mean().sort_values(ascending=False).head(20)
+
+plt.figure(figsize=(10,6))
+sns.barplot(y=top_words.index, x=top_words.values)
+plt.title("Top 20 Words by Average SHAP Value")
+plt.xlabel("Average SHAP Value")
+plt.ylabel("Word")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+
+#5. Word Cloud of Influential SHAP Words
+```{python}
+from wordcloud import WordCloud
+
+word_freq = df_shap.groupby("word")["shap_value"].mean().to_dict()
+wordcloud = WordCloud(width=800, height=400, background_color="white").generate_from_frequencies(word_freq)
+
+plt.figure(figsize=(12, 6))
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.title("SHAP Word Importance Cloud")
+plt.show()
+```
+
+#6. (Optional) SHAP Stability Under Synonym Perturbations
+```{python}
+from nltk.corpus import wordnet
+import nltk
+import random
+nltk.download("wordnet")
+
+def synonym_replace(text):
+    words = text.split()
+    new_words = []
+    for word in words:
+        syns = wordnet.synsets(word)
+        if syns and random.random() < 0.2:
+            lemmas = syns[0].lemma_names()
+            if lemmas:
+                new_words.append(lemmas[0].replace("_", " "))
+                continue
+        new_words.append(word)
+    return " ".join(new_words)
+
+stability_scores = []
+
+for i in range(len(val)):
+    text = val.iloc[i]["tweet"]
+    perturbed = synonym_replace(text)
+
+    shap_orig = explainer([text])
+    shap_pert = explainer([perturbed])
+
+    idx = np.argmax(shap_orig.values[0].sum(axis=0))
+    words_orig = set(shap_orig.data[0])
+    words_pert = set(shap_pert.data[0])
+    jaccard = len(words_orig & words_pert) / len(words_orig | words_pert)
+    stability_scores.append(jaccard)
+
+print(f"Average Jaccard similarity over {len(val)} perturbed explanations: {np.mean(stability_scores):.3f}")
+```
+
+#Summary
+This notebook evaluated the interpretability of a BERT model using SHAP:
+
+Aggregated SHAP values across all tweets
+
+Visualized important tokens via bar plot and word cloud
+
+Quantified robustness to synonym-based perturbations
+
+Now you can compare LIME and SHAP side-by-side for interpretability quality and stability.

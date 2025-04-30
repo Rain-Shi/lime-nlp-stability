@@ -14,3 +14,4 @@ transformers
 emoji
 nltk
 plt
+shap
