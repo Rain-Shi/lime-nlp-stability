@@ -1,32 +1,54 @@
 ---
-title: "Explaining Text Classification Models with LIME"
+title: "Explaining Text Classification Models with LIME and SHAP"
 format: html
 ---
 
-## Background and Motivation
+## 🎯 Background and Motivation
 
-As natural language processing (NLP) models are increasingly deployed in areas such as sentiment analysis and public opinion monitoring, **interpretability** has become a critical concern. In particular, when working with **short, informal text** like tweets, it is often difficult to understand the decisions made by complex black-box models.
+As NLP models are increasingly deployed in applications such as **sentiment analysis** and **public opinion tracking**, understanding the **reasoning behind their predictions** has become critical—especially for short, informal, and noisy text like tweets.
 
-This project explores the use of **LIME (Local Interpretable Model-agnostic Explanations)** to explain NLP model predictions and evaluates the **stability** and **usefulness** of these explanations.
+In this project, we explore two widely used interpretability techniques—**LIME** and **SHAP**—to explain predictions made by two fundamentally different models:
 
-## Research Questions
+- A **linear model** based on TF-IDF and Logistic Regression  
+- A **deep learning model** based on fine-tuned **BERT**
 
-We focus on the following key questions:
+By comparing the **explanations across models and methods**, we aim to uncover how model complexity affects interpretability, and whether simpler models offer more stable and human-understandable explanations.
 
-- How stable are LIME explanations for short and noisy texts like tweets?
-- How sensitive are the explanations to minor text perturbations (e.g., synonyms, punctuation)?
-- Can enhanced visualizations improve human understanding of model decisions?
+## ❓ Research Questions
 
-## Dataset
+We seek to address the following questions:
 
-We use the **[Twitter Entity Sentiment Analysis dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis)** from Kaggle. Each example includes a tweet, a referenced entity, and a sentiment label (Positive, Neutral, or Negative) that reflects the opinion expressed toward the entity.
+- 💬 How do LIME and SHAP differ in their explanation behavior for text classification?
+- 🔁 Are the explanations stable when the input is slightly perturbed?
+- 🧠 Do more complex models (like BERT) produce less interpretable outputs?
+- 📊 How can visualization help highlight key differences in interpretability?
 
-## Authors
+## 🔍 Methodology Overview
+
+Our analysis is organized into six parts:
+
+1. **LIME Explanation for the Linear Model**  
+2. **LIME Explanation for the BERT Model**  
+3. **Comparison of LIME Explanations across Models**  
+4. **SHAP Explanation for the Linear Model**  
+5. **SHAP Explanation for the BERT Model**  
+6. **Comparison of SHAP Explanations across Models**
+
+Each section analyzes feature importance, visualizes word-level influence, and evaluates explanation stability under controlled perturbations.
+
+## 🗂️ Dataset
+
+We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis), which includes:
+
+- A tweet  
+- A named entity mentioned in the tweet  
+- A sentiment label (**Positive**, **Neutral**, or **Negative**) reflecting public opinion
+
+## 👥 Authors
 
 - **Shi Jinze** (js6605)  
 - **Mao Xiying** (xm2335)
 
-## Date
+## 🗓️ Date
 
 April 2025
-
