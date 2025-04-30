@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Dataset Overview – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
+<title>2&nbsp; 📊 Dataset Overview – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Dataset Overview</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">📊 Dataset Overview</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Dataset Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">📊 Dataset Overview</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -166,26 +166,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lime.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LIME Interpretation</span></span></a>
+  <a href="./bert_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fine-tuned BERT Model for Sentiment Classification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LIME Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LIME Interpretability for Logistic Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SHAP Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">SHAP Interpretability for Logistic Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
     </ul>
@@ -197,19 +221,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul>
-  <li><a href="#dataset-description" id="toc-dataset-description" class="nav-link active" data-scroll-target="#dataset-description"><span class="header-section-number">2.1</span> Dataset Description</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">2.2</span> Load Data</a></li>
-  <li><a href="#basic-statistics" id="toc-basic-statistics" class="nav-link" data-scroll-target="#basic-statistics"><span class="header-section-number">2.3</span> Basic Statistics</a></li>
+  <ul class="collapse">
+  <li><a href="#dataset-description" id="toc-dataset-description" class="nav-link active" data-scroll-target="#dataset-description"><span class="header-section-number">2.1</span> 📂 Dataset Description</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data"><span class="header-section-number">2.2</span> 📥 Load Data</a></li>
+  <li><a href="#dataset-dimensions" id="toc-dataset-dimensions" class="nav-link" data-scroll-target="#dataset-dimensions"><span class="header-section-number">2.3</span> 📐 Dataset Dimensions</a></li>
+  <li><a href="#column-names" id="toc-column-names" class="nav-link" data-scroll-target="#column-names"><span class="header-section-number">2.4</span> 📋 Column Names</a></li>
+  <li><a href="#sentiment-label-counts" id="toc-sentiment-label-counts" class="nav-link" data-scroll-target="#sentiment-label-counts"><span class="header-section-number">2.5</span> 📊 Sentiment Label Counts</a></li>
+  <li><a href="#sample-records" id="toc-sample-records" class="nav-link" data-scroll-target="#sample-records"><span class="header-section-number">2.6</span> 🧪 Sample Records</a></li>
+  <li><a href="#missing-value-check" id="toc-missing-value-check" class="nav-link" data-scroll-target="#missing-value-check"><span class="header-section-number">2.7</span> 🚨 Missing Value Check</a></li>
+  <li><a href="#sentiment-distribution" id="toc-sentiment-distribution" class="nav-link" data-scroll-target="#sentiment-distribution"><span class="header-section-number">2.8</span> 📉 Sentiment Distribution</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.9</span> ✅ Summary</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul class="collapse"><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Dataset Overview</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">📊 Dataset Overview</span></h1>
 </div>
 
 
@@ -227,75 +257,181 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="dataset-description" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="dataset-description"><span class="header-section-number">2.1</span> Dataset Description</h2>
-<p>This project uses the <strong>Twitter Entity Sentiment Analysis</strong> dataset. It consists of two files:</p>
+<h2 data-number="2.1" class="anchored" data-anchor-id="dataset-description"><span class="header-section-number">2.1</span> 📂 Dataset Description</h2>
+<p>This project uses the <strong>Twitter Entity Sentiment Analysis</strong> dataset, composed of:</p>
 <ul>
 <li><code>twitter_training.csv</code>: Main training dataset<br>
 </li>
 <li><code>twitter_validation.csv</code>: Validation dataset</li>
 </ul>
-<p>Each row contains: - an <strong>ID</strong> - a <strong>target entity</strong> - the <strong>sentiment label</strong>: <code>Positive</code>, <code>Neutral</code>, or <code>Negative</code> - a <strong>tweet</strong></p>
-<p>The task is to predict the sentiment expressed toward the entity.</p>
-<hr>
+<p>Each row contains: - <code>id</code>: unique identifier<br>
+- <code>entity</code>: the target subject<br>
+- <code>sentiment</code>: one of <code>Positive</code>, <code>Neutral</code>, <code>Negative</code>, or <code>Irrelevant</code><br>
+- <code>tweet</code>: the tweet content</p>
+<p>🎯 <strong>Task</strong>: Predict the sentiment expressed toward the entity.</p>
 </section>
 <section id="load-data" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.2</span> Load Data</h2>
-<div id="ab4bb79c" class="cell" data-execution_count="1">
+<h2 data-number="2.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.2</span> 📥 Load Data</h2>
+<div id="ffb6533c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define column names</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load CSVs with no header row</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_training.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_validation.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with missing or empty tweets</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train.isnull().<span class="bu">sum</span>())</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_training.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_validation.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove missing/empty tweets</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>id             0
-entity         0
-sentiment      0
-tweet        686
-dtype: int64</code></pre>
+</div>
+</section>
+<section id="dataset-dimensions" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="dataset-dimensions"><span class="header-section-number">2.3</span> 📐 Dataset Dimensions</h2>
+<div id="dc581a70" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shape_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Dataset"</span>: [<span class="st">"Training Set"</span>, <span class="st">"Validation Set"</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Rows"</span>: [train.shape[<span class="dv">0</span>], valid.shape[<span class="dv">0</span>]],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Columns"</span>: [train.shape[<span class="dv">1</span>], valid.shape[<span class="dv">1</span>]]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>shape_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Dataset</th>
+<th data-quarto-table-cell-role="th">Rows</th>
+<th data-quarto-table-cell-role="th">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Training Set</td>
+<td>73824</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Validation Set</td>
+<td>1000</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
 </div>
 </div>
 </section>
-<section id="basic-statistics" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="basic-statistics"><span class="header-section-number">2.3</span> Basic Statistics</h2>
-<div id="e0e26148" class="cell" data-execution_count="2">
+<section id="column-names" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="column-names"><span class="header-section-number">2.4</span> 📋 Column Names</h2>
+<div id="4b74dda1" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training set shape:"</span>, train.shape)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Validation set shape:"</span>, valid.shape)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train.columns)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(train[<span class="st">'sentiment'</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"Columns"</span>: train.columns})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Training set shape: (73824, 4)
-Validation set shape: (1000, 4)
-Index(['id', 'entity', 'sentiment', 'tweet'], dtype='object')
-sentiment
-Negative      22312
-Positive      20619
-Neutral       18051
-Irrelevant    12842
-Name: count, dtype: int64</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>id</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>entity</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>sentiment</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>tweet</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 </div>
-<p>##Sample Records (Training Set)</p>
-<div id="590083ee" class="cell" data-execution_count="3">
+</div>
+</section>
+<section id="sentiment-label-counts" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sentiment-label-counts"><span class="header-section-number">2.5</span> 📊 Sentiment Label Counts</h2>
+<div id="4e4ee54a" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sentiment_df <span class="op">=</span> train[<span class="st">'sentiment'</span>].value_counts().sort_values(ascending<span class="op">=</span><span class="va">False</span>).reset_index()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sentiment_df.columns <span class="op">=</span> [<span class="st">"Sentiment"</span>, <span class="st">"Count"</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sentiment_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Sentiment</th>
+<th data-quarto-table-cell-role="th">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Negative</td>
+<td>22312</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Positive</td>
+<td>20619</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Neutral</td>
+<td>18051</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Irrelevant</td>
+<td>12842</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="sample-records" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sample-records"><span class="header-section-number">2.6</span> 🧪 Sample Records</h2>
+<div id="0c1e2cdb" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>train.sample(<span class="dv">5</span>)[[<span class="st">"tweet"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -310,34 +446,34 @@ Name: count, dtype: int64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">13290</td>
-<td>Wale not being on a nba 2k sound track is crim...</td>
-<td>NBA2K</td>
+<td data-quarto-table-cell-role="th">64094</td>
+<td>@ EAMaddenNFL servers down?</td>
+<td>MaddenNFL</td>
 <td>Negative</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">33347</td>
-<td>is</td>
-<td>Fortnite</td>
-<td>Positive</td>
+<td data-quarto-table-cell-role="th">35122</td>
+<td>my dick is one microsoft</td>
+<td>Microsoft</td>
+<td>Negative</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">3673</td>
-<td>I'm sorry I can't imagine doing a shit in this...</td>
-<td>CallOfDutyBlackopsColdWar</td>
+<td data-quarto-table-cell-role="th">23536</td>
+<td>ahh... copy pasting from the text google doc f...</td>
+<td>Google</td>
 <td>Negative</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">18035</td>
-<td>Flowers is played out and them guys die anyway</td>
-<td>PlayStation5(PS5)</td>
+<td data-quarto-table-cell-role="th">60375</td>
+<td>Fear is prime</td>
+<td>Facebook</td>
 <td>Irrelevant</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">49952</td>
-<td>Are EA servers down? Apex Legends &amp; FIFA playe...</td>
-<td>FIFA</td>
-<td>Negative</td>
+<td data-quarto-table-cell-role="th">6873</td>
+<td>Ppl dead be rude to me just cuz i&lt;unk&gt; a amazo...</td>
+<td>Amazon</td>
+<td>Positive</td>
 </tr>
 </tbody>
 </table>
@@ -345,49 +481,116 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>##Check Missing Values</p>
-<div id="00b12898" class="cell" data-execution_count="4">
+</section>
+<section id="missing-value-check" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="missing-value-check"><span class="header-section-number">2.7</span> 🚨 Missing Value Check</h2>
+<div id="d146fd2b" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>missing_df <span class="op">=</span> train.isnull().<span class="bu">sum</span>().reset_index()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>missing_df.columns <span class="op">=</span> [<span class="st">"Column"</span>, <span class="st">"Missing Values"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>missing_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>id           0
-entity       0
-sentiment    0
-tweet        0
-dtype: int64</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Column</th>
+<th data-quarto-table-cell-role="th">Missing Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>id</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>entity</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>sentiment</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>tweet</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 </div>
-<p>##Sentiment Distribution (Train vs Validation)</p>
-<div id="9eb6c91b" class="cell" data-execution_count="5">
+</div>
+</section>
+<section id="sentiment-distribution" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="sentiment-distribution"><span class="header-section-number">2.8</span> 📉 Sentiment Distribution</h2>
+<div id="63002219" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>palette <span class="op">=</span> sns.color_palette(<span class="st">"Set2"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="dv">5</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>train, x<span class="op">=</span><span class="st">"sentiment"</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              order<span class="op">=</span>[<span class="st">"Positive"</span>, <span class="st">"Neutral"</span>, <span class="st">"Negative"</span>, <span class="st">"Irrelevant"</span>],</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>              palette<span class="op">=</span>palette, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Training Sentiment Distribution"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Count"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>sns.countplot(data<span class="op">=</span>valid, x<span class="op">=</span><span class="st">"sentiment"</span>, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>              order<span class="op">=</span>[<span class="st">"Positive"</span>, <span class="st">"Neutral"</span>, <span class="st">"Negative"</span>, <span class="st">"Irrelevant"</span>],</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>              palette<span class="op">=</span>palette, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Validation Sentiment Distribution"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">""</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:9: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.countplot(data=train, x="sentiment",
+/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:9: UserWarning: The palette list has more values (8) than needed (4), which may not be intended.
+  sns.countplot(data=train, x="sentiment",
+/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:15: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.countplot(data=valid, x="sentiment",
+/var/folders/6f/4d64zbqj5816vg7gt9y_mmwr0000gn/T/ipykernel_46852/4238378009.py:15: UserWarning: The palette list has more values (8) than needed (4), which may not be intended.
+  sns.countplot(data=valid, x="sentiment",</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="data_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>##Summary The training set has ~74k records, and the validation set has ~1k.</p>
-<p>686 rows with missing or empty tweets were removed from the training set.</p>
-<p>The sentiment distribution is imbalanced, with Neutral being the most common label.</p>
+</section>
+<section id="summary" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.9</span> ✅ Summary</h2>
+<ul>
+<li>The training set has <strong>~74,000</strong> records; validation has <strong>~1,000</strong></li>
+<li><strong>686 empty tweets</strong> were removed from training</li>
+<li><code>Neutral</code> is the most common label — indicating an <strong>imbalanced</strong> distribution</li>
+</ul>
 
 
 </section>
