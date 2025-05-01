@@ -8,22 +8,19 @@ jupyter: python3
 
 This project uses the **Twitter Entity Sentiment Analysis** dataset. It consists of two files:
 
-- `twitter_training.csv`: Main training dataset  
-- `twitter_validation.csv`: Validation dataset
+-   `twitter_training.csv`: Main training dataset\
+-   `twitter_validation.csv`: Validation dataset
 
-Each row contains:
-- an **ID**
-- a **target entity**
-- the **sentiment label**: `Positive`, `Neutral`, or `Negative`
-- a **tweet**
+Each row contains: - an **ID** - a **target entity** - the **sentiment label**: `Positive`, `Neutral`, `Negative, or  Irrelevant` - a **tweet**
 
 The task is to predict the sentiment expressed toward the entity.
 
----
+------------------------------------------------------------------------
 
-##  Sample Records (Training Set)
+## Sample Records (Training Set)
 
 We display a few sample records from the training set to get a sense of what the tweets and associated sentiment labels look like. This is helpful for qualitative understanding of the input data before preprocessing.
+
 ```{python}
 import pandas as pd
 
@@ -38,9 +35,11 @@ train.sample(5)[["tweet", "entity", "sentiment"]]
 ```
 
 ## Data Cleaning
+
 The dataset is used to train and evaluate sentiment classification models.
 
 ### Delete Missing Data
+
 In this step, we remove rows with missing or empty tweet texts to ensure clean inputs for training.
 
 ```{python}
@@ -53,7 +52,9 @@ train = train[train["tweet"].str.strip().astype(bool)]
 ```
 
 ### Delete Missing Emoji
+
 In this step, we remove emojis from tweets to clean the text and ensure consistent tokenization for vectorization.
+
 ```{python}
 import emoji
 
@@ -68,7 +69,9 @@ train["tweet"] = train["tweet"].apply(clean_text)
 ```
 
 ## Basic Statistics
+
 We explore the basic statistics of the dataset, including class distributions and dataset sizes. This helps us understand potential class imbalance and verify the dataset was loaded correctly.
+
 ```{python}
 sentiment_counts = train["sentiment"].value_counts().reset_index()
 sentiment_counts.columns = ["Sentiment", "Count"]
@@ -84,11 +87,12 @@ sentiment_counts.style.set_table_styles(
 
 
 ```
-We explore the basic statistics of the dataset, including class distributions and dataset sizes. This helps us understand potential class imbalance and verify the dataset was loaded correctly.  
+
+We explore the basic statistics of the dataset, including class distributions and dataset sizes. This helps us understand potential class imbalance and verify the dataset was loaded correctly.\
 Based on the distribution of sentiment labels, we did **not observe a significant class imbalance** in the dataset.
 
-
 ## Sentiment Distribution (Bar-Chart)
+
 ```{python}
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -103,4 +107,3 @@ plt.tight_layout()
 plt.show()
 
 ```
-

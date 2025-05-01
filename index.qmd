@@ -9,8 +9,8 @@ As NLP models are increasingly deployed in applications such as **sentiment anal
 
 In this project, we explore two widely used interpretability techniques—**LIME** and **SHAP**—to explain predictions made by two fundamentally different models:
 
-- A **linear model** based on TF-IDF and Logistic Regression  
-- A **deep learning model** based on fine-tuned **BERT**
+-   A **linear model** based on TF-IDF and Logistic Regression\
+-   A **deep learning model** based on fine-tuned **BERT**
 
 By comparing the **explanations across models and methods**, we aim to uncover how model complexity affects interpretability, and whether simpler models offer more stable and human-understandable explanations.
 
@@ -18,21 +18,21 @@ By comparing the **explanations across models and methods**, we aim to uncover h
 
 We seek to address the following questions:
 
-- How do LIME and SHAP differ in their explanation behavior for text classification?
-- Are the explanations stable when the input is slightly perturbed?
-- Do more complex models (like BERT) produce less interpretable outputs?
-- How can visualization help highlight key differences in interpretability?
+-   How do LIME and SHAP differ in their explanation behavior for text classification?
+-   Are the explanations stable when the input is slightly perturbed?
+-   Do more complex models (like BERT) produce less interpretable outputs?
+-   How can visualization help highlight key differences in interpretability?
 
 ## Methodology Overview
 
 Our analysis is organized into six parts:
 
-1. **LIME Explanation for the Linear Model**  
-2. **LIME Explanation for the BERT Model**  
-3. **Comparison of LIME Explanations across Models**  
-4. **SHAP Explanation for the Linear Model**  
-5. **SHAP Explanation for the BERT Model**  
-6. **Comparison of SHAP Explanations across Models**
+1.  **LIME Explanation for the Linear Model**\
+2.  **LIME Explanation for the BERT Model**\
+3.  **Comparison of LIME Explanations across Models**\
+4.  **SHAP Explanation for the Linear Model**\
+5.  **SHAP Explanation for the BERT Model**\
+6.  **Comparison of SHAP Explanations across Models**
 
 Each section analyzes feature importance, visualizes word-level influence, and evaluates explanation stability under controlled perturbations.
 
@@ -40,14 +40,14 @@ Each section analyzes feature importance, visualizes word-level influence, and e
 
 We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis), which includes:
 
-- A tweet  
-- A named entity mentioned in the tweet  
-- A sentiment label (**Positive**, **Neutral**, or **Negative**) reflecting public opinion
+-   A tweet\
+-   A named entity mentioned in the tweet\
+-   A sentiment label (**Positive**, **Neutral**, **Negative, Irrelevant**) reflecting public opinion
 
 ## Authors
 
-- **Shi Jinze** (js6605)  
-- **Mao Xiying** (xm2335)
+-   **Shi Jinze** (js6605)\
+-   **Mao Xiying** (xm2335)
 
 ##️ Date
 

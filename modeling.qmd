@@ -9,9 +9,9 @@ jupyter: python3
 We aim to build a **baseline text classification model** that predicts the **sentiment** toward a given **entity** in a tweet.
 
 The model performs **4-class classification**, identifying whether the sentiment is Positive, Negative, Neutral, or Irrelevant.
----
 
 ## Baseline: Logistic Regression with TF-IDF
+
 In this step, we build a baseline sentiment classification model using a Scikit-learn pipeline that combines:
 
 TF-IDF Vectorization: Converts tweets into numeric features based on word frequency and inverse document frequency. Specifically, we:
@@ -26,8 +26,8 @@ Logistic Regression Classifier: A linear model used for multi-class classificati
 
 max_iter=1000 ensures convergence for larger feature sets.
 
-The dataset is split into an 80/20 train-test split.
-We evaluate the model using the classification_report function, which reports precision, recall, and F1-score for each sentiment class.
+The dataset is split into an 80/20 train-test split. We evaluate the model using the classification_report function, which reports precision, recall, and F1-score for each sentiment class.
+
 ```{python}
 # Load & Preprocess Data
 import pandas as pd
@@ -59,12 +59,12 @@ print(classification_report(y_test, y_pred))
 ```
 
 ## Save Trained Model for Interpretation
+
 After training, we save the entire pipeline (including the TF-IDF vectorizer and the logistic regression classifier) using joblib. This serialized model will be used later for interpretability analysis with tools like LIME or SHAP.
+
 ```{python}
 import joblib
 
 # Save pipeline
 joblib.dump(model, "scripts/baseline_pipeline.pkl")
 ```
-
-
