@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Conclusion – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
+<title>11&nbsp; Conclusion – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conclusion.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conclusion.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -111,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -123,31 +123,55 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">TF_IDF+Logistic Regression Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lime.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">LIME Interpretation</span></span></a>
+  <a href="./bert_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fine-tuned BERT Model for Sentiment Classification</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">LIME Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lime_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LIME Interpretability for Logistic Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_bert.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">SHAP Interpretability Evaluation for BERT</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shap_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">SHAP Interpretability for Logistic Regression</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
     </ul>
@@ -160,11 +184,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#project-summary" id="toc-project-summary" class="nav-link active" data-scroll-target="#project-summary"><span class="header-section-number">7.1</span> Project Summary</a></li>
-  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings"><span class="header-section-number">7.2</span> Key Findings</a></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">7.3</span> Limitations</a></li>
-  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">7.4</span> Future Work</a></li>
-  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note"><span class="header-section-number">7.5</span> Final Note</a></li>
+  <li><a href="#project-summary" id="toc-project-summary" class="nav-link active" data-scroll-target="#project-summary"><span class="header-section-number">11.1</span> Project Summary</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings"><span class="header-section-number">11.2</span> Key Findings</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">11.3</span> Limitations</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">11.4</span> Future Work</a></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note"><span class="header-section-number">11.5</span> Final Note</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -173,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></h1>
 </div>
 
 
@@ -190,8 +214,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="project-summary" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="project-summary"><span class="header-section-number">7.1</span> Project Summary</h2>
+<section id="project-summary" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="project-summary"><span class="header-section-number">11.1</span> Project Summary</h2>
 <p>In this project, we explored the <strong>stability of LIME explanations</strong> for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.</p>
 <p>We implemented the following key components:</p>
 <ul>
@@ -203,8 +227,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="key-findings" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="key-findings"><span class="header-section-number">7.2</span> Key Findings</h2>
+<section id="key-findings" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="key-findings"><span class="header-section-number">11.2</span> Key Findings</h2>
 <ul>
 <li>LIME explanations are <strong>reasonably stable</strong> under minor perturbations (average Jaccard scores &gt; 0.8).</li>
 <li>Important tokens such as named entities or sentiment-laden words tend to remain consistent across versions.</li>
@@ -216,8 +240,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="limitations" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="limitations"><span class="header-section-number">7.3</span> Limitations</h2>
+<section id="limitations" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="limitations"><span class="header-section-number">11.3</span> Limitations</h2>
 <ul>
 <li>LIME relies on <strong>bag-of-words perturbations</strong>, which may not preserve sentence fluency or semantic coherence.</li>
 <li>Explanations vary depending on the classifier’s <strong>confidence and sensitivity to input noise</strong>.</li>
@@ -225,8 +249,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="future-work" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="future-work"><span class="header-section-number">7.4</span> Future Work</h2>
+<section id="future-work" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="future-work"><span class="header-section-number">11.4</span> Future Work</h2>
 <ul>
 <li><strong>Compare LIME vs SHAP</strong> on the same dataset to assess differences in explanation quality and robustness.</li>
 <li>Experiment with more <strong>diverse perturbation strategies</strong> (e.g., synonym substitution, contextual masking).</li>
@@ -235,8 +259,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="final-note" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="final-note"><span class="header-section-number">7.5</span> Final Note</h2>
+<section id="final-note" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="final-note"><span class="header-section-number">11.5</span> Final Note</h2>
 <p>LIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand <strong>when we can trust an explanation</strong> — and when we should be cautious.</p>
 
 
@@ -666,7 +690,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./visualization.html" class="pagination-link" aria-label="visualization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">visualization</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

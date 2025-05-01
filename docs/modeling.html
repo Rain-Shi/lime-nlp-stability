@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Modeling – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
+<title>3&nbsp; TF_IDF+Logistic Regression Modeling – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modeling.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modeling</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modeling.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">TF_IDF+Logistic Regression Modeling</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -158,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modeling.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">TF_IDF+Logistic Regression Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -220,7 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">3.1</span> Objective</a></li>
-  <li><a href="#load-preprocess-data" id="toc-load-preprocess-data" class="nav-link" data-scroll-target="#load-preprocess-data"><span class="header-section-number">3.2</span> Load &amp; Preprocess Data</a></li>
+  <li><a href="#baseline-logistic-regression-with-tf-idf" id="toc-baseline-logistic-regression-with-tf-idf" class="nav-link" data-scroll-target="#baseline-logistic-regression-with-tf-idf"><span class="header-section-number">3.2</span> Baseline: Logistic Regression with TF-IDF</a></li>
+  <li><a href="#save-trained-model-for-interpretation" id="toc-save-trained-model-for-interpretation" class="nav-link" data-scroll-target="#save-trained-model-for-interpretation"><span class="header-section-number">3.3</span> Save Trained Model for Interpretation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/modeling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -229,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modeling</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">TF_IDF+Logistic Regression Modeling</span></h1>
 </div>
 
 
@@ -248,46 +249,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="objective" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="objective"><span class="header-section-number">3.1</span> Objective</h2>
-<p>We aim to build a <strong>baseline text classification model</strong> that predicts the <strong>sentiment</strong> toward a given <strong>entity</strong> in a tweet. This sets the stage for applying <strong>LIME</strong> to explain individual predictions.</p>
-<hr>
+<p>We aim to build a <strong>baseline text classification model</strong> that predicts the <strong>sentiment</strong> toward a given <strong>entity</strong> in a tweet.</p>
+<p>The model performs <strong>4-class classification</strong>, identifying whether the sentiment is Positive, Negative, Neutral, or Irrelevant.</p>
 </section>
-<section id="load-preprocess-data" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="load-preprocess-data"><span class="header-section-number">3.2</span> Load &amp; Preprocess Data</h2>
-<div id="7c832d31" class="cell" data-execution_count="1">
+<section id="baseline-logistic-regression-with-tf-idf" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="baseline-logistic-regression-with-tf-idf"><span class="header-section-number">3.2</span> Baseline: Logistic Regression with TF-IDF</h2>
+<p>In this step, we build a baseline sentiment classification model using a Scikit-learn pipeline that combines:</p>
+<p>TF-IDF Vectorization: Converts tweets into numeric features based on word frequency and inverse document frequency. Specifically, we:</p>
+<p>Remove English stopwords</p>
+<p>Limit vocabulary to the top 10,000 terms</p>
+<p>Use unigrams and bigrams (1–2-gram)</p>
+<p>Logistic Regression Classifier: A linear model used for multi-class classification.</p>
+<p>max_iter=1000 ensures convergence for larger feature sets.</p>
+<p>The dataset is split into an 80/20 train-test split. We evaluate the model using the classification_report function, which reports precision, recall, and F1-score for each sentiment class.</p>
+<div id="84d2f1d3" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_training.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train[<span class="st">"tweet"</span>]</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train[<span class="st">"sentiment"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>##Baseline: Logistic Regression with TF-IDF</p>
-<div id="4e7cc610" class="cell" data-execution_count="2">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    TfidfVectorizer(stop_words<span class="op">=</span><span class="st">'english'</span>,max_features<span class="op">=</span><span class="dv">10000</span>, ngram_range<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">2</span>)),</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load &amp; Preprocess Data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_training.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> train[train[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train[<span class="st">"tweet"</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train[<span class="st">"sentiment"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    TfidfVectorizer(stop_words<span class="op">=</span><span class="st">'english'</span>,max_features<span class="op">=</span><span class="dv">10000</span>, ngram_range<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">2</span>)),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
@@ -295,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   Irrelevant       0.75      0.60      0.67      2568
     Negative       0.77      0.81      0.79      4463
      Neutral       0.75      0.70      0.72      3610
-    Positive       0.70      0.80      0.75      4124
+    Positive       0.70      0.79      0.75      4124
 
     accuracy                           0.74     14765
    macro avg       0.74      0.73      0.73     14765
@@ -303,22 +307,22 @@ weighted avg       0.74      0.74      0.74     14765
 </code></pre>
 </div>
 </div>
-<p>##Save Model &amp; Vectorizer for LIME</p>
-<div id="ea328009" class="cell" data-execution_count="3">
+</section>
+<section id="save-trained-model-for-interpretation" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="save-trained-model-for-interpretation"><span class="header-section-number">3.3</span> Save Trained Model for Interpretation</h2>
+<p>After training, we save the entire pipeline (including the TF-IDF vectorizer and the logistic regression classifier) using joblib. This serialized model will be used later for interpretability analysis with tools like LIME or SHAP.</p>
+<div id="b54ade38" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Save pipeline</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>joblib.dump(model, <span class="st">"scripts/baseline_pipeline.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Save pipeline</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>joblib.dump(model, <span class="st">"scripts/baseline_pipeline.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>['scripts/baseline_pipeline.pkl']</code></pre>
 </div>
 </div>
-<p>##Summary We trained a baseline logistic regression model using TF-IDF features.</p>
-<p>Performance will serve as a reference when we apply interpretation methods.</p>
-<p>Next: Apply LIME to explain predictions.</p>
 
 
 </section>
