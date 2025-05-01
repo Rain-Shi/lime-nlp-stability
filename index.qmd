@@ -3,7 +3,7 @@ title: "Explaining Text Classification Models with LIME and SHAP"
 format: html
 ---
 
-## 🎯 Background and Motivation
+## Background and Motivation
 
 As NLP models are increasingly deployed in applications such as **sentiment analysis** and **public opinion tracking**, understanding the **reasoning behind their predictions** has become critical—especially for short, informal, and noisy text like tweets.
 
@@ -14,16 +14,16 @@ In this project, we explore two widely used interpretability techniques—**LIME
 
 By comparing the **explanations across models and methods**, we aim to uncover how model complexity affects interpretability, and whether simpler models offer more stable and human-understandable explanations.
 
-## ❓ Research Questions
+## Research Questions
 
 We seek to address the following questions:
 
-- 💬 How do LIME and SHAP differ in their explanation behavior for text classification?
-- 🔁 Are the explanations stable when the input is slightly perturbed?
-- 🧠 Do more complex models (like BERT) produce less interpretable outputs?
-- 📊 How can visualization help highlight key differences in interpretability?
+- How do LIME and SHAP differ in their explanation behavior for text classification?
+- Are the explanations stable when the input is slightly perturbed?
+- Do more complex models (like BERT) produce less interpretable outputs?
+- How can visualization help highlight key differences in interpretability?
 
-## 🔍 Methodology Overview
+## Methodology Overview
 
 Our analysis is organized into six parts:
 
@@ -36,7 +36,7 @@ Our analysis is organized into six parts:
 
 Each section analyzes feature importance, visualizes word-level influence, and evaluates explanation stability under controlled perturbations.
 
-## 🗂️ Dataset
+##️ Dataset
 
 We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis), which includes:
 
@@ -44,11 +44,11 @@ We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.co
 - A named entity mentioned in the tweet  
 - A sentiment label (**Positive**, **Neutral**, or **Negative**) reflecting public opinion
 
-## 👥 Authors
+## Authors
 
 - **Shi Jinze** (js6605)  
 - **Mao Xiying** (xm2335)
 
-## 🗓️ Date
+##️ Date
 
 April 2025
