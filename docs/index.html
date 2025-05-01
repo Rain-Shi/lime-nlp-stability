@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining the Black Box: A Comparative Study of BERT and Logistic Regression using LIME and SHAP</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -114,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining the Black Box: A Comparative Study of BERT and Logistic Regression using LIME and SHAP</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -187,10 +187,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation"><span class="header-section-number">0.1</span> Background and Motivation</a></li>
-  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">0.2</span> Research Questions</a></li>
-  <li><a href="#methodology-overview" id="toc-methodology-overview" class="nav-link" data-scroll-target="#methodology-overview"><span class="header-section-number">0.3</span> Methodology Overview</a></li>
-  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">0.4</span> Authors</a></li>
+  <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation"><span class="header-section-number">1</span> Background and Motivation</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">2</span> Research Questions</a></li>
+  <li><a href="#methodology-overview" id="toc-methodology-overview" class="nav-link" data-scroll-target="#methodology-overview"><span class="header-section-number">3</span> Methodology Overview</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">4</span> Authors</a></li>
+  <li><a href="#date" id="toc-date" class="nav-link" data-scroll-target="#date"><span class="header-section-number">5</span> Date</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -229,45 +230,42 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="background-and-motivation" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="background-and-motivation"><span class="header-section-number">0.1</span> Background and Motivation</h2>
-<p>As NLP models are increasingly deployed in applications such as <strong>sentiment analysis</strong> and <strong>public opinion tracking</strong>, understanding the <strong>reasoning behind their predictions</strong> has become critical—especially for short, informal, and noisy text like tweets.</p>
-<p>In this project, we explore two widely used interpretability techniques—<strong>LIME</strong> and <strong>SHAP</strong>—to explain predictions made by two fundamentally different models:</p>
-<ul>
-<li>A <strong>linear model</strong> based on TF-IDF and Logistic Regression<br>
-</li>
-<li>A <strong>deep learning model</strong> based on fine-tuned <strong>BERT</strong></li>
-</ul>
-<p>By comparing the <strong>explanations across models and methods</strong>, we aim to uncover how model complexity affects interpretability, and whether simpler models offer more stable and human-understandable explanations.</p>
+<section id="background-and-motivation" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Background and Motivation</h1>
+<p>As <strong>NLP models</strong> are increasingly deployed in applications such as <strong>sentiment analysis</strong> and public opinion tracking, understanding the reasoning behind their predictions has become critical—especially for short, informal, and noisy text like tweets.</p>
+<p>In this project, we explore the <strong>interpretability</strong> of a <strong>fine-tuned BERT model</strong>—a high-performing yet opaque deep learning model—by comparing it to a much simpler, inherently <strong>interpretable linear model</strong> based on <strong>TF-IDF</strong> and <strong>Logistic Regression</strong>.</p>
+<p>We apply two widely-used model explanation techniques, <strong>LIME</strong> and <strong>SHAP</strong>, to examine and contrast the reasoning processes behind these models’ predictions. Our goal is to assess whether the <strong>accuracy advantage</strong> offered by deep models like BERT comes at a significant cost to interpretability, and to what extent this <strong>trade-off</strong> manifests in real-world, noisy data. By analyzing explanation stability, word importance attribution, and human interpretability, we aim to understand the practical implications of using <strong>black-box models</strong> in socially sensitive NLP applications.</p>
 </section>
-<section id="research-questions" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="research-questions"><span class="header-section-number">0.2</span> Research Questions</h2>
-<p>We seek to address the following questions:</p>
+<section id="research-questions" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Research Questions</h1>
+<p>This project aims to answer the following research questions:</p>
+<p>Our project investigates the following research questions:</p>
 <ul>
-<li>How do LIME and SHAP differ in their explanation behavior for text classification?</li>
-<li>Are the explanations stable when the input is slightly perturbed?</li>
-<li>Do more complex models (like BERT) produce less interpretable outputs?</li>
-<li>How can visualization help highlight key differences in interpretability?</li>
+<li>To what extent do LIME and SHAP produce consistent and meaningful explanations for short, noisy texts such as tweets?</li>
+<li>How does the interpretability of a simple, transparent model (TF-IDF + Logistic Regression) compare to that of a complex, high-performing model (fine-tuned BERT)?</li>
+<li>Are the explanations generated by each model stable under small perturbations of the input text?</li>
+<li>Does the increase in predictive accuracy offered by deep models like BERT come at a significant cost to explanation quality?</li>
+<li>How can visualizations support the comparison of interpretability across different models and explanation methods?</li>
 </ul>
 </section>
-<section id="methodology-overview" class="level2" data-number="0.3">
-<h2 data-number="0.3" class="anchored" data-anchor-id="methodology-overview"><span class="header-section-number">0.3</span> Methodology Overview</h2>
+<section id="methodology-overview" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Methodology Overview</h1>
 <p>Our analysis is organized into six parts:</p>
 <ol type="1">
-<li><strong>LIME Explanation for the Linear Model</strong><br>
+<li><strong>LIME Explanations for the Linear Model</strong><br>
 </li>
-<li><strong>LIME Explanation for the BERT Model</strong><br>
+<li><strong>LIME Explanations for the BERT Model</strong><br>
 </li>
-<li><strong>Comparison of LIME Explanations across Models</strong><br>
+<li><strong>Comparison of LIME-Based Interpretations Across Models</strong><br>
 </li>
-<li><strong>SHAP Explanation for the Linear Model</strong><br>
+<li><strong>SHAP Explanations for the Linear Model</strong><br>
 </li>
-<li><strong>SHAP Explanation for the BERT Model</strong><br>
+<li><strong>SHAP Explanations for the BERT Model</strong><br>
 </li>
-<li><strong>Comparison of SHAP Explanations across Models</strong></li>
+<li><strong>Comparison of SHAP-Based Interpretations Across Models</strong></li>
 </ol>
-<p>Each section analyzes feature importance, visualizes word-level influence, and evaluates explanation stability under controlled perturbations.</p>
-<p>##️ Dataset</p>
+<p>Each section examines word-level feature importance, visualizes explanation outputs, and assesses explanation robustness under input perturbations. Together, these analyses allow us to evaluate the impact of model complexity on interpretability, and compare how LIME and SHAP behave across white-box and black-box classifiers.</p>
+<p>#️ Dataset</p>
 <p>We use the <a href="https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis"><strong>Twitter Entity Sentiment Analysis</strong> dataset</a>, which includes:</p>
 <ul>
 <li>A tweet<br>
@@ -277,14 +275,16 @@ ul.task-list li input[type="checkbox"] {
 <li>A sentiment label (<strong>Positive</strong>, <strong>Neutral</strong>, <strong>Negative, Irrelevant</strong>) reflecting public opinion</li>
 </ul>
 </section>
-<section id="authors" class="level2" data-number="0.4">
-<h2 data-number="0.4" class="anchored" data-anchor-id="authors"><span class="header-section-number">0.4</span> Authors</h2>
+<section id="authors" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Authors</h1>
 <ul>
 <li><strong>Shi Jinze</strong> (js6605)<br>
 </li>
 <li><strong>Mao Xiying</strong> (xm2335)</li>
 </ul>
-<p>##️ Date</p>
+</section>
+<section id="date" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Date</h1>
 <p>April 2025</p>
 
 

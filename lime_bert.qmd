@@ -5,7 +5,7 @@ jupyter: python3
 
 ---
 
-# Goal
+## Goal
 
 Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using LIME on all validation tweets:
 - Extract and aggregate top words by importance
@@ -14,7 +14,7 @@ Systematically evaluate the interpretability of a fine-tuned BERT sentiment mode
 
 ---
 
-## 1. Load Model, Tokenizer, and Validation Set
+## Load Model, Tokenizer, and Validation Set
 
 ```{python}
 import torch
@@ -46,7 +46,7 @@ print(f"✅ Loaded {len(val)} validation tweets")
 
 ---
 
-## 2. Setup LIME Explainer and Prediction Function
+## Setup LIME Explainer and Prediction Function
 
 ```{python}
 from lime.lime_text import LimeTextExplainer
@@ -67,7 +67,7 @@ explainer = LimeTextExplainer(class_names=class_names)
 
 ---
 
-## 3. Run LIME on Validation Set and Collect Word Importances
+## Run LIME on Validation Set and Collect Word Importances
 
 ```{python}
 import emoji

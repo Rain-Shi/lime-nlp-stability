@@ -53,7 +53,7 @@ train = train[train["tweet"].str.strip().astype(bool)]
 
 ### Delete Missing Emoji
 
-In this step, we remove emojis from tweets to clean the text and ensure consistent tokenization for vectorization.
+In this step, we remove emojis from tweets to clean the text and ensure consistent tokenization for vectorization. Here is the  examples: 
 
 ```{python}
 import emoji
@@ -65,6 +65,20 @@ def clean_text(text):
 
 # Apply to training set
 train["tweet"] = train["tweet"].apply(clean_text)
+
+#ourexample
+samples = [
+    "I'm so happy today! 😄🎉",
+    "Great job! 💯🔥",
+    "This is weird... 🤔🙃",
+    "Just finished my code 🐍💻"
+]
+
+max_len = max(len(s) for s in samples)
+
+for s in samples:
+    cleaned = clean_text(s)
+    print(f"{s.ljust(max_len)}  →  {cleaned}")
 
 ```
 

@@ -146,7 +146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining Text Classification Models with LIME and SHAP</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Explaining the Black Box: A Comparative Study of BERT and Logistic Regression using LIME and SHAP</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -219,16 +219,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal"><span class="header-section-number">6</span> Goal</a>
-  <ul class="collapse">
-  <li><a href="#load-model-tokenizer-and-validation-set" id="toc-load-model-tokenizer-and-validation-set" class="nav-link" data-scroll-target="#load-model-tokenizer-and-validation-set"><span class="header-section-number">6.1</span> 1. Load Model, Tokenizer, and Validation Set</a></li>
-  <li><a href="#setup-lime-explainer-and-prediction-function" id="toc-setup-lime-explainer-and-prediction-function" class="nav-link" data-scroll-target="#setup-lime-explainer-and-prediction-function"><span class="header-section-number">6.2</span> 2. Setup LIME Explainer and Prediction Function</a></li>
-  <li><a href="#run-lime-on-validation-set-and-collect-word-importances" id="toc-run-lime-on-validation-set-and-collect-word-importances" class="nav-link" data-scroll-target="#run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">6.3</span> 3. Run LIME on Validation Set and Collect Word Importances</a></li>
-  <li><a href="#visualize-top-words-mean-weight" id="toc-visualize-top-words-mean-weight" class="nav-link" data-scroll-target="#visualize-top-words-mean-weight"><span class="header-section-number">6.4</span> 4. Visualize Top Words (Mean Weight)</a></li>
-  <li><a href="#word-cloud-of-influential-words" id="toc-word-cloud-of-influential-words" class="nav-link" data-scroll-target="#word-cloud-of-influential-words"><span class="header-section-number">6.5</span> 5. Word Cloud of Influential Words</a></li>
-  <li><a href="#optional-stability-evaluation-with-minor-perturbations" id="toc-optional-stability-evaluation-with-minor-perturbations" class="nav-link" data-scroll-target="#optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">6.6</span> 6. (Optional) Stability Evaluation with Minor Perturbations</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.7</span> Summary</a></li>
-  </ul></li>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal"><span class="header-section-number">5.1</span> Goal</a></li>
+  <li><a href="#load-model-tokenizer-and-validation-set" id="toc-load-model-tokenizer-and-validation-set" class="nav-link" data-scroll-target="#load-model-tokenizer-and-validation-set"><span class="header-section-number">5.2</span> Load Model, Tokenizer, and Validation Set</a></li>
+  <li><a href="#setup-lime-explainer-and-prediction-function" id="toc-setup-lime-explainer-and-prediction-function" class="nav-link" data-scroll-target="#setup-lime-explainer-and-prediction-function"><span class="header-section-number">5.3</span> Setup LIME Explainer and Prediction Function</a></li>
+  <li><a href="#run-lime-on-validation-set-and-collect-word-importances" id="toc-run-lime-on-validation-set-and-collect-word-importances" class="nav-link" data-scroll-target="#run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">5.4</span> Run LIME on Validation Set and Collect Word Importances</a></li>
+  <li><a href="#visualize-top-words-mean-weight" id="toc-visualize-top-words-mean-weight" class="nav-link" data-scroll-target="#visualize-top-words-mean-weight"><span class="header-section-number">5.5</span> 4. Visualize Top Words (Mean Weight)</a></li>
+  <li><a href="#word-cloud-of-influential-words" id="toc-word-cloud-of-influential-words" class="nav-link" data-scroll-target="#word-cloud-of-influential-words"><span class="header-section-number">5.6</span> 5. Word Cloud of Influential Words</a></li>
+  <li><a href="#optional-stability-evaluation-with-minor-perturbations" id="toc-optional-stability-evaluation-with-minor-perturbations" class="nav-link" data-scroll-target="#optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.7</span> 6. (Optional) Stability Evaluation with Minor Perturbations</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.8</span> Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/lime_bert.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -254,13 +252,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="goal" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Goal</h1>
+<section id="goal" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="goal"><span class="header-section-number">5.1</span> Goal</h2>
 <p>Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using LIME on all validation tweets: - Extract and aggregate top words by importance - Visualize most influential words via word cloud - Assess explanation consistency under perturbations</p>
 <hr>
-<section id="load-model-tokenizer-and-validation-set" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">6.1</span> 1. Load Model, Tokenizer, and Validation Set</h2>
-<div id="391f727d" class="cell" data-execution_count="1">
+</section>
+<section id="load-model-tokenizer-and-validation-set" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">5.2</span> Load Model, Tokenizer, and Validation Set</h2>
+<div id="f353d572" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -295,9 +294,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="setup-lime-explainer-and-prediction-function" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="setup-lime-explainer-and-prediction-function"><span class="header-section-number">6.2</span> 2. Setup LIME Explainer and Prediction Function</h2>
-<div id="69df25b1" class="cell" data-execution_count="2">
+<section id="setup-lime-explainer-and-prediction-function" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="setup-lime-explainer-and-prediction-function"><span class="header-section-number">5.3</span> Setup LIME Explainer and Prediction Function</h2>
+<div id="59602d9e" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_text <span class="im">import</span> LimeTextExplainer</span>
@@ -318,9 +317,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="run-lime-on-validation-set-and-collect-word-importances" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">6.3</span> 3. Run LIME on Validation Set and Collect Word Importances</h2>
-<div id="5a6cdcf3" class="cell" data-execution_count="3">
+<section id="run-lime-on-validation-set-and-collect-word-importances" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">5.4</span> Run LIME on Validation Set and Collect Word Importances</h2>
+<div id="c08ea438" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -376,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✅ All explanations completed.</code></pre>
 </div>
 </div>
-<div id="48f388fa" class="cell" data-execution_count="4">
+<div id="9b391029" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -426,9 +425,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="visualize-top-words-mean-weight" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="visualize-top-words-mean-weight"><span class="header-section-number">6.4</span> 4. Visualize Top Words (Mean Weight)</h2>
-<div id="802564d0" class="cell" data-execution_count="5">
+<section id="visualize-top-words-mean-weight" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="visualize-top-words-mean-weight"><span class="header-section-number">5.5</span> 4. Visualize Top Words (Mean Weight)</h2>
+<div id="4401fca5" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -456,9 +455,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="word-cloud-of-influential-words" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="word-cloud-of-influential-words"><span class="header-section-number">6.5</span> 5. Word Cloud of Influential Words</h2>
-<div id="871657ce" class="cell" data-execution_count="6">
+<section id="word-cloud-of-influential-words" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="word-cloud-of-influential-words"><span class="header-section-number">5.6</span> 5. Word Cloud of Influential Words</h2>
+<div id="8f986e92" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -482,9 +481,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="optional-stability-evaluation-with-minor-perturbations" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">6.6</span> 6. (Optional) Stability Evaluation with Minor Perturbations</h2>
-<div id="39171772" class="cell" data-execution_count="7">
+<section id="optional-stability-evaluation-with-minor-perturbations" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.7</span> 6. (Optional) Stability Evaluation with Minor Perturbations</h2>
+<div id="97e55085" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -543,18 +542,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 5 samples: 0.527</code></pre>
+<pre><code>Average Jaccard similarity over 5 samples: 0.456</code></pre>
 </div>
 </div>
 <hr>
 </section>
-<section id="summary" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">6.7</span> Summary</h2>
+<section id="summary" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.8</span> Summary</h2>
 <p>This notebook evaluated the interpretability of a BERT model on a validation set using LIME: - Aggregated word importance from all tweets - Visualized dominant features via barplot and word cloud - Measured stability of explanations under synonym substitution</p>
 <p>This approach provides a quantitative view of how and why your model makes predictions. You can now include these results in your interpretability report or presentation.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
