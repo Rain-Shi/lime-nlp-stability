@@ -8,7 +8,6 @@ jupyter: python3
 
 
 ## Objective
----
 
 In this section, we fine-tune a **BERT model** for **entity-level sentiment classification** on tweets.
 
