@@ -149,7 +149,7 @@ for label in class_names:
 
 
 
-## 4. Visualize Top Words (Mean Weight)
+## Visualize Top Words (Mean Weight)
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -169,8 +169,8 @@ plt.show()
 ```
 
 
-## 5. Word Cloud of Influential Words
-
+## Word Cloud of Influential Words
+Visualize important words using a word cloud, where larger font size indicates higher average contribution to predictions. This is useful for presentations and high-level understanding.
 ```{python}
 from wordcloud import WordCloud
 
@@ -186,7 +186,7 @@ plt.show()
 ```
 
 
-## 6. (Optional) Stability Evaluation with Minor Perturbations
+## (Optional) Stability Evaluation with Minor Perturbations
 
 ```{python}
 from nltk.corpus import wordnet
@@ -243,7 +243,4 @@ print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(similaritie
 
 
 ## Summary
-This notebook evaluated the interpretability of a BERT model on a validation set using LIME:
-- Aggregated word importance from all tweets
-- Visualized dominant features via barplot and word cloud
-- Measured stability of explanations under synonym substitution
+In summary, this section used LIME to interpret a fine-tuned BERT model on tweets, visualized top features, and tested explanation robustness under perturbations (Jaccard: 0.475).
