@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Perturbation Stability: Comparing LIME and SHAP for Logistic Regression and BERT</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -220,7 +220,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">6.1</span> Objective</a></li>
-  <li><a href="#load-model-and-validation-set" id="toc-load-model-and-validation-set" class="nav-link" data-scroll-target="#load-model-and-validation-set"><span class="header-section-number">6.2</span> 1. Load Model and Validation Set</a></li>
+  <li><a href="#load-model-and-validation-set" id="toc-load-model-and-validation-set" class="nav-link" data-scroll-target="#load-model-and-validation-set"><span class="header-section-number">6.2</span> Load Model and Validation Set</a></li>
+  <li><a href="#run-lime-and-collect-word-importances" id="toc-run-lime-and-collect-word-importances" class="nav-link" data-scroll-target="#run-lime-and-collect-word-importances"><span class="header-section-number">6.3</span> Run LIME and Collect Word Importances</a></li>
+  <li><a href="#top-words-per-class-barplot" id="toc-top-words-per-class-barplot" class="nav-link" data-scroll-target="#top-words-per-class-barplot"><span class="header-section-number">6.4</span> Top Words per Class (BarPlot)</a></li>
+  <li><a href="#overall-top-20-word-importance" id="toc-overall-top-20-word-importance" class="nav-link" data-scroll-target="#overall-top-20-word-importance"><span class="header-section-number">6.5</span> Overall Top 20 Word Importance</a></li>
+  <li><a href="#word-cloud-of-explanations" id="toc-word-cloud-of-explanations" class="nav-link" data-scroll-target="#word-cloud-of-explanations"><span class="header-section-number">6.6</span> Word Cloud of Explanations</a></li>
+  <li><a href="#stability-analysis-under-synonym-substitution" id="toc-stability-analysis-under-synonym-substitution" class="nav-link" data-scroll-target="#stability-analysis-under-synonym-substitution"><span class="header-section-number">6.7</span> Stability Analysis under Synonym Substitution</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/lime_logistics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -249,11 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="objective" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="objective"><span class="header-section-number">6.1</span> Objective</h2>
 <p>Evaluate and visualize word-level explanations for a baseline TF-IDF + Logistic Regression model using LIME on validation tweets.</p>
-<hr>
 </section>
 <section id="load-model-and-validation-set" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="load-model-and-validation-set"><span class="header-section-number">6.2</span> 1. Load Model and Validation Set</h2>
-<div id="149e4aac" class="cell" data-execution_count="1">
+<h2 data-number="6.2" class="anchored" data-anchor-id="load-model-and-validation-set"><span class="header-section-number">6.2</span> Load Model and Validation Set</h2>
+<p>Load the pre-trained pipeline (TF-IDF + logistic regression), and select a sample of cleaned validation tweets for analysis. Also, initialize the LIME explainer with sentiment class labels.</p>
+<div id="bdb273c0" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -275,8 +280,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>explainer <span class="op">=</span> LimeTextExplainer(class_names<span class="op">=</span>class_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>#2. Run LIME and Collect Word Importances</p>
-<div id="59d7f889" class="cell" data-execution_count="2">
+</section>
+<section id="run-lime-and-collect-word-importances" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="run-lime-and-collect-word-importances"><span class="header-section-number">6.3</span> Run LIME and Collect Word Importances</h2>
+<p>Run LIME on each tweet to get the top 10 words contributing to the predicted label. For each explanation, store word-level weights in a structured format for analysis.</p>
+<div id="3b329edb" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -321,8 +329,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>✅ LIME explanations complete.</code></pre>
 </div>
 </div>
-<p>#3. Top Words per Class (BarPlot)</p>
-<div id="803d6f56" class="cell" data-execution_count="3">
+</section>
+<section id="top-words-per-class-barplot" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="top-words-per-class-barplot"><span class="header-section-number">6.4</span> Top Words per Class (BarPlot)</h2>
+<p>Group the results by predicted class and show the top 15 most important words for each class using bar plots. This gives insight into which words drive predictions for each sentiment category.</p>
+<div id="8a8cf2bd" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -370,8 +381,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>#4. Overall Top 20 Word Importance</p>
-<div id="04ffe1c5" class="cell" data-execution_count="4">
+</section>
+<section id="overall-top-20-word-importance" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="overall-top-20-word-importance"><span class="header-section-number">6.5</span> Overall Top 20 Word Importance</h2>
+<p>Aggregate word importance scores across all samples and display the top 20 words globally. This shows which words are most influential for the model overall.</p>
+<div id="98d93884" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>top_words <span class="op">=</span> df_weights.groupby(<span class="st">"word"</span>)[<span class="st">"weight"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
@@ -393,8 +407,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>#5. Word Cloud of Explanations</p>
-<div id="88d4225c" class="cell" data-execution_count="5">
+<p>This global bar plot highlights the top 20 words across all tweets, regardless of class. Words like “SpeakerPelosi”, “diamond”, and “AWESOME” dominate, showing that they were consistently influential in driving the model’s decisions. This visualization offers a high-level summary of what the model deems important overall.</p>
+</section>
+<section id="word-cloud-of-explanations" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="word-cloud-of-explanations"><span class="header-section-number">6.6</span> Word Cloud of Explanations</h2>
+<p>Visualize important words using a word cloud, where larger font size indicates higher average contribution to predictions. This is useful for presentations and high-level understanding.</p>
+<div id="003c4f0e" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -416,10 +434,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<ol start="6" type="1">
-<li>Stability Analysis under Synonym Substitution</li>
-</ol>
-<div id="f852e5fb" class="cell" data-execution_count="6">
+<p>The word cloud visually encodes the global importance of words. Larger font size corresponds to higher contribution. Words such as “Montage”, “AWESOME”, and “SpeakerPelosi” appear prominently. This format is useful for quick insights and visual storytelling in presentations.</p>
+</section>
+<section id="stability-analysis-under-synonym-substitution" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="stability-analysis-under-synonym-substitution"><span class="header-section-number">6.7</span> Stability Analysis under Synonym Substitution</h2>
+<div id="bb1527e3" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -468,10 +487,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 1000 samples: 0.675</code></pre>
+<pre><code>Average Jaccard similarity over 1000 samples: 0.662</code></pre>
 </div>
 </div>
-<p>#Summary We applied LIME to explain the predictions of a Logistic Regression sentiment model.</p>
+<p>##Summary We applied LIME to explain the predictions of a Logistic Regression sentiment model.</p>
 <p>Top contributing words were visualized using bar plots and word clouds.</p>
 <p>Stability under perturbations was evaluated via synonym substitution.</p>
 <p>This helps us assess how interpretable and robust the baseline model’s predictions are.</p>

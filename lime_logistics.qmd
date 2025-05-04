@@ -8,9 +8,9 @@ jupyter: python3
 
 Evaluate and visualize word-level explanations for a baseline TF-IDF + Logistic Regression model using LIME on validation tweets.
 
----
 
-## 1. Load Model and Validation Set
+## Load Model and Validation Set
+Load the pre-trained pipeline (TF-IDF + logistic regression), and select a sample of cleaned validation tweets for analysis. Also, initialize the LIME explainer with sentiment class labels.
 
 ```{python}
 import pandas as pd
@@ -32,7 +32,8 @@ class_names = ["Positive", "Neutral", "Negative", "Irrelevant"]
 explainer = LimeTextExplainer(class_names=class_names)
 ```
 
-#2. Run LIME and Collect Word Importances
+## Run LIME and Collect Word Importances
+Run LIME on each tweet to get the top 10 words contributing to the predicted label. For each explanation, store word-level weights in a structured format for analysis.
 ```{python}
 import emoji
 
@@ -72,7 +73,8 @@ for idx, row in val.iterrows():
 df_weights = pd.DataFrame(all_weights)
 print("✅ LIME explanations complete.")
 ```
-#3. Top Words per Class (BarPlot)
+## Top Words per Class (BarPlot)
+Group the results by predicted class and show the top 15 most important words for each class using bar plots. This gives insight into which words drive predictions for each sentiment category.
 ```{python}
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -91,7 +93,8 @@ for label in class_names:
     plt.show()
 
 ```
-#4. Overall Top 20 Word Importance
+## Overall Top 20 Word Importance
+Aggregate word importance scores across all samples and display the top 20 words globally. This shows which words are most influential for the model overall.
 ```{python}
 top_words = df_weights.groupby("word")["weight"].mean().sort_values(ascending=False).head(20)
 
@@ -104,7 +107,10 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 ```
-#5. Word Cloud of Explanations
+This global bar plot highlights the top 20 words across all tweets, regardless of class. Words like "SpeakerPelosi", "diamond", and "AWESOME" dominate, showing that they were consistently influential in driving the model's decisions. This visualization offers a high-level summary of what the model deems important overall.
+
+## Word Cloud of Explanations
+Visualize important words using a word cloud, where larger font size indicates higher average contribution to predictions. This is useful for presentations and high-level understanding.
 ```{python}
 from wordcloud import WordCloud
 
@@ -117,8 +123,9 @@ plt.axis("off")
 plt.title("LIME Word Importance Cloud")
 plt.show()
 ```
+The word cloud visually encodes the global importance of words. Larger font size corresponds to higher contribution. Words such as "Montage", "AWESOME", and "SpeakerPelosi" appear prominently. This format is useful for quick insights and visual storytelling in presentations.
 
-6. Stability Analysis under Synonym Substitution
+## Stability Analysis under Synonym Substitution
 ```{python}
 from nltk.corpus import wordnet
 import nltk
@@ -161,7 +168,8 @@ for i in range(len(val)):
 print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(stability_scores):.3f}")
 
 ```
-#Summary
+
+##Summary
 We applied LIME to explain the predictions of a Logistic Regression sentiment model.
 
 Top contributing words were visualized using bar plots and word clouds.
