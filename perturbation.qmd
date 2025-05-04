@@ -15,7 +15,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
 - **Stability**: Do explanations remain consistent after perturbations? (Jaccard similarity)  
 - **Visualization Effectiveness**: Are the insights clearly communicated?
 
----
+
 
 ### Logistic Regression + LIME
 
@@ -26,7 +26,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
   - Words map clearly to model predictions.
   - Explanation quality is stable enough for reliable human inspection.
 
----
+
 
 ### Logistic Regression + SHAP
 
@@ -37,7 +37,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
   - Most robust and faithful explanations among all configurations.
   - Ideal for explainable AI deployments in real-world settings.
 
----
+
 
 ### BERT + LIME
 
@@ -48,7 +48,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
   - BERT’s contextual embeddings are difficult to fully capture with LIME’s local linear approximations.
   - Visuals (bar plots, word clouds) help, but the sensitivity to input changes undermines reliability.
 
----
+
 
 ### BERT + SHAP
 
@@ -59,7 +59,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
   - Despite BERT’s complexity, SHAP shows strong robustness.
   - Offers a balance between deep model capacity and explanation reliability.
 
----
+
 
 ## Comparative Table
 
@@ -70,7 +70,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
 | **SHAP**   | Logistic Regression | Very High        | **0.910**        | Excellent               |
 | SHAP   | BERT                | High                | 0.885              | Very Good              |
 
----
+
 
 ## Takeaways
 
