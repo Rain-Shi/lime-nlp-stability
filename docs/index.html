@@ -245,22 +245,26 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="methodology-overview" class="level2" data-number="0.3">
 <h2 data-number="0.3" class="anchored" data-anchor-id="methodology-overview"><span class="header-section-number">0.3</span> Methodology Overview</h2>
-<p>Our analysis is organized into six components:</p>
+<p>Our analysis is structured into the following components, corresponding directly to the report’s chapter structure:</p>
 <ol type="1">
+<li><p><strong>TF-IDF + Logistic Regression Modeling</strong><br>
+We construct a transparent linear baseline model using TF-IDF vectorization and Logistic Regression for sentiment classification on tweets.</p></li>
+<li><p><strong>Fine-tuned BERT Model for Sentiment Classification</strong><br>
+A deep contextual model is built by fine-tuning a pretrained BERT model, offering stronger performance but lower inherent interpretability.</p></li>
+<li><p><strong>LIME Interpretability Evaluation for BERT</strong><br>
+Apply LIME to the BERT model to extract local word-level explanations and assess the effectiveness of linear approximations in capturing contextual semantics.</p></li>
 <li><p><strong>LIME Interpretability for Logistic Regression</strong><br>
-Apply LIME to a transparent TF-IDF + Logistic Regression model to analyze token-level contributions and explanation clarity.</p></li>
-<li><p><strong>LIME Interpretability for BERT</strong><br>
-Use LIME on a fine-tuned BERT model to assess how local linear approximations capture deep contextual semantics.</p></li>
+Use LIME on the linear baseline to validate how well it reflects token-level contributions in an inherently interpretable model.</p></li>
+<li><p><strong>SHAP Interpretability Evaluation for BERT</strong><br>
+Employ SHAP to examine BERT predictions and quantify feature importance through additive token attributions based on Shapley values.</p></li>
 <li><p><strong>SHAP Interpretability for Logistic Regression</strong><br>
-Apply SHAP to the logistic model to examine additive, class-agnostic explanations aligned with feature weights.</p></li>
-<li><p><strong>SHAP Interpretability for BERT</strong><br>
-Use SHAP to interpret BERT predictions and evaluate the quality and granularity of token attributions.</p></li>
-<li><p><strong>Perturbation Stability Analysis</strong><br>
-Introduce controlled text perturbations (e.g., synonym replacement) and compute Jaccard similarity to assess explanation robustness.</p></li>
-<li><p><strong>Comparative Evaluation Across Models and Methods</strong><br>
-Compare LIME vs.&nbsp;SHAP and BERT vs.&nbsp;Logistic Regression in terms of interpretability, stability, and visualization effectiveness.</p></li>
+Use SHAP to explain predictions of the linear model, validating consistency with model coefficients and understanding feature-level impacts.</p></li>
+<li><p><strong>Perturbation Stability: Comparing LIME and SHAP for Logistic Regression and BERT</strong><br>
+Conduct synonym replacement and measure Jaccard similarity to evaluate how robust LIME and SHAP explanations are under input variation.</p></li>
+<li><p><strong>Conclusion</strong><br>
+Summarize key findings on interpretability, robustness, and the trade-off between performance and explainability in modern NLP pipelines.</p></li>
 </ol>
-<p>Each section examines word-level feature importance, visualizes key attributions (via bar plots and word clouds), and tests the reliability of explanations under realistic perturbations. Together, these components enable us to evaluate the interpretability-performance trade-off in modern NLP pipelines.</p>
+<p>Each section investigates word-level feature attribution, visualization (via bar charts and word clouds), and explanation consistency. This structure allows a clear comparison between <strong>simple vs.&nbsp;complex models</strong>, and <strong>model-agnostic vs.&nbsp;model-aware</strong> interpretability methods, specifically in the context of short, noisy social media text.</p>
 </section>
 <section id="dataset" class="level2" data-number="0.4">
 <h2 data-number="0.4" class="anchored" data-anchor-id="dataset"><span class="header-section-number">0.4</span> Dataset</h2>
