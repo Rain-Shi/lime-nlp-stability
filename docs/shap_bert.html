@@ -213,17 +213,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">8</span> Objective</a>
-  <ul class="collapse">
-  <li><a href="#background-why-shap-for-bert" id="toc-background-why-shap-for-bert" class="nav-link" data-scroll-target="#background-why-shap-for-bert"><span class="header-section-number">8.1</span> Background: Why SHAP for BERT?</a></li>
-  <li><a href="#load-model-tokenizer-and-validation-set" id="toc-load-model-tokenizer-and-validation-set" class="nav-link" data-scroll-target="#load-model-tokenizer-and-validation-set"><span class="header-section-number">8.2</span> Load Model, Tokenizer, and Validation Set</a></li>
-  <li><a href="#define-shap-explainer-and-prediction-function" id="toc-define-shap-explainer-and-prediction-function" class="nav-link" data-scroll-target="#define-shap-explainer-and-prediction-function"><span class="header-section-number">8.3</span> Define SHAP Explainer and Prediction Function</a></li>
-  <li><a href="#run-shap-on-validation-set-and-collect-word-importances" id="toc-run-shap-on-validation-set-and-collect-word-importances" class="nav-link" data-scroll-target="#run-shap-on-validation-set-and-collect-word-importances"><span class="header-section-number">8.4</span> Run SHAP on Validation Set and Collect Word Importances</a></li>
-  <li><a href="#visualize-top-words-by-mean-shap-value" id="toc-visualize-top-words-by-mean-shap-value" class="nav-link" data-scroll-target="#visualize-top-words-by-mean-shap-value"><span class="header-section-number">8.5</span> Visualize Top Words by Mean SHAP Value</a></li>
-  <li><a href="#word-cloud-of-influential-shap-words" id="toc-word-cloud-of-influential-shap-words" class="nav-link" data-scroll-target="#word-cloud-of-influential-shap-words"><span class="header-section-number">8.6</span> Word Cloud of Influential SHAP Words</a></li>
-  <li><a href="#shap-stability-under-synonym-perturbations" id="toc-shap-stability-under-synonym-perturbations" class="nav-link" data-scroll-target="#shap-stability-under-synonym-perturbations"><span class="header-section-number">8.7</span> SHAP Stability Under Synonym Perturbations</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.8</span> Summary</a></li>
-  </ul></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">7.1</span> Objective</a></li>
+  <li><a href="#background-why-shap-for-bert" id="toc-background-why-shap-for-bert" class="nav-link" data-scroll-target="#background-why-shap-for-bert"><span class="header-section-number">7.2</span> Background: Why SHAP for BERT?</a></li>
+  <li><a href="#load-model-tokenizer-and-validation-set" id="toc-load-model-tokenizer-and-validation-set" class="nav-link" data-scroll-target="#load-model-tokenizer-and-validation-set"><span class="header-section-number">7.3</span> Load Model, Tokenizer, and Validation Set</a></li>
+  <li><a href="#define-shap-explainer-and-prediction-function" id="toc-define-shap-explainer-and-prediction-function" class="nav-link" data-scroll-target="#define-shap-explainer-and-prediction-function"><span class="header-section-number">7.4</span> Define SHAP Explainer and Prediction Function</a></li>
+  <li><a href="#run-shap-on-validation-set-and-collect-word-importances" id="toc-run-shap-on-validation-set-and-collect-word-importances" class="nav-link" data-scroll-target="#run-shap-on-validation-set-and-collect-word-importances"><span class="header-section-number">7.5</span> Run SHAP on Validation Set and Collect Word Importances</a></li>
+  <li><a href="#visualize-top-words-by-mean-shap-value" id="toc-visualize-top-words-by-mean-shap-value" class="nav-link" data-scroll-target="#visualize-top-words-by-mean-shap-value"><span class="header-section-number">7.6</span> Visualize Top Words by Mean SHAP Value</a></li>
+  <li><a href="#word-cloud-of-influential-shap-words" id="toc-word-cloud-of-influential-shap-words" class="nav-link" data-scroll-target="#word-cloud-of-influential-shap-words"><span class="header-section-number">7.7</span> Word Cloud of Influential SHAP Words</a></li>
+  <li><a href="#shap-stability-under-synonym-perturbations" id="toc-shap-stability-under-synonym-perturbations" class="nav-link" data-scroll-target="#shap-stability-under-synonym-perturbations"><span class="header-section-number">7.8</span> SHAP Stability Under Synonym Perturbations</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7.9</span> Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/shap_bert.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -249,11 +247,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="objective" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Objective</h1>
-<p>Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets: - Extract and aggregate top words by SHAP value - Visualize most influential words via word cloud - Assess explanation consistency under perturbations</p>
-<section id="background-why-shap-for-bert" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="background-why-shap-for-bert"><span class="header-section-number">8.1</span> Background: Why SHAP for BERT?</h2>
+<section id="objective" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="objective"><span class="header-section-number">7.1</span> Objective</h2>
+<p>Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets:<br>
+- Extract and aggregate top words by SHAP value<br>
+- Visualize most influential words via word cloud<br>
+- Assess explanation consistency under perturbations</p>
+</section>
+<section id="background-why-shap-for-bert" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="background-why-shap-for-bert"><span class="header-section-number">7.2</span> Background: Why SHAP for BERT?</h2>
 <ul>
 <li>BERT is a deep transformer-based model that achieves high accuracy on NLP tasks by capturing complex contextual relationships in text.</li>
 <li>However, its black-box nature makes it difficult to understand why a particular prediction is made.</li>
@@ -261,10 +263,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>In this notebook, we use SHAP’s tokenizer-aware <code>TextExplainer</code> to generate word-level explanations for BERT predictions.</li>
 </ul>
 </section>
-<section id="load-model-tokenizer-and-validation-set" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">8.2</span> Load Model, Tokenizer, and Validation Set</h2>
+<section id="load-model-tokenizer-and-validation-set" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">7.3</span> Load Model, Tokenizer, and Validation Set</h2>
 <p>Load the fine-tuned BERT model and tokenizer, then load a cleaned subset of validation tweets. This data will be explained using SHAP.</p>
-<div id="8fde4ab5" class="cell" data-execution_count="1">
+<div id="ac175a75" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -296,10 +298,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="define-shap-explainer-and-prediction-function" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="define-shap-explainer-and-prediction-function"><span class="header-section-number">8.3</span> Define SHAP Explainer and Prediction Function</h2>
+<section id="define-shap-explainer-and-prediction-function" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="define-shap-explainer-and-prediction-function"><span class="header-section-number">7.4</span> Define SHAP Explainer and Prediction Function</h2>
 <p>Define a function that returns class probabilities (as required by SHAP). Then initialize the SHAP text explainer using a tokenizer-based masker.</p>
-<div id="8cc8b9fb" class="cell" data-execution_count="2">
+<div id="1978228c" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shap</span>
@@ -334,10 +336,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="run-shap-on-validation-set-and-collect-word-importances" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="run-shap-on-validation-set-and-collect-word-importances"><span class="header-section-number">8.4</span> Run SHAP on Validation Set and Collect Word Importances</h2>
+<section id="run-shap-on-validation-set-and-collect-word-importances" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="run-shap-on-validation-set-and-collect-word-importances"><span class="header-section-number">7.5</span> Run SHAP on Validation Set and Collect Word Importances</h2>
 <p>Run SHAP on each tweet and extract the SHAP value for each token. Store results in a DataFrame for later aggregation and visualization.</p>
-<div id="0a4977f7" class="cell" data-execution_count="3">
+<div id="739fcaf4" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -373,10 +375,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="visualize-top-words-by-mean-shap-value" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="visualize-top-words-by-mean-shap-value"><span class="header-section-number">8.5</span> Visualize Top Words by Mean SHAP Value</h2>
+<section id="visualize-top-words-by-mean-shap-value" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="visualize-top-words-by-mean-shap-value"><span class="header-section-number">7.6</span> Visualize Top Words by Mean SHAP Value</h2>
 <p>Group tokens by word and compute their average SHAP value across all samples. Visualize the top 20 words to show which tokens had the greatest impact on model predictions.</p>
-<div id="c315fb4b" class="cell" data-execution_count="4">
+<div id="c96fe302" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -404,10 +406,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="word-cloud-of-influential-shap-words" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="word-cloud-of-influential-shap-words"><span class="header-section-number">8.6</span> Word Cloud of Influential SHAP Words</h2>
+<section id="word-cloud-of-influential-shap-words" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="word-cloud-of-influential-shap-words"><span class="header-section-number">7.7</span> Word Cloud of Influential SHAP Words</h2>
 <p>Create a word cloud from SHAP values to highlight the most influential words visually. This gives an intuitive view of token importance.</p>
-<div id="1a14a543" class="cell" data-execution_count="5">
+<div id="eba6b506" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -430,10 +432,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="shap-stability-under-synonym-perturbations" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="shap-stability-under-synonym-perturbations"><span class="header-section-number">8.7</span> SHAP Stability Under Synonym Perturbations</h2>
+<section id="shap-stability-under-synonym-perturbations" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="shap-stability-under-synonym-perturbations"><span class="header-section-number">7.8</span> SHAP Stability Under Synonym Perturbations</h2>
 <p>Randomly replace words in tweets with synonyms and compare SHAP explanations before and after. Use Jaccard similarity to measure how stable the explanations are under small perturbations.</p>
-<div id="6b98333f" class="cell" data-execution_count="6">
+<div id="eddb0c36" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -477,19 +479,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 500 perturbed explanations: 0.883</code></pre>
+<pre><code>Average Jaccard similarity over 500 perturbed explanations: 0.886</code></pre>
 </div>
 </div>
 </section>
-<section id="summary" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.8</span> Summary</h2>
+<section id="summary" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">7.9</span> Summary</h2>
 <p>This notebook evaluated the interpretability of a BERT model using SHAP:</p>
 <p>Aggregated SHAP values across all tweets</p>
 <p>Visualized important tokens via bar plot and word cloud</p>
 <p>Quantified robustness to synonym-based perturbations</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

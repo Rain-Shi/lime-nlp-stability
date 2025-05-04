@@ -8,10 +8,13 @@ jupyter: python3
 
 Evaluate the interpretability of the Logistic Regression baseline model using SHAP. Visualize top contributing words and measure stability under input perturbation.
 
----
+## Background: SHAP for Linear Models
+- The baseline model used here is a **TF-IDF + Logistic Regression** pipeline. TF-IDF converts text into sparse numerical vectors, and Logistic Regression is a linear classifier that estimates class probabilities.
+- While the model itself is relatively transparent, SHAP provides **fine-grained, feature-level explanations** by assigning each token a contribution value based on Shapley values from game theory.
+- We use **KernelExplainer**, a model-agnostic SHAP variant suitable for interpreting any black-box model, including pipelines like this.
 
-## 1. Load Model and Validation Set
-
+## Load Model and Validation Set
+Load the saved model pipeline, split it into vectorizer and classifier, and prepare a cleaned sample of tweets from the validation set. These will be explained using SHAP.
 ```{python}
 import pandas as pd
 import numpy as np
@@ -35,6 +38,8 @@ print(f"✅ Loaded {len(val)} validation tweets")
 
 ```{python}
 import shap
+import logging
+logging.getLogger("shap").setLevel(logging.ERROR)
 
 def clean_text(text):
     no_emoji = emoji.replace_emoji(text, replace='')
@@ -87,7 +92,8 @@ df_shap.head()
 
 ```
 
-#2. Create SHAP Explainer using KernelExplainer (black-box)
+## Create SHAP Explainer using KernelExplainer (black-box)
+Use SHAP's KernelExplainer, a model-agnostic method, to compute SHAP values based on the classifier's predicted probabilities. For each tweet, extract SHAP values of non-zero TF-IDF features.
 ```{python}
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -118,8 +124,8 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 ```
-
-#3. Clean and Transform Text
+## Word Cloud of Influential SHAP Words
+Create a word cloud from SHAP values to highlight the most influential words visually. This gives an intuitive view of token importance.
 ```{python}
 from wordcloud import WordCloud
 
@@ -133,7 +139,7 @@ plt.title("SHAP Word Importance Cloud")
 plt.show()
 ```
 
-#4. Compute SHAP Values
+## Compute SHAP Values
 ```{python}
 from nltk.corpus import wordnet
 import nltk
@@ -215,7 +221,7 @@ else:
 ```
 
 
-#Summary
+## Summary
 We used SHAP to explain a Logistic Regression model's decisions on validation tweets.
 
 Top contributing words were visualized through barplots and word clouds.

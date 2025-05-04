@@ -4,12 +4,12 @@ format: html
 jupyter: python3
 ---
 
-# Objective
+## Objective
 
-Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets:
-- Extract and aggregate top words by SHAP value
-- Visualize most influential words via word cloud
-- Assess explanation consistency under perturbations
+Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets:  
+- Extract and aggregate top words by SHAP value  
+- Visualize most influential words via word cloud  
+- Assess explanation consistency under perturbations  
 
 
 ## Background: Why SHAP for BERT?

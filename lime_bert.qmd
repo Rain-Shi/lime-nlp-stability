@@ -186,8 +186,8 @@ plt.show()
 ```
 
 
-## (Optional) Stability Evaluation with Minor Perturbations
-
+##Stability Evaluation with Minor Perturbations
+Slightly change each tweet by replacing some words with synonyms. Then compare the original and modified LIME explanations using Jaccard similarity to assess explanation stability.
 ```{python}
 from nltk.corpus import wordnet
 import random
