@@ -4,17 +4,23 @@ format: html
 jupyter: python3
 ---
 
-# Goal
+# Objective
 
 Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using SHAP on all validation tweets:
 - Extract and aggregate top words by SHAP value
 - Visualize most influential words via word cloud
 - Assess explanation consistency under perturbations
 
----
 
-## 1. Load Model, Tokenizer, and Validation Set
+## Background: Why SHAP for BERT?
 
+- BERT is a deep transformer-based model that achieves high accuracy on NLP tasks by capturing complex contextual relationships in text.
+- However, its black-box nature makes it difficult to understand why a particular prediction is made.
+- SHAP provides a way to interpret BERT’s behavior by assigning each word a contribution score based on Shapley values, helping quantify how much each token influences the model’s output.
+- In this notebook, we use SHAP's tokenizer-aware `TextExplainer` to generate word-level explanations for BERT predictions.
+
+## Load Model, Tokenizer, and Validation Set
+Load the fine-tuned BERT model and tokenizer, then load a cleaned subset of validation tweets. This data will be explained using SHAP.
 ```{python}
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -42,7 +48,8 @@ print(f"✅ Loaded {len(val)} validation tweets")
 ```
 
 
-#2. Define SHAP Explainer and Prediction Function
+## Define SHAP Explainer and Prediction Function
+Define a function that returns class probabilities (as required by SHAP). Then initialize the SHAP text explainer using a tokenizer-based masker.
 ```{python}
 import shap
 
@@ -79,7 +86,8 @@ explainer = shap.Explainer(shap_predict, masker)
 
 ```
 
-#3. Run SHAP on Validation Set and Collect Word Importances
+## Run SHAP on Validation Set and Collect Word Importances
+Run SHAP on each tweet and extract the SHAP value for each token. Store results in a DataFrame for later aggregation and visualization.
 ```{python}
 import emoji
 import pandas as pd
@@ -90,12 +98,12 @@ def clean_text(text):
     return cleaned
 
 all_shap = []
-print("Running SHAP on validation samples...")
+#print("Running SHAP on validation samples...")
 
 for idx, row in val.iterrows():
     text = clean_text(str(row["tweet"]))
     sentiment = row["sentiment"]
-    print(f"Explaining tweet {idx+1}: {text[:50]}...")
+    #print(f"Explaining tweet {idx+1}: {text[:50]}...")
 
     shap_values = explainer([text])
     pred_label = class_names[np.argmax(shap_values.values[0].sum(axis=0))]
@@ -110,11 +118,12 @@ for idx, row in val.iterrows():
         })
 
 df_shap = pd.DataFrame(all_shap)
-print("SHAP explanations complete.")
+#print("SHAP explanations complete.")
 
 ```
 
-#4. Visualize Top Words by Mean SHAP Value
+## Visualize Top Words by Mean SHAP Value
+Group tokens by word and compute their average SHAP value across all samples. Visualize the top 20 words to show which tokens had the greatest impact on model predictions.
 ```{python}
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -133,7 +142,8 @@ plt.tight_layout()
 plt.show()
 ```
 
-#5. Word Cloud of Influential SHAP Words
+## Word Cloud of Influential SHAP Words
+Create a word cloud from SHAP values to highlight the most influential words visually. This gives an intuitive view of token importance.
 ```{python}
 from wordcloud import WordCloud
 
@@ -147,7 +157,8 @@ plt.title("SHAP Word Importance Cloud")
 plt.show()
 ```
 
-#6. (Optional) SHAP Stability Under Synonym Perturbations
+## SHAP Stability Under Synonym Perturbations
+Randomly replace words in tweets with synonyms and compare SHAP explanations before and after. Use Jaccard similarity to measure how stable the explanations are under small perturbations.
 ```{python}
 from nltk.corpus import wordnet
 import nltk
@@ -185,7 +196,7 @@ for i in range(len(val)):
 print(f"Average Jaccard similarity over {len(val)} perturbed explanations: {np.mean(stability_scores):.3f}")
 ```
 
-#Summary
+## Summary
 This notebook evaluated the interpretability of a BERT model using SHAP:
 
 Aggregated SHAP values across all tweets
@@ -193,5 +204,3 @@ Aggregated SHAP values across all tweets
 Visualized important tokens via bar plot and word cloud
 
 Quantified robustness to synonym-based perturbations
-
-Now you can compare LIME and SHAP side-by-side for interpretability quality and stability.
