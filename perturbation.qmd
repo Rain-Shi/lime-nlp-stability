@@ -4,9 +4,9 @@ format: html
 jupyter: python3
 ---
 
-## Final Summary: Interpretability & Stability of LIME and SHAP on BERT and Logistic Regression
+## Objectice
 
-This section synthesizes findings from applying **LIME** and **SHAP** to explain two models:
+Synthesize findings from applying **LIME** and **SHAP** to explain two models:
 - **TF-IDF + Logistic Regression**
 - **Fine-tuned BERT**
 
