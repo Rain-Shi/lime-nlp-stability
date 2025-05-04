@@ -9,7 +9,6 @@ This study investigated the interpretability and robustness of two widely-used e
 
 We aimed to assess whether model performance comes at the cost of interpretability, and whether explanation methods remain stable when the input text is perturbed. Below, we synthesize our findings around five core research questions.
 
----
 
 ## Key Findings by Research Question
 
@@ -41,7 +40,6 @@ We aimed to assess whether model performance comes at the cost of interpretabili
 - SHAP’s additive attribution allowed for more consistent visualization across different inputs and models.
 - **BERT explanations** were harder to interpret visually due to their sensitivity to input semantics and syntax.
 
----
 
 ## Final Takeaways
 
