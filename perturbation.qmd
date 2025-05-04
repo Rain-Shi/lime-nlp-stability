@@ -4,61 +4,79 @@ format: html
 jupyter: python3
 ---
 
-## Goal
+## Final Summary: Interpretability & Stability of LIME and SHAP on BERT and Logistic Regression
 
-This notebook compares the **stability of explanation methods** under text perturbations across two models:
+This section synthesizes findings from applying **LIME** and **SHAP** to explain two models:
+- **TF-IDF + Logistic Regression**
+- **Fine-tuned BERT**
 
-- **TF-IDF + Logistic Regression** (interpretable baseline)  
-- **Fine-tuned BERT** (context-aware deep model)
-
-We evaluate robustness of two explainability tools:
-- **LIME**: Local Interpretable Model-Agnostic Explanations  
-- **SHAP**: SHapley Additive exPlanations
-
-Using:
-- Overall top words  
-- Word clouds  
-- Perturbation robustness via **Jaccard similarity**
+### Evaluation Criteria:
+- **Interpretability**: Are the word-level explanations intuitive?  
+- **Stability**: Do explanations remain consistent after perturbations? (Jaccard similarity)  
+- **Visualization Effectiveness**: Are the insights clearly communicated?
 
 ---
 
-##Overall Top Words (Barplot)
+### Logistic Regression + LIME
 
-### LIME - BERT
-![](https://rain-shi.github.io/lime-nlp-stability/lime_bert_files/figure-html/cell-6-output-1.png)
-
-### LIME - Logistic Regression
-![](https://rain-shi.github.io/lime-nlp-stability/lime_logistics_files/figure-html/cell-5-output-1.png)
-
-
-## Word Cloud Comparison
-
-### LIME - BERT
-![](https://rain-shi.github.io/lime-nlp-stability/lime_bert_files/figure-html/cell-7-output-1.png)
-
-### LIME - Logistic Regression
-![](https://rain-shi.github.io/lime-nlp-stability/lime_logistics_files/figure-html/cell-6-output-1.png)
-
-### SHAP - BERT
-![](https://rain-shi.github.io/lime-nlp-stability/shap_bert_files/figure-html/cell-6-output-1.png)
-
-### SHAP - Logistic Regression
-![](https://rain-shi.github.io/lime-nlp-stability/shap_logistics_files/figure-html/cell-5-output-1.png)
+- **Top Words**: Literal, generic terms like `"SpeakerPelosi"`, `"Montage"`, `"kid"`, `"AWESOME"`.
+- **Interpretability**: ✅ High — linear model yields transparent explanations.
+- **Stability**: **Jaccard = 0.662**
+- **Insights**:
+  - Words map clearly to model predictions.
+  - Explanation quality is stable enough for reliable human inspection.
 
 ---
 
-## Perturbation Stability (Jaccard Similarity)
+### Logistic Regression + SHAP
 
-| Method | Model               | Avg. Jaccard Similarity | Stability Rank |
-|--------|---------------------|--------------------------|----------------|
-| LIME   | Logistic Regression | **0.675**                | ✅ Higher      |
-| LIME   | BERT                | 0.473                    | ❌ Lower       |
-| SHAP   | Logistic Regression | **~0.67**                | ✅ Higher      |
-| SHAP   | BERT                | ~0.48                    | ❌ Lower       |
+- **Top Words**: Similar to LIME — lexical, interpretable tokens with strong polarity or topic focus.
+- **Interpretability**: ✅✅ Very High — SHAP's additive structure mirrors linear coefficients.
+- **Stability**: **Jaccard = 0.910** 🔝
+- **Insights**:
+  - Most robust and faithful explanations among all configurations.
+  - Ideal for explainable AI deployments in real-world settings.
 
-## Summary
+---
 
-- **Interpretability**: Logistic Regression highlights more literal, general words (e.g., *fix*, *sad*, *recommend*), while BERT focuses on context-dependent or emotional cues.
-- **Consistency**: Both SHAP and LIME show **reduced stability on BERT**, with Jaccard drops > 0.2 compared to logistic models.
-- **Takeaway**: There is a clear **trade-off between model complexity and explanation robustness**, regardless of the explanation method used.
+### BERT + LIME
 
+- **Top Words**: Emotionally or contextually rich words (e.g., `"inadequate"`, `"LOVE"`, `"smartrobotics"`).
+- **Interpretability**: ⚠️ Moderate — sometimes insightful, but inconsistent.
+- **Stability**: **Jaccard = 0.475**
+- **Insights**:
+  - BERT’s contextual embeddings are difficult to fully capture with LIME’s local linear approximations.
+  - Visuals (bar plots, word clouds) help, but the sensitivity to input changes undermines reliability.
+
+---
+
+### BERT + SHAP
+
+- **Top Words**: Named entities, sentiment tokens, and syntactic markers (e.g., `"Ranked"`, `"RAVENS"`, `"sad"`).
+- **Interpretability**: ✅ High — SHAP can extract meaningful attributions from a complex black-box.
+- **Stability**: **Jaccard = 0.885**
+- **Insights**:
+  - Despite BERT’s complexity, SHAP shows strong robustness.
+  - Offers a balance between deep model capacity and explanation reliability.
+
+---
+
+## Comparative Table
+
+| Method | Model               | Interpretability       | Jaccard Similarity | Explanation Stability |
+|--------|---------------------|------------------------|--------------------|------------------------|
+| **LIME**   | Logistic Regression | ✅ High               | **0.662**          | Medium-High             |
+| LIME   | BERT                | ⚠️ Moderate            | 0.475              | Low                    |
+| **SHAP**   | Logistic Regression | ✅✅ Very High        | **0.910** 🔝       | Excellent               |
+| SHAP   | BERT                | ✅ High                | 0.885              | Very Good              |
+
+---
+
+## Takeaways
+
+- **SHAP + Logistic Regression** provides the **best trade-off** between transparency and robustness — recommended for trustworthy NLP systems.
+- **LIME + BERT** produces intuitive but **unstable** explanations — useful for local debugging, but not for auditing.
+- **SHAP outperforms LIME** on both models in **stability**.
+- Even for complex models like BERT, **SHAP maintains explanation consistency**, making it suitable for high-stakes applications.
+
+> ✅ **Recommendation**: For interpretable and dependable NLP systems, favor **SHAP with simpler models** or **combine SHAP+LIME** to gain both global and local insights.

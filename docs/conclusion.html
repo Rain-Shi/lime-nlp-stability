@@ -159,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">perturbation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -184,11 +184,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#project-summary" id="toc-project-summary" class="nav-link active" data-scroll-target="#project-summary"><span class="header-section-number">11.1</span> Project Summary</a></li>
-  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings"><span class="header-section-number">11.2</span> Key Findings</a></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">11.3</span> Limitations</a></li>
-  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">11.4</span> Future Work</a></li>
-  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note"><span class="header-section-number">11.5</span> Final Note</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link active" data-scroll-target="#conclusion"><span class="header-section-number">11.1</span> Conclusion</a></li>
+  <li><a href="#key-findings-by-research-question" id="toc-key-findings-by-research-question" class="nav-link" data-scroll-target="#key-findings-by-research-question"><span class="header-section-number">11.2</span> Key Findings by Research Question</a>
+  <ul class="collapse">
+  <li><a href="#explanation-consistency" id="toc-explanation-consistency" class="nav-link" data-scroll-target="#explanation-consistency"><span class="header-section-number">11.2.1</span> Explanation Consistency</a></li>
+  <li><a href="#model-complexity-vs.-interpretability" id="toc-model-complexity-vs.-interpretability" class="nav-link" data-scroll-target="#model-complexity-vs.-interpretability"><span class="header-section-number">11.2.2</span> Model Complexity vs.&nbsp;Interpretability</a></li>
+  <li><a href="#perturbation-stability" id="toc-perturbation-stability" class="nav-link" data-scroll-target="#perturbation-stability"><span class="header-section-number">11.2.3</span> Perturbation Stability</a></li>
+  <li><a href="#accuracy-vs.-explanation-quality" id="toc-accuracy-vs.-explanation-quality" class="nav-link" data-scroll-target="#accuracy-vs.-explanation-quality"><span class="header-section-number">11.2.4</span> Accuracy vs.&nbsp;Explanation Quality</a></li>
+  <li><a href="#visualization-as-interpretability-aid" id="toc-visualization-as-interpretability-aid" class="nav-link" data-scroll-target="#visualization-as-interpretability-aid"><span class="header-section-number">11.2.5</span> Visualization as Interpretability Aid</a></li>
+  </ul></li>
+  <li><a href="#final-takeaways" id="toc-final-takeaways" class="nav-link" data-scroll-target="#final-takeaways"><span class="header-section-number">11.3</span> Final Takeaways</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -214,54 +219,82 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="project-summary" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="project-summary"><span class="header-section-number">11.1</span> Project Summary</h2>
-<p>In this project, we explored the <strong>stability of LIME explanations</strong> for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.</p>
-<p>We implemented the following key components:</p>
+<section id="conclusion" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">11.1</span> Conclusion</h2>
+<p>This study investigated the interpretability and robustness of two widely-used explanation methods—<strong>LIME</strong> and <strong>SHAP</strong>—when applied to two contrasting models:</p>
 <ul>
-<li>Built a baseline <strong>text classifier</strong> to predict sentiment (<code>Positive</code>, <code>Neutral</code>, <code>Negative</code>) based on tweets.</li>
-<li>Applied <strong>LIME (Local Interpretable Model-Agnostic Explanations)</strong> to interpret model predictions at the instance level.</li>
-<li>Generated <strong>perturbed versions</strong> of input texts to assess how LIME explanations change under slight modifications.</li>
-<li>Used <strong>Jaccard similarity</strong> to quantify the overlap in top important words across perturbed samples.</li>
-<li>Visualized <strong>stability scores</strong> across perturbations.</li>
+<li>A <strong>transparent linear model</strong> (TF-IDF + Logistic Regression)<br>
+</li>
+<li>A <strong>contextual deep model</strong> (fine-tuned BERT)</li>
+</ul>
+<p>We aimed to assess whether model performance comes at the cost of interpretability, and whether explanation methods remain stable when the input text is perturbed. Below, we synthesize our findings around five core research questions.</p>
+<hr>
+</section>
+<section id="key-findings-by-research-question" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="key-findings-by-research-question"><span class="header-section-number">11.2</span> Key Findings by Research Question</h2>
+<section id="explanation-consistency" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="explanation-consistency"><span class="header-section-number">11.2.1</span> Explanation Consistency</h3>
+<ul>
+<li><strong>SHAP</strong> consistently provides more stable and consistent explanations than LIME across both models.</li>
+<li><strong>SHAP + Logistic Regression</strong> had the most robust performance with a Jaccard similarity of <strong>0.910</strong>, compared to <strong>0.885</strong> for SHAP + BERT.</li>
+<li><strong>LIME</strong> showed greater variability, especially on BERT (<strong>0.475</strong>), suggesting that contextual embeddings are harder to interpret reliably with local approximations.</li>
+</ul>
+</section>
+<section id="model-complexity-vs.-interpretability" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="model-complexity-vs.-interpretability"><span class="header-section-number">11.2.2</span> Model Complexity vs.&nbsp;Interpretability</h3>
+<ul>
+<li><strong>Logistic Regression</strong> produced clear, human-understandable explanations with both LIME and SHAP.</li>
+<li><strong>BERT</strong>, while more accurate, sacrificed interpretability. Its top words were often emotionally or contextually rich but not always intuitive.</li>
+<li>The trade-off is clear: greater model capacity may obscure the path to interpretability.</li>
+</ul>
+</section>
+<section id="perturbation-stability" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="perturbation-stability"><span class="header-section-number">11.2.3</span> Perturbation Stability</h3>
+<ul>
+<li><strong>Explanation robustness was strongly affected by perturbations</strong>:
+<ul>
+<li>LIME + Logistic Regression: <strong>0.662</strong></li>
+<li>LIME + BERT: <strong>0.475</strong></li>
+<li>SHAP + Logistic Regression: <strong>0.910</strong></li>
+<li>SHAP + BERT: <strong>0.885</strong></li>
+</ul></li>
+<li>These results show that simpler models paired with SHAP yield more stable word-level explanations.</li>
+</ul>
+</section>
+<section id="accuracy-vs.-explanation-quality" class="level3" data-number="11.2.4">
+<h3 data-number="11.2.4" class="anchored" data-anchor-id="accuracy-vs.-explanation-quality"><span class="header-section-number">11.2.4</span> Accuracy vs.&nbsp;Explanation Quality</h3>
+<ul>
+<li><strong>BERT</strong> achieved a ~23% increase in accuracy and outperformed Logistic Regression on all classification metrics.</li>
+<li>However, this gain came with reduced explanation stability and lower transparency, especially under LIME.</li>
+<li>In applications requiring both high performance and auditability, a combination of SHAP + simple models may offer a balanced solution.</li>
+</ul>
+</section>
+<section id="visualization-as-interpretability-aid" class="level3" data-number="11.2.5">
+<h3 data-number="11.2.5" class="anchored" data-anchor-id="visualization-as-interpretability-aid"><span class="header-section-number">11.2.5</span> Visualization as Interpretability Aid</h3>
+<ul>
+<li>Visual tools like <strong>bar plots</strong> and <strong>word clouds</strong> were essential for surfacing key tokens influencing model predictions.</li>
+<li>SHAP’s additive attribution allowed for more consistent visualization across different inputs and models.</li>
+<li><strong>BERT explanations</strong> were harder to interpret visually due to their sensitivity to input semantics and syntax.</li>
 </ul>
 <hr>
 </section>
-<section id="key-findings" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="key-findings"><span class="header-section-number">11.2</span> Key Findings</h2>
+</section>
+<section id="final-takeaways" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="final-takeaways"><span class="header-section-number">11.3</span> Final Takeaways</h2>
 <ul>
-<li>LIME explanations are <strong>reasonably stable</strong> under minor perturbations (average Jaccard scores &gt; 0.8).</li>
-<li>Important tokens such as named entities or sentiment-laden words tend to remain consistent across versions.</li>
-<li>However, in some cases, a small change in wording can lead to <strong>shifts in important features</strong>, especially when:
+<li>There exists a <strong>fundamental trade-off</strong> between model complexity and interpretability robustness.</li>
+<li><strong>SHAP outperforms LIME</strong> in explanation stability and reliability across both models.</li>
+<li><strong>Logistic Regression + SHAP</strong> offers the most trustworthy combination for interpretable NLP.</li>
+<li>Practitioners should choose explanation tools and model types based on task sensitivity:
 <ul>
-<li>The prediction confidence is low;</li>
-<li>The tweet is short or ambiguous.</li>
+<li>Use <strong>SHAP</strong> when explanation stability is essential.</li>
+<li>Use <strong>LIME</strong> for local debugging and lightweight inspection.</li>
+<li>Prefer simpler models in high-stakes or regulated contexts.</li>
 </ul></li>
 </ul>
-<hr>
-</section>
-<section id="limitations" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="limitations"><span class="header-section-number">11.3</span> Limitations</h2>
-<ul>
-<li>LIME relies on <strong>bag-of-words perturbations</strong>, which may not preserve sentence fluency or semantic coherence.</li>
-<li>Explanations vary depending on the classifier’s <strong>confidence and sensitivity to input noise</strong>.</li>
-<li>Our current model is relatively simple; stability might differ on <strong>deeper or more contextual models</strong>.</li>
-</ul>
-<hr>
-</section>
-<section id="future-work" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="future-work"><span class="header-section-number">11.4</span> Future Work</h2>
-<ul>
-<li><strong>Compare LIME vs SHAP</strong> on the same dataset to assess differences in explanation quality and robustness.</li>
-<li>Experiment with more <strong>diverse perturbation strategies</strong> (e.g., synonym substitution, contextual masking).</li>
-<li>Use a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.</li>
-<li>isualize <strong>word importance trajectories</strong> over increasing perturbation intensity.</li>
-</ul>
-<hr>
-</section>
-<section id="final-note" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="final-note"><span class="header-section-number">11.5</span> Final Note</h2>
-<p>LIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand <strong>when we can trust an explanation</strong> — and when we should be cautious.</p>
+<blockquote class="blockquote">
+<p><strong>Conclusion</strong>: In socially sensitive NLP tasks such as sentiment analysis of public discourse, model transparency and explanation stability are not optional. Our study shows that while BERT improves classification performance, Logistic Regression—especially when interpreted with SHAP—offers the most dependable insight into model behavior.</p>
+</blockquote>
 
 
 </section>

@@ -185,20 +185,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal"><span class="header-section-number">9.1</span> Goal</a>
+  <li><a href="#final-summary-interpretability-stability-of-lime-and-shap-on-bert-and-logistic-regression" id="toc-final-summary-interpretability-stability-of-lime-and-shap-on-bert-and-logistic-regression" class="nav-link active" data-scroll-target="#final-summary-interpretability-stability-of-lime-and-shap-on-bert-and-logistic-regression"><span class="header-section-number">9.1</span> Final Summary: Interpretability &amp; Stability of LIME and SHAP on BERT and Logistic Regression</a>
   <ul class="collapse">
-  <li><a href="#lime---bert" id="toc-lime---bert" class="nav-link" data-scroll-target="#lime---bert"><span class="header-section-number">9.1.1</span> LIME - BERT</a></li>
-  <li><a href="#lime---logistic-regression" id="toc-lime---logistic-regression" class="nav-link" data-scroll-target="#lime---logistic-regression"><span class="header-section-number">9.1.2</span> LIME - Logistic Regression</a></li>
+  <li><a href="#evaluation-criteria" id="toc-evaluation-criteria" class="nav-link" data-scroll-target="#evaluation-criteria"><span class="header-section-number">9.1.1</span> Evaluation Criteria:</a></li>
+  <li><a href="#logistic-regression-lime" id="toc-logistic-regression-lime" class="nav-link" data-scroll-target="#logistic-regression-lime"><span class="header-section-number">9.1.2</span> Logistic Regression + LIME</a></li>
+  <li><a href="#logistic-regression-shap" id="toc-logistic-regression-shap" class="nav-link" data-scroll-target="#logistic-regression-shap"><span class="header-section-number">9.1.3</span> Logistic Regression + SHAP</a></li>
+  <li><a href="#bert-lime" id="toc-bert-lime" class="nav-link" data-scroll-target="#bert-lime"><span class="header-section-number">9.1.4</span> BERT + LIME</a></li>
+  <li><a href="#bert-shap" id="toc-bert-shap" class="nav-link" data-scroll-target="#bert-shap"><span class="header-section-number">9.1.5</span> BERT + SHAP</a></li>
   </ul></li>
-  <li><a href="#word-cloud-comparison" id="toc-word-cloud-comparison" class="nav-link" data-scroll-target="#word-cloud-comparison"><span class="header-section-number">9.2</span> Word Cloud Comparison</a>
-  <ul class="collapse">
-  <li><a href="#lime---bert-1" id="toc-lime---bert-1" class="nav-link" data-scroll-target="#lime---bert-1"><span class="header-section-number">9.2.1</span> LIME - BERT</a></li>
-  <li><a href="#lime---logistic-regression-1" id="toc-lime---logistic-regression-1" class="nav-link" data-scroll-target="#lime---logistic-regression-1"><span class="header-section-number">9.2.2</span> LIME - Logistic Regression</a></li>
-  <li><a href="#shap---bert" id="toc-shap---bert" class="nav-link" data-scroll-target="#shap---bert"><span class="header-section-number">9.2.3</span> SHAP - BERT</a></li>
-  <li><a href="#shap---logistic-regression" id="toc-shap---logistic-regression" class="nav-link" data-scroll-target="#shap---logistic-regression"><span class="header-section-number">9.2.4</span> SHAP - Logistic Regression</a></li>
-  </ul></li>
-  <li><a href="#perturbation-stability-jaccard-similarity" id="toc-perturbation-stability-jaccard-similarity" class="nav-link" data-scroll-target="#perturbation-stability-jaccard-similarity"><span class="header-section-number">9.3</span> Perturbation Stability (Jaccard Similarity)</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">9.4</span> Summary</a></li>
+  <li><a href="#comparative-table" id="toc-comparative-table" class="nav-link" data-scroll-target="#comparative-table"><span class="header-section-number">9.2</span> Comparative Table</a></li>
+  <li><a href="#takeaways" id="toc-takeaways" class="nav-link" data-scroll-target="#takeaways"><span class="header-section-number">9.3</span> Takeaways</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/perturbation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -224,102 +220,140 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="goal" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="goal"><span class="header-section-number">9.1</span> Goal</h2>
-<p>This notebook compares the <strong>stability of explanation methods</strong> under text perturbations across two models:</p>
+<section id="final-summary-interpretability-stability-of-lime-and-shap-on-bert-and-logistic-regression" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="final-summary-interpretability-stability-of-lime-and-shap-on-bert-and-logistic-regression"><span class="header-section-number">9.1</span> Final Summary: Interpretability &amp; Stability of LIME and SHAP on BERT and Logistic Regression</h2>
+<p>This section synthesizes findings from applying <strong>LIME</strong> and <strong>SHAP</strong> to explain two models: - <strong>TF-IDF + Logistic Regression</strong> - <strong>Fine-tuned BERT</strong></p>
+<section id="evaluation-criteria" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="evaluation-criteria"><span class="header-section-number">9.1.1</span> Evaluation Criteria:</h3>
 <ul>
-<li><strong>TF-IDF + Logistic Regression</strong> (interpretable baseline)<br>
+<li><strong>Interpretability</strong>: Are the word-level explanations intuitive?<br>
 </li>
-<li><strong>Fine-tuned BERT</strong> (context-aware deep model)</li>
+<li><strong>Stability</strong>: Do explanations remain consistent after perturbations? (Jaccard similarity)<br>
+</li>
+<li><strong>Visualization Effectiveness</strong>: Are the insights clearly communicated?</li>
 </ul>
-<p>We evaluate robustness of two explainability tools: - <strong>LIME</strong>: Local Interpretable Model-Agnostic Explanations<br>
-- <strong>SHAP</strong>: SHapley Additive exPlanations</p>
-<p>Using: - Overall top words<br>
-- Word clouds<br>
-- Perturbation robustness via <strong>Jaccard similarity</strong></p>
-<hr>
-<p>##Overall Top Words (Barplot)</p>
-<section id="lime---bert" class="level3" data-number="9.1.1">
-<h3 data-number="9.1.1" class="anchored" data-anchor-id="lime---bert"><span class="header-section-number">9.1.1</span> LIME - BERT</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/lime_bert_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
-</section>
-<section id="lime---logistic-regression" class="level3" data-number="9.1.2">
-<h3 data-number="9.1.2" class="anchored" data-anchor-id="lime---logistic-regression"><span class="header-section-number">9.1.2</span> LIME - Logistic Regression</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/lime_logistics_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
-</section>
-</section>
-<section id="word-cloud-comparison" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="word-cloud-comparison"><span class="header-section-number">9.2</span> Word Cloud Comparison</h2>
-<section id="lime---bert-1" class="level3" data-number="9.2.1">
-<h3 data-number="9.2.1" class="anchored" data-anchor-id="lime---bert-1"><span class="header-section-number">9.2.1</span> LIME - BERT</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/lime_bert_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
-</section>
-<section id="lime---logistic-regression-1" class="level3" data-number="9.2.2">
-<h3 data-number="9.2.2" class="anchored" data-anchor-id="lime---logistic-regression-1"><span class="header-section-number">9.2.2</span> LIME - Logistic Regression</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/lime_logistics_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
-</section>
-<section id="shap---bert" class="level3" data-number="9.2.3">
-<h3 data-number="9.2.3" class="anchored" data-anchor-id="shap---bert"><span class="header-section-number">9.2.3</span> SHAP - BERT</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/shap_bert_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
-</section>
-<section id="shap---logistic-regression" class="level3" data-number="9.2.4">
-<h3 data-number="9.2.4" class="anchored" data-anchor-id="shap---logistic-regression"><span class="header-section-number">9.2.4</span> SHAP - Logistic Regression</h3>
-<p><img src="https://rain-shi.github.io/lime-nlp-stability/shap_logistics_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 <hr>
 </section>
+<section id="logistic-regression-lime" class="level3" data-number="9.1.2">
+<h3 data-number="9.1.2" class="anchored" data-anchor-id="logistic-regression-lime"><span class="header-section-number">9.1.2</span> Logistic Regression + LIME</h3>
+<ul>
+<li><strong>Top Words</strong>: Literal, generic terms like <code>"SpeakerPelosi"</code>, <code>"Montage"</code>, <code>"kid"</code>, <code>"AWESOME"</code>.</li>
+<li><strong>Interpretability</strong>: ✅ High — linear model yields transparent explanations.</li>
+<li><strong>Stability</strong>: <strong>Jaccard = 0.662</strong></li>
+<li><strong>Insights</strong>:
+<ul>
+<li>Words map clearly to model predictions.</li>
+<li>Explanation quality is stable enough for reliable human inspection.</li>
+</ul></li>
+</ul>
+<hr>
 </section>
-<section id="perturbation-stability-jaccard-similarity" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="perturbation-stability-jaccard-similarity"><span class="header-section-number">9.3</span> Perturbation Stability (Jaccard Similarity)</h2>
+<section id="logistic-regression-shap" class="level3" data-number="9.1.3">
+<h3 data-number="9.1.3" class="anchored" data-anchor-id="logistic-regression-shap"><span class="header-section-number">9.1.3</span> Logistic Regression + SHAP</h3>
+<ul>
+<li><strong>Top Words</strong>: Similar to LIME — lexical, interpretable tokens with strong polarity or topic focus.</li>
+<li><strong>Interpretability</strong>: ✅✅ Very High — SHAP’s additive structure mirrors linear coefficients.</li>
+<li><strong>Stability</strong>: <strong>Jaccard = 0.910</strong> 🔝</li>
+<li><strong>Insights</strong>:
+<ul>
+<li>Most robust and faithful explanations among all configurations.</li>
+<li>Ideal for explainable AI deployments in real-world settings.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="bert-lime" class="level3" data-number="9.1.4">
+<h3 data-number="9.1.4" class="anchored" data-anchor-id="bert-lime"><span class="header-section-number">9.1.4</span> BERT + LIME</h3>
+<ul>
+<li><strong>Top Words</strong>: Emotionally or contextually rich words (e.g., <code>"inadequate"</code>, <code>"LOVE"</code>, <code>"smartrobotics"</code>).</li>
+<li><strong>Interpretability</strong>: ⚠️ Moderate — sometimes insightful, but inconsistent.</li>
+<li><strong>Stability</strong>: <strong>Jaccard = 0.475</strong></li>
+<li><strong>Insights</strong>:
+<ul>
+<li>BERT’s contextual embeddings are difficult to fully capture with LIME’s local linear approximations.</li>
+<li>Visuals (bar plots, word clouds) help, but the sensitivity to input changes undermines reliability.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="bert-shap" class="level3" data-number="9.1.5">
+<h3 data-number="9.1.5" class="anchored" data-anchor-id="bert-shap"><span class="header-section-number">9.1.5</span> BERT + SHAP</h3>
+<ul>
+<li><strong>Top Words</strong>: Named entities, sentiment tokens, and syntactic markers (e.g., <code>"Ranked"</code>, <code>"RAVENS"</code>, <code>"sad"</code>).</li>
+<li><strong>Interpretability</strong>: ✅ High — SHAP can extract meaningful attributions from a complex black-box.</li>
+<li><strong>Stability</strong>: <strong>Jaccard = 0.885</strong></li>
+<li><strong>Insights</strong>:
+<ul>
+<li>Despite BERT’s complexity, SHAP shows strong robustness.</li>
+<li>Offers a balance between deep model capacity and explanation reliability.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="comparative-table" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="comparative-table"><span class="header-section-number">9.2</span> Comparative Table</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 29%">
-<col style="width: 36%">
-<col style="width: 22%">
+<col style="width: 8%">
+<col style="width: 21%">
+<col style="width: 24%">
+<col style="width: 20%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Method</th>
 <th>Model</th>
-<th>Avg. Jaccard Similarity</th>
-<th>Stability Rank</th>
+<th>Interpretability</th>
+<th>Jaccard Similarity</th>
+<th>Explanation Stability</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>LIME</td>
+<td><strong>LIME</strong></td>
 <td>Logistic Regression</td>
-<td><strong>0.675</strong></td>
-<td>✅ Higher</td>
+<td>✅ High</td>
+<td><strong>0.662</strong></td>
+<td>Medium-High</td>
 </tr>
 <tr class="even">
 <td>LIME</td>
 <td>BERT</td>
-<td>0.473</td>
-<td>❌ Lower</td>
+<td>⚠️ Moderate</td>
+<td>0.475</td>
+<td>Low</td>
 </tr>
 <tr class="odd">
-<td>SHAP</td>
+<td><strong>SHAP</strong></td>
 <td>Logistic Regression</td>
-<td><strong>~0.67</strong></td>
-<td>✅ Higher</td>
+<td>✅✅ Very High</td>
+<td><strong>0.910</strong> 🔝</td>
+<td>Excellent</td>
 </tr>
 <tr class="even">
 <td>SHAP</td>
 <td>BERT</td>
-<td>~0.48</td>
-<td>❌ Lower</td>
+<td>✅ High</td>
+<td>0.885</td>
+<td>Very Good</td>
 </tr>
 </tbody>
 </table>
+<hr>
 </section>
-<section id="summary" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="summary"><span class="header-section-number">9.4</span> Summary</h2>
+<section id="takeaways" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="takeaways"><span class="header-section-number">9.3</span> Takeaways</h2>
 <ul>
-<li><strong>Interpretability</strong>: Logistic Regression highlights more literal, general words (e.g., <em>fix</em>, <em>sad</em>, <em>recommend</em>), while BERT focuses on context-dependent or emotional cues.</li>
-<li><strong>Consistency</strong>: Both SHAP and LIME show <strong>reduced stability on BERT</strong>, with Jaccard drops &gt; 0.2 compared to logistic models.</li>
-<li><strong>Takeaway</strong>: There is a clear <strong>trade-off between model complexity and explanation robustness</strong>, regardless of the explanation method used.</li>
+<li><strong>SHAP + Logistic Regression</strong> provides the <strong>best trade-off</strong> between transparency and robustness — recommended for trustworthy NLP systems.</li>
+<li><strong>LIME + BERT</strong> produces intuitive but <strong>unstable</strong> explanations — useful for local debugging, but not for auditing.</li>
+<li><strong>SHAP outperforms LIME</strong> on both models in <strong>stability</strong>.</li>
+<li>Even for complex models like BERT, <strong>SHAP maintains explanation consistency</strong>, making it suitable for high-stakes applications.</li>
 </ul>
+<blockquote class="blockquote">
+<p>✅ <strong>Recommendation</strong>: For interpretable and dependable NLP systems, favor <strong>SHAP with simpler models</strong> or <strong>combine SHAP+LIME</strong> to gain both global and local insights.</p>
+</blockquote>
 
 
 </section>

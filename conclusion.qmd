@@ -3,48 +3,57 @@ title: "Conclusion"
 format: html
 ---
 
-## Project Summary
+## Conclusion
 
-In this project, we explored the **stability of LIME explanations** for a sentiment classification task on the Twitter Entity Sentiment Analysis dataset.
+This study investigated the interpretability and robustness of two widely-used explanation methods—**LIME** and **SHAP**—when applied to two contrasting models:
 
-We implemented the following key components:
+- A **transparent linear model** (TF-IDF + Logistic Regression)  
+- A **contextual deep model** (fine-tuned BERT)
 
-- Built a baseline **text classifier** to predict sentiment (`Positive`, `Neutral`, `Negative`) based on tweets.
-- Applied **LIME (Local Interpretable Model-Agnostic Explanations)** to interpret model predictions at the instance level.
-- Generated **perturbed versions** of input texts to assess how LIME explanations change under slight modifications.
-- Used **Jaccard similarity** to quantify the overlap in top important words across perturbed samples.
-- Visualized **stability scores** across perturbations.
+We aimed to assess whether model performance comes at the cost of interpretability, and whether explanation methods remain stable when the input text is perturbed. Below, we synthesize our findings around five core research questions.
 
 ---
 
-## Key Findings
+## Key Findings by Research Question
 
-- LIME explanations are **reasonably stable** under minor perturbations (average Jaccard scores > 0.8).
-- Important tokens such as named entities or sentiment-laden words tend to remain consistent across versions.
-- However, in some cases, a small change in wording can lead to **shifts in important features**, especially when:
-  - The prediction confidence is low;
-  - The tweet is short or ambiguous.
+### Explanation Consistency
+- **SHAP** consistently provides more stable and consistent explanations than LIME across both models.
+- **SHAP + Logistic Regression** had the most robust performance with a Jaccard similarity of **0.910**, compared to **0.885** for SHAP + BERT.
+- **LIME** showed greater variability, especially on BERT (**0.475**), suggesting that contextual embeddings are harder to interpret reliably with local approximations.
+
+### Model Complexity vs. Interpretability
+- **Logistic Regression** produced clear, human-understandable explanations with both LIME and SHAP.
+- **BERT**, while more accurate, sacrificed interpretability. Its top words were often emotionally or contextually rich but not always intuitive.
+- The trade-off is clear: greater model capacity may obscure the path to interpretability.
+
+### Perturbation Stability
+- **Explanation robustness was strongly affected by perturbations**:
+  - LIME + Logistic Regression: **0.662**
+  - LIME + BERT: **0.475**
+  - SHAP + Logistic Regression: **0.910**
+  - SHAP + BERT: **0.885**
+- These results show that simpler models paired with SHAP yield more stable word-level explanations.
+
+### Accuracy vs. Explanation Quality
+- **BERT** achieved a ~23% increase in accuracy and outperformed Logistic Regression on all classification metrics.
+- However, this gain came with reduced explanation stability and lower transparency, especially under LIME.
+- In applications requiring both high performance and auditability, a combination of SHAP + simple models may offer a balanced solution.
+
+### Visualization as Interpretability Aid
+- Visual tools like **bar plots** and **word clouds** were essential for surfacing key tokens influencing model predictions.
+- SHAP’s additive attribution allowed for more consistent visualization across different inputs and models.
+- **BERT explanations** were harder to interpret visually due to their sensitivity to input semantics and syntax.
 
 ---
 
-##  Limitations
+## Final Takeaways
 
-- LIME relies on **bag-of-words perturbations**, which may not preserve sentence fluency or semantic coherence.
-- Explanations vary depending on the classifier’s **confidence and sensitivity to input noise**.
-- Our current model is relatively simple; stability might differ on **deeper or more contextual models**.
+- There exists a **fundamental trade-off** between model complexity and interpretability robustness.
+- **SHAP outperforms LIME** in explanation stability and reliability across both models.
+- **Logistic Regression + SHAP** offers the most trustworthy combination for interpretable NLP.
+- Practitioners should choose explanation tools and model types based on task sensitivity:
+  - Use **SHAP** when explanation stability is essential.
+  - Use **LIME** for local debugging and lightweight inspection.
+  - Prefer simpler models in high-stakes or regulated contexts.
 
----
-
-## Future Work
-
-- **Compare LIME vs SHAP** on the same dataset to assess differences in explanation quality and robustness.
-- Experiment with more **diverse perturbation strategies** (e.g., synonym substitution, contextual masking).
-- Use a more powerful model (e.g., fine-tuned BERT) and study whether model complexity improves or worsens stability.
-- isualize **word importance trajectories** over increasing perturbation intensity.
-
----
-
-##  Final Note
-
-LIME provides valuable local interpretability, but its explanations are not always stable. Evaluating robustness under perturbations helps us understand **when we can trust an explanation** — and when we should be cautious.
-
+> **Conclusion**: In socially sensitive NLP tasks such as sentiment analysis of public discourse, model transparency and explanation stability are not optional. Our study shows that while BERT improves classification performance, Logistic Regression—especially when interpreted with SHAP—offers the most dependable insight into model behavior.
