@@ -40,7 +40,7 @@ The dataset is used to train and evaluate sentiment classification models.
 
 ### Delete Missing Data
 
-In this step, we remove rows with missing or empty tweet texts to ensure clean inputs for training.
+In this step, we remove rows with missing or empty tweet texts to ensure clean inputs for training. Below is  the  number  of  missing  data in  each  feature.
 
 ```{python}
 

@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sample-records-training-set" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="sample-records-training-set"><span class="header-section-number">2.2</span> Sample Records (Training Set)</h2>
 <p>We display a few sample records from the training set to get a sense of what the tweets and associated sentiment labels look like. This is helpful for qualitative understanding of the input data before preprocessing.</p>
-<div id="d4befe43" class="cell" data-execution_count="1">
+<div id="2c9b7868" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -294,33 +294,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">74217</td>
-<td>The Android tablet the longest support actuall...</td>
-<td>Nvidia</td>
-<td>Neutral</td>
+<td data-quarto-table-cell-role="th">35197</td>
+<td>It seems like a lot of the higher influencers ...</td>
+<td>Microsoft</td>
+<td>Positive</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">45086</td>
-<td>I'm sure I had such a buzz at Verizon... Good ...</td>
-<td>Verizon</td>
+<td data-quarto-table-cell-role="th">12070</td>
+<td>Just trying to the spread love</td>
+<td>NBA2K</td>
 <td>Positive</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6416</td>
-<td>People are so angry in this life that they wil...</td>
-<td>Amazon</td>
-<td>Positive</td>
+<td data-quarto-table-cell-role="th">9030</td>
+<td>@CODLeague when I watch the NFL I dont see NBA...</td>
+<td>Overwatch</td>
+<td>Negative</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">40095</td>
-<td>A ban on Fifa 4 player Jade_Emperor_aaa has oc...</td>
-<td>Battlefield</td>
+<td data-quarto-table-cell-role="th">50037</td>
+<td>Great performances from @loucollsport learners...</td>
+<td>FIFA</td>
 <td>Irrelevant</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">64455</td>
-<td>MY BOY KUPP Y GOT HIS RESPECT</td>
-<td>MaddenNFL</td>
+<td data-quarto-table-cell-role="th">37016</td>
+<td>His playing day for Microsoft and... 7 years i...</td>
+<td>Microsoft</td>
 <td>Positive</td>
 </tr>
 </tbody>
@@ -335,8 +335,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The dataset is used to train and evaluate sentiment classification models.</p>
 <section id="delete-missing-data" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="delete-missing-data"><span class="header-section-number">2.3.1</span> Delete Missing Data</h3>
-<p>In this step, we remove rows with missing or empty tweet texts to ensure clean inputs for training.Below is the number of missing data in each feature.</p>
-<div id="8ece1ff7" class="cell" data-execution_count="2">
+<p>In this step, we remove rows with missing or empty tweet texts to ensure clean inputs for training. Below is the number of missing data in each feature.</p>
+<div id="c44d32e8" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with missing or empty tweets</span></span>
@@ -357,7 +357,7 @@ dtype: int64</code></pre>
 <section id="delete-missing-emoji" class="level3" data-number="2.3.2">
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="delete-missing-emoji"><span class="header-section-number">2.3.2</span> Delete Missing Emoji</h3>
 <p>In this step, we remove emojis from tweets to clean the text and ensure consistent tokenization for vectorization. Here is the examples:</p>
-<div id="f61827f3" class="cell" data-execution_count="3">
+<div id="b7c8532d" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -396,7 +396,7 @@ Just finished my code 🐍💻  →  Just finished my code </code></pre>
 <section id="basic-statistics" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="basic-statistics"><span class="header-section-number">2.4</span> Basic Statistics</h2>
 <p>We explore the basic statistics of the dataset, including class distributions and dataset sizes. This helps us understand potential class imbalance and verify the dataset was loaded correctly.</p>
-<div id="9fffe5b1" class="cell" data-execution_count="4">
+<div id="f20df2a0" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> train[<span class="st">"sentiment"</span>].value_counts().reset_index()</span>
@@ -413,39 +413,39 @@ Just finished my code 🐍💻  →  Just finished my code </code></pre>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <style type="text/css">
-#T_44e03 th {
+#T_c4585 th {
   text-align: center;
 }
-#T_44e03_row0_col0, #T_44e03_row0_col1, #T_44e03_row1_col0, #T_44e03_row1_col1, #T_44e03_row2_col0, #T_44e03_row2_col1, #T_44e03_row3_col0, #T_44e03_row3_col1 {
+#T_c4585_row0_col0, #T_c4585_row0_col1, #T_c4585_row1_col0, #T_c4585_row1_col1, #T_c4585_row2_col0, #T_c4585_row2_col1, #T_c4585_row3_col0, #T_c4585_row3_col1 {
   text-align: center;
   border: 1px solid lightgrey;
   background-color: #f9f9f9;
 }
 </style>
 
-<table id="T_44e03" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_c4585" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_44e03_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Sentiment</th>
-<th id="T_44e03_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Count</th>
+<th id="T_c4585_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Sentiment</th>
+<th id="T_c4585_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Count</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_44e03_row0_col0" class="data row0 col0">Negative</td>
-<td id="T_44e03_row0_col1" class="data row0 col1">22312</td>
+<td id="T_c4585_row0_col0" class="data row0 col0">Negative</td>
+<td id="T_c4585_row0_col1" class="data row0 col1">22312</td>
 </tr>
 <tr class="even">
-<td id="T_44e03_row1_col0" class="data row1 col0">Positive</td>
-<td id="T_44e03_row1_col1" class="data row1 col1">20619</td>
+<td id="T_c4585_row1_col0" class="data row1 col0">Positive</td>
+<td id="T_c4585_row1_col1" class="data row1 col1">20619</td>
 </tr>
 <tr class="odd">
-<td id="T_44e03_row2_col0" class="data row2 col0">Neutral</td>
-<td id="T_44e03_row2_col1" class="data row2 col1">18051</td>
+<td id="T_c4585_row2_col0" class="data row2 col0">Neutral</td>
+<td id="T_c4585_row2_col1" class="data row2 col1">18051</td>
 </tr>
 <tr class="even">
-<td id="T_44e03_row3_col0" class="data row3 col0">Irrelevant</td>
-<td id="T_44e03_row3_col1" class="data row3 col1">12842</td>
+<td id="T_c4585_row3_col0" class="data row3 col0">Irrelevant</td>
+<td id="T_c4585_row3_col1" class="data row3 col1">12842</td>
 </tr>
 </tbody>
 </table>
@@ -456,7 +456,7 @@ Based on the distribution of sentiment labels, we did <strong>not observe a sign
 </section>
 <section id="sentiment-distribution-bar-chart" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="sentiment-distribution-bar-chart"><span class="header-section-number">2.5</span> Sentiment Distribution (Bar-Chart)</h2>
-<div id="004a30b3" class="cell" data-execution_count="5">
+<div id="232c94af" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
