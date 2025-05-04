@@ -62,7 +62,7 @@ Rendered outputs will be in the `docs/` folder and can be viewed locally or host
 
 ## 📦 Dataset
 
-We use the [Twitter Entity Sentiment Analysis dataset](https://www.kaggle.com/competitions/twitter-entity-sentiment-analysis) which contains tweets labeled with:
+We use the [Twitter Entity Sentiment Analysis dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis) which contains tweets labeled with:
 
 * `id`: Unique identifier
 * `entity`: Entity referenced in the tweet (e.g., person or organization)
@@ -97,7 +97,7 @@ Through this project, you’ll learn:
 This project was developed for the final project of **GR5293: Exploratory Data Analysis and Visualization** at Columbia University.
 
 Special thanks to [Prof. Joyce Robbins](https://www.jtr13.com/) and the EDAV team.
-Inspired by the [LIME paper](https://arxiv.org/abs/1602.04938) and [Twitter dataset on Kaggle](https://www.kaggle.com/competitions/twitter-entity-sentiment-analysis).
+Inspired by the [LIME paper](https://arxiv.org/abs/1602.04938) and [Twitter dataset on Kaggle](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis).
 
 ---
 
