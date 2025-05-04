@@ -32,7 +32,7 @@ Synthesize findings from applying **LIME** and **SHAP** to explain two models:
 
 - **Top Words**: Similar to LIME — lexical, interpretable tokens with strong polarity or topic focus.
 - **Interpretability**: ✅✅ Very High — SHAP's additive structure mirrors linear coefficients.
-- **Stability**: **Jaccard = 0.910** 🔝
+- **Stability**: **Jaccard = 0.910** 
 - **Insights**:
   - Most robust and faithful explanations among all configurations.
   - Ideal for explainable AI deployments in real-world settings.
