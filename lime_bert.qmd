@@ -5,12 +5,12 @@ jupyter: python3
 
 ---
 
-## Goal
+## Objective
 
 Systematically evaluate the interpretability of a fine-tuned BERT sentiment model using LIME on all validation tweets:
 - Extract and aggregate top words by importance
 - Visualize most influential words via word cloud
-- Assess explanation consistency under perturbations
+- Assess explanation consistency under perturbations.
 
 ## Background: BERT and the Need for Interpretability
 - **BERT (Bidirectional Encoder Representations from Transformers)** is a deep pre-trained language model capable of understanding contextual relationships in text. It is fine-tuned on downstream tasks such as sentiment classification to achieve state-of-the-art performance.
@@ -243,11 +243,7 @@ print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(similaritie
 
 
 ## Summary
-
 This notebook evaluated the interpretability of a BERT model on a validation set using LIME:
 - Aggregated word importance from all tweets
 - Visualized dominant features via barplot and word cloud
 - Measured stability of explanations under synonym substitution
-
-This approach provides a quantitative view of how and why your model makes predictions.
-You can now include these results in your interpretability report or presentation.
