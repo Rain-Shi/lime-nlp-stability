@@ -96,7 +96,7 @@ Through this project, you’ll learn:
 
 This project was developed for the final project of **GR5293: Exploratory Data Analysis and Visualization** at Columbia University.
 
-Special thanks to [Prof. Joyce Robbins](https://www.jtr13.com/) and the EDAV team.
+Special thanks to [Prof. Joyce Robbins](https://github.com/jtr13/quarto-edav-template.git) and the EDAV team.
 Inspired by the [LIME paper](https://arxiv.org/abs/1602.04938) and [Twitter dataset on Kaggle](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis).
 
 ---
