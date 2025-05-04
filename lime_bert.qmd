@@ -12,9 +12,13 @@ Systematically evaluate the interpretability of a fine-tuned BERT sentiment mode
 - Visualize most influential words via word cloud
 - Assess explanation consistency under perturbations
 
----
+## Background: BERT and the Need for Interpretability
+- **BERT (Bidirectional Encoder Representations from Transformers)** is a deep pre-trained language model capable of understanding contextual relationships in text. It is fine-tuned on downstream tasks such as sentiment classification to achieve state-of-the-art performance.
+- However, due to its complexity and non-linearity, BERT behaves like a "black-box" model, making it difficult to understand its predictions.
+- **LIME** helps address this by approximating the local decision boundary around a specific input, allowing us to identify which words influenced the model’s prediction the most.
 
 ## Load Model, Tokenizer, and Validation Set
+Load the fine-tuned BERT model and tokenizer, and prepare a cleaned sample of tweets from the validation set for explanation.
 
 ```{python}
 import torch
@@ -45,10 +49,10 @@ val = val[val["sentiment"].isin(class_names)].reset_index(drop=True)
 print(f"✅ Loaded {len(val)} validation tweets")
 ```
 
----
+
 
 ## Setup LIME Explainer and Prediction Function
-
+Define a wrapper function that returns prediction probabilities (needed by LIME), and initialize the LIME explainer with class names.
 ```{python}
 from lime.lime_text import LimeTextExplainer
 
@@ -66,10 +70,11 @@ def bert_predict_proba(texts):
 explainer = LimeTextExplainer(class_names=class_names)
 ```
 
----
+
 
 ## Run LIME on Validation Set and Collect Word Importances
-
+Word Importances
+Run LIME on each tweet to get top influential words and their weights. Store the results for later visualization and analysis.
 ```{python}
 import emoji
 import pandas as pd
@@ -121,7 +126,8 @@ print("✅ All explanations completed.")
 
 
 ```
-
+## Visualize Top Words by Class
+For each sentiment class, plot the average contribution of the top words that most influenced the model’s predictions for that class.
 ```{python}
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -142,7 +148,6 @@ for label in class_names:
 ```
 
 
----
 
 ## 4. Visualize Top Words (Mean Weight)
 
@@ -163,7 +168,6 @@ plt.tight_layout()
 plt.show()
 ```
 
----
 
 ## 5. Word Cloud of Influential Words
 
@@ -181,7 +185,6 @@ plt.show()
 
 ```
 
----
 
 ## 6. (Optional) Stability Evaluation with Minor Perturbations
 
@@ -238,7 +241,6 @@ print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(similaritie
 
 ```
 
----
 
 ## Summary
 
