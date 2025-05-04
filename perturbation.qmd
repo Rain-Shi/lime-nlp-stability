@@ -65,10 +65,10 @@ This section synthesizes findings from applying **LIME** and **SHAP** to explain
 
 | Method | Model               | Interpretability       | Jaccard Similarity | Explanation Stability |
 |--------|---------------------|------------------------|--------------------|------------------------|
-| **LIME**   | Logistic Regression | ✅ High               | **0.662**          | Medium-High             |
-| LIME   | BERT                | ⚠️ Moderate            | 0.475              | Low                    |
-| **SHAP**   | Logistic Regression | ✅✅ Very High        | **0.910** 🔝       | Excellent               |
-| SHAP   | BERT                | ✅ High                | 0.885              | Very Good              |
+| **LIME**   | Logistic Regression | High               | **0.662**          | Medium-High             |
+| LIME   | BERT                |  Moderate            | 0.475              | Low                    |
+| **SHAP**   | Logistic Regression | Very High        | **0.910**        | Excellent               |
+| SHAP   | BERT                | High                | 0.885              | Very Good              |
 
 ---
 
@@ -79,4 +79,4 @@ This section synthesizes findings from applying **LIME** and **SHAP** to explain
 - **SHAP outperforms LIME** on both models in **stability**.
 - Even for complex models like BERT, **SHAP maintains explanation consistency**, making it suitable for high-stakes applications.
 
-> ✅ **Recommendation**: For interpretable and dependable NLP systems, favor **SHAP with simpler models** or **combine SHAP+LIME** to gain both global and local insights.
+> **Recommendation**: For interpretable and dependable NLP systems, favor **SHAP with simpler models** or **combine SHAP+LIME** to gain both global and local insights.
