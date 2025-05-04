@@ -2,9 +2,6 @@
 title: "Conclusion"
 format: html
 ---
-
-## Conclusion
-
 This study investigated the interpretability and robustness of two widely-used explanation methods—**LIME** and **SHAP**—when applied to two contrasting models:
 
 - A **transparent linear model** (TF-IDF + Logistic Regression)  

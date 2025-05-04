@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; Conclusion – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
+<title>10&nbsp; Conclusion – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./visualization.html" rel="prev">
+<link href="./perturbation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conclusion.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./conclusion.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Conclusion</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -159,19 +159,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./perturbation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Perturbation Stability: Comparing LIME and SHAP for Logistic Regression and BERT</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
     </ul>
@@ -184,16 +178,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link active" data-scroll-target="#conclusion"><span class="header-section-number">11.1</span> Conclusion</a></li>
-  <li><a href="#key-findings-by-research-question" id="toc-key-findings-by-research-question" class="nav-link" data-scroll-target="#key-findings-by-research-question"><span class="header-section-number">11.2</span> Key Findings by Research Question</a>
+  <li><a href="#key-findings-by-research-question" id="toc-key-findings-by-research-question" class="nav-link active" data-scroll-target="#key-findings-by-research-question"><span class="header-section-number">10.1</span> Key Findings by Research Question</a>
   <ul class="collapse">
-  <li><a href="#explanation-consistency" id="toc-explanation-consistency" class="nav-link" data-scroll-target="#explanation-consistency"><span class="header-section-number">11.2.1</span> Explanation Consistency</a></li>
-  <li><a href="#model-complexity-vs.-interpretability" id="toc-model-complexity-vs.-interpretability" class="nav-link" data-scroll-target="#model-complexity-vs.-interpretability"><span class="header-section-number">11.2.2</span> Model Complexity vs.&nbsp;Interpretability</a></li>
-  <li><a href="#perturbation-stability" id="toc-perturbation-stability" class="nav-link" data-scroll-target="#perturbation-stability"><span class="header-section-number">11.2.3</span> Perturbation Stability</a></li>
-  <li><a href="#accuracy-vs.-explanation-quality" id="toc-accuracy-vs.-explanation-quality" class="nav-link" data-scroll-target="#accuracy-vs.-explanation-quality"><span class="header-section-number">11.2.4</span> Accuracy vs.&nbsp;Explanation Quality</a></li>
-  <li><a href="#visualization-as-interpretability-aid" id="toc-visualization-as-interpretability-aid" class="nav-link" data-scroll-target="#visualization-as-interpretability-aid"><span class="header-section-number">11.2.5</span> Visualization as Interpretability Aid</a></li>
+  <li><a href="#explanation-consistency" id="toc-explanation-consistency" class="nav-link" data-scroll-target="#explanation-consistency"><span class="header-section-number">10.1.1</span> Explanation Consistency</a></li>
+  <li><a href="#model-complexity-vs.-interpretability" id="toc-model-complexity-vs.-interpretability" class="nav-link" data-scroll-target="#model-complexity-vs.-interpretability"><span class="header-section-number">10.1.2</span> Model Complexity vs.&nbsp;Interpretability</a></li>
+  <li><a href="#perturbation-stability" id="toc-perturbation-stability" class="nav-link" data-scroll-target="#perturbation-stability"><span class="header-section-number">10.1.3</span> Perturbation Stability</a></li>
+  <li><a href="#accuracy-vs.-explanation-quality" id="toc-accuracy-vs.-explanation-quality" class="nav-link" data-scroll-target="#accuracy-vs.-explanation-quality"><span class="header-section-number">10.1.4</span> Accuracy vs.&nbsp;Explanation Quality</a></li>
+  <li><a href="#visualization-as-interpretability-aid" id="toc-visualization-as-interpretability-aid" class="nav-link" data-scroll-target="#visualization-as-interpretability-aid"><span class="header-section-number">10.1.5</span> Visualization as Interpretability Aid</a></li>
   </ul></li>
-  <li><a href="#final-takeaways" id="toc-final-takeaways" class="nav-link" data-scroll-target="#final-takeaways"><span class="header-section-number">11.3</span> Final Takeaways</a></li>
+  <li><a href="#final-takeaways" id="toc-final-takeaways" class="nav-link" data-scroll-target="#final-takeaways"><span class="header-section-number">10.2</span> Final Takeaways</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -202,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusion</span></h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Conclusion</span></h1>
 </div>
 
 
@@ -219,8 +212,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="conclusion" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">11.1</span> Conclusion</h2>
 <p>This study investigated the interpretability and robustness of two widely-used explanation methods—<strong>LIME</strong> and <strong>SHAP</strong>—when applied to two contrasting models:</p>
 <ul>
 <li>A <strong>transparent linear model</strong> (TF-IDF + Logistic Regression)<br>
@@ -229,27 +220,26 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>We aimed to assess whether model performance comes at the cost of interpretability, and whether explanation methods remain stable when the input text is perturbed. Below, we synthesize our findings around five core research questions.</p>
 <hr>
-</section>
-<section id="key-findings-by-research-question" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="key-findings-by-research-question"><span class="header-section-number">11.2</span> Key Findings by Research Question</h2>
-<section id="explanation-consistency" class="level3" data-number="11.2.1">
-<h3 data-number="11.2.1" class="anchored" data-anchor-id="explanation-consistency"><span class="header-section-number">11.2.1</span> Explanation Consistency</h3>
+<section id="key-findings-by-research-question" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="key-findings-by-research-question"><span class="header-section-number">10.1</span> Key Findings by Research Question</h2>
+<section id="explanation-consistency" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="explanation-consistency"><span class="header-section-number">10.1.1</span> Explanation Consistency</h3>
 <ul>
 <li><strong>SHAP</strong> consistently provides more stable and consistent explanations than LIME across both models.</li>
 <li><strong>SHAP + Logistic Regression</strong> had the most robust performance with a Jaccard similarity of <strong>0.910</strong>, compared to <strong>0.885</strong> for SHAP + BERT.</li>
 <li><strong>LIME</strong> showed greater variability, especially on BERT (<strong>0.475</strong>), suggesting that contextual embeddings are harder to interpret reliably with local approximations.</li>
 </ul>
 </section>
-<section id="model-complexity-vs.-interpretability" class="level3" data-number="11.2.2">
-<h3 data-number="11.2.2" class="anchored" data-anchor-id="model-complexity-vs.-interpretability"><span class="header-section-number">11.2.2</span> Model Complexity vs.&nbsp;Interpretability</h3>
+<section id="model-complexity-vs.-interpretability" class="level3" data-number="10.1.2">
+<h3 data-number="10.1.2" class="anchored" data-anchor-id="model-complexity-vs.-interpretability"><span class="header-section-number">10.1.2</span> Model Complexity vs.&nbsp;Interpretability</h3>
 <ul>
 <li><strong>Logistic Regression</strong> produced clear, human-understandable explanations with both LIME and SHAP.</li>
 <li><strong>BERT</strong>, while more accurate, sacrificed interpretability. Its top words were often emotionally or contextually rich but not always intuitive.</li>
 <li>The trade-off is clear: greater model capacity may obscure the path to interpretability.</li>
 </ul>
 </section>
-<section id="perturbation-stability" class="level3" data-number="11.2.3">
-<h3 data-number="11.2.3" class="anchored" data-anchor-id="perturbation-stability"><span class="header-section-number">11.2.3</span> Perturbation Stability</h3>
+<section id="perturbation-stability" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="perturbation-stability"><span class="header-section-number">10.1.3</span> Perturbation Stability</h3>
 <ul>
 <li><strong>Explanation robustness was strongly affected by perturbations</strong>:
 <ul>
@@ -261,16 +251,16 @@ ul.task-list li input[type="checkbox"] {
 <li>These results show that simpler models paired with SHAP yield more stable word-level explanations.</li>
 </ul>
 </section>
-<section id="accuracy-vs.-explanation-quality" class="level3" data-number="11.2.4">
-<h3 data-number="11.2.4" class="anchored" data-anchor-id="accuracy-vs.-explanation-quality"><span class="header-section-number">11.2.4</span> Accuracy vs.&nbsp;Explanation Quality</h3>
+<section id="accuracy-vs.-explanation-quality" class="level3" data-number="10.1.4">
+<h3 data-number="10.1.4" class="anchored" data-anchor-id="accuracy-vs.-explanation-quality"><span class="header-section-number">10.1.4</span> Accuracy vs.&nbsp;Explanation Quality</h3>
 <ul>
 <li><strong>BERT</strong> achieved a ~23% increase in accuracy and outperformed Logistic Regression on all classification metrics.</li>
 <li>However, this gain came with reduced explanation stability and lower transparency, especially under LIME.</li>
 <li>In applications requiring both high performance and auditability, a combination of SHAP + simple models may offer a balanced solution.</li>
 </ul>
 </section>
-<section id="visualization-as-interpretability-aid" class="level3" data-number="11.2.5">
-<h3 data-number="11.2.5" class="anchored" data-anchor-id="visualization-as-interpretability-aid"><span class="header-section-number">11.2.5</span> Visualization as Interpretability Aid</h3>
+<section id="visualization-as-interpretability-aid" class="level3" data-number="10.1.5">
+<h3 data-number="10.1.5" class="anchored" data-anchor-id="visualization-as-interpretability-aid"><span class="header-section-number">10.1.5</span> Visualization as Interpretability Aid</h3>
 <ul>
 <li>Visual tools like <strong>bar plots</strong> and <strong>word clouds</strong> were essential for surfacing key tokens influencing model predictions.</li>
 <li>SHAP’s additive attribution allowed for more consistent visualization across different inputs and models.</li>
@@ -279,8 +269,8 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 </section>
 </section>
-<section id="final-takeaways" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="final-takeaways"><span class="header-section-number">11.3</span> Final Takeaways</h2>
+<section id="final-takeaways" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="final-takeaways"><span class="header-section-number">10.2</span> Final Takeaways</h2>
 <ul>
 <li>There exists a <strong>fundamental trade-off</strong> between model complexity and interpretability robustness.</li>
 <li><strong>SHAP outperforms LIME</strong> in explanation stability and reliability across both models.</li>
@@ -722,8 +712,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./visualization.html" class="pagination-link" aria-label="visualization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">visualization</span></span>
+      <a href="./perturbation.html" class="pagination-link" aria-label="Perturbation Stability: Comparing LIME and SHAP for Logistic Regression and BERT">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Perturbation Stability: Comparing LIME and SHAP for Logistic Regression and BERT</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
