@@ -19,13 +19,12 @@ from lime.lime_text import LimeTextExplainer
 
 # Load baseline model
 model = joblib.load("scripts/baseline_pipeline.pkl")
-
 # Load validation data
 col_names = ["id", "entity", "sentiment", "tweet"]
 val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
 val = val.dropna(subset=["tweet"])
 val = val[val["tweet"].str.strip().astype(bool)]
-val = val.sample(5, random_state=42)
+#val = val.sample(5, random_state=42)
 
 class_names = ["Positive", "Neutral", "Negative", "Irrelevant"]
 

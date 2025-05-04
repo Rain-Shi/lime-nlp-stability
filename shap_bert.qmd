@@ -36,7 +36,7 @@ val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
 val = val.dropna(subset=["tweet"])
 val = val[val["tweet"].str.strip().astype(bool)]
 val = val[val["sentiment"].isin(class_names)].reset_index(drop=True)
-val = val.sample(10, random_state=42)
+val = val.sample(500, random_state=42)
 
 print(f"✅ Loaded {len(val)} validation tweets")
 ```

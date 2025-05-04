@@ -259,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-model-tokenizer-and-validation-set" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">5.2</span> Load Model, Tokenizer, and Validation Set</h2>
-<div id="f353d572" class="cell" data-execution_count="1">
+<div id="b09a8b67" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -274,29 +274,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load model and tokenizer</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">"./scripts/bert_model4"</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(model_path)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_path)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Load validation data</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>class_names <span class="op">=</span> [<span class="st">"Positive"</span>, <span class="st">"Neutral"</span>, <span class="st">"Negative"</span>, <span class="st">"Irrelevant"</span>]</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_validation.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val[val[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val[val[<span class="st">"sentiment"</span>].isin(class_names)].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val.sample(<span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Loaded </span><span class="sc">{</span><span class="bu">len</span>(val)<span class="sc">}</span><span class="ss"> validation tweets"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>model.to(<span class="st">"cuda"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_path)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Load validation data</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>class_names <span class="op">=</span> [<span class="st">"Positive"</span>, <span class="st">"Neutral"</span>, <span class="st">"Negative"</span>, <span class="st">"Irrelevant"</span>]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> [<span class="st">"id"</span>, <span class="st">"entity"</span>, <span class="st">"sentiment"</span>, <span class="st">"tweet"</span>]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> pd.read_csv(<span class="st">"data/twitter_validation.csv"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>col_names)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val.dropna(subset<span class="op">=</span>[<span class="st">"tweet"</span>])</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val[val[<span class="st">"tweet"</span>].<span class="bu">str</span>.strip().astype(<span class="bu">bool</span>)]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>val <span class="op">=</span> val[val[<span class="st">"sentiment"</span>].isin(class_names)].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#val = val.sample(5, random_state=42)</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Loaded </span><span class="sc">{</span><span class="bu">len</span>(val)<span class="sc">}</span><span class="ss"> validation tweets"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>✅ Loaded 5 validation tweets</code></pre>
+<pre><code>✅ Loaded 1000 validation tweets</code></pre>
 </div>
 </div>
 <hr>
 </section>
 <section id="setup-lime-explainer-and-prediction-function" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="setup-lime-explainer-and-prediction-function"><span class="header-section-number">5.3</span> Setup LIME Explainer and Prediction Function</h2>
-<div id="59602d9e" class="cell" data-execution_count="2">
+<div id="3d81bcdf" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_text <span class="im">import</span> LimeTextExplainer</span>
@@ -319,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="run-lime-on-validation-set-and-collect-word-importances" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">5.4</span> Run LIME on Validation Set and Collect Word Importances</h2>
-<div id="c08ea438" class="cell" data-execution_count="3">
+<div id="4ad70fe3" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -371,11 +372,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ All explanations completed."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Starting explanation on 5 tweets...
+<pre><code>Starting explanation on 1000 tweets...
 ✅ All explanations completed.</code></pre>
 </div>
 </div>
-<div id="9b391029" class="cell" data-execution_count="4">
+<div id="2e5bc0c0" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -427,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualize-top-words-mean-weight" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="visualize-top-words-mean-weight"><span class="header-section-number">5.5</span> 4. Visualize Top Words (Mean Weight)</h2>
-<div id="4401fca5" class="cell" data-execution_count="5">
+<div id="cf13e70b" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -457,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="word-cloud-of-influential-words" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="word-cloud-of-influential-words"><span class="header-section-number">5.6</span> 5. Word Cloud of Influential Words</h2>
-<div id="8f986e92" class="cell" data-execution_count="6">
+<div id="a308afe7" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -483,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="optional-stability-evaluation-with-minor-perturbations" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.7</span> 6. (Optional) Stability Evaluation with Minor Perturbations</h2>
-<div id="97e55085" class="cell" data-execution_count="7">
+<div id="3a200287" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -542,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 5 samples: 0.456</code></pre>
+<pre><code>Average Jaccard similarity over 1000 samples: 0.472</code></pre>
 </div>
 </div>
 <hr>

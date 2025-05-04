@@ -4,29 +4,58 @@ format: html
 jupyter: python3
 ---
 
-## Objective
 
-We aim to build a **baseline text classification model** that predicts the **sentiment** toward a given **entity** in a tweet.
+## Objective
+We aim to build a **baseline text classification model** that predicts the **sentiment** toward a given **entity** in a tweet.  
+The TF-IDF score for a $term(t)$ in $document(d)$ is given by:
+
+$$
+\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\left(\frac{N}{\text{DF}(t)}\right)
+$$
+
+where:
+
+- $\text{TF}(t, d)$ : Term frequency of $word (t)$ in $document(d)$  
+- $\text{DF}(t)$ : Number of documents containing $word(t)$  
+- $N$ : Total number of documents
+
+---
+
 
 The model performs **4-class classification**, identifying whether the sentiment is Positive, Negative, Neutral, or Irrelevant.
 
+For multi-class classification, logistic regression uses the softmax function:
+
+$$
+P(y = k \mid \mathbf{x}) = \frac{e^{\mathbf{w}_k^\top \mathbf{x}}}{\sum_{j=1}^{K} e^{\mathbf{w}_j^\top \mathbf{x}}}
+$$
+
+Where:
+
+- $\mathbf{x}$ : The input feature vector (TF-IDF transformed)  
+- $\mathbf{w}_k$ : The weight vector for class $k$  
+- $K$ : The number of classes (4 in our case)
+
 ## Baseline: Logistic Regression with TF-IDF
 
-In this step, we build a baseline sentiment classification model using a Scikit-learn pipeline that combines:
+**Logistic Regression for Multi-class Classification** uses a one-vs-rest strategy by default in Scikit-learn, where a separate binary classifier is trained for each class. The model outputs probabilities for each class, and the class with the highest probability is selected as the prediction.
 
-TF-IDF Vectorization: Converts tweets into numeric features based on word frequency and inverse document frequency. Specifically, we:
+### Modeling Pipeline Summary
 
-Remove English stopwords
+We build a **baseline sentiment classification pipeline** using Scikit-learn, consisting of:
 
-Limit vocabulary to the top 10,000 terms
+#### TF-IDF Vectorization  
+- Remove English stopwords  
+- Limit vocabulary to the top 10,000 terms  
+- Use unigrams and bigrams (1–2 gram)
 
-Use unigrams and bigrams (1–2-gram)
+#### Logistic Regression Classifier  
+- A linear model used for multi-class classification  
+- `max_iter = 1000` ensures convergence for large feature sets
 
-Logistic Regression Classifier: A linear model used for multi-class classification.
-
-max_iter=1000 ensures convergence for larger feature sets.
-
-The dataset is split into an 80/20 train-test split. We evaluate the model using the classification_report function, which reports precision, recall, and F1-score for each sentiment class.
+#### Evaluation  
+- Dataset split: 80/20 train-test  
+- Evaluation via `classification_report` (Precision, Recall, F1-score for each class)
 
 ```{python}
 # Load & Preprocess Data
@@ -55,8 +84,19 @@ model = make_pipeline(
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
-print(classification_report(y_test, y_pred))
+#print(classification_report(y_test, y_pred))
 ```
+Here is the evaluation result for the **Logistic Regression (TF-IDF)** baseline model:
+
+| Class       | Precision | Recall  | F1-score | Support |
+|-------------|-----------|---------|----------|---------|
+| Irrelevant  | 0.75      | 0.60     | 0.67     | 2568    |
+| Negative    | 0.77      | 0.81     | 0.79     | 4463    |
+| Neutral     | 0.75      | 0.70     | 0.72     | 3610    |
+| Positive    | 0.70      | 0.79     | 0.75     | 4124    |
+| **Accuracy**    |           |        |   **0.74**  | 14765   |
+| Macro avg   | 0.74      | 0.73   | 0.73       | 14765   |
+| Weighted avg| 0.74      | 0.74   | 0.74       | 14765   |
 
 ## Save Trained Model for Interpretation
 

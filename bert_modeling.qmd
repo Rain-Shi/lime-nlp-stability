@@ -8,8 +8,20 @@ jupyter: python3
 
 
 ## Objective
+---
 
-In this section,  we fine-tune a **BERT model** for **entity-level sentiment classification** on tweets.
+In this section, we fine-tune a **BERT model** for **entity-level sentiment classification** on tweets.
+
+**BERT (Bidirectional Encoder Representations from Transformers)** is a pre-trained transformer-based language model that captures contextual information from both directions (left and right). It has been widely adopted in various NLP tasks due to its deep understanding of sentence semantics. **BERT (Bidirectional Encoder Representations from Transformers)** [[Devlin et al., 2018]](https://arxiv.org/abs/1810.04805) is a pre-trained transformer-based language model that captures contextual information from both directions (left and right). It has been widely adopted in various NLP tasks due to its deep understanding of sentence semantics.
+
+
+During **fine-tuning**, we adapt the pre-trained BERT model to our specific classification task by adding a classification head on top of the `[CLS]` token representation. The entire model is then trained end-to-end using our labeled dataset. The softmax output layer is trained to predict one of the sentiment classes.
+
+Given the final hidden vector of the `[CLS]` token $\mathbf{h}_{\text{[CLS]}}$, the probability of $class( k )$ is computed as:
+
+$$
+P(y = k \mid \mathbf{h}_{\text{[CLS]}}) = \frac{e^{\mathbf{w}_k^\top \mathbf{h}_{\text{[CLS]}}}}{\sum_{j=1}^K e^{\mathbf{w}_j^\top \mathbf{h}_{\text{[CLS]}}}}
+$$
 
 This model serves as our primary benchmark for comparison with the logistic regression baseline and for subsequent interpretability analysis using **LIME**.
 
@@ -164,10 +176,23 @@ trainer = Trainer(
     tokenizer=tokenizer
 )
 
-trainer.evaluate()
+#trainer.evaluate()
 
 ```
-Here is a comparison of the BERT model vs. the Logistic Regression (TF-IDF) baseline mode
+Here is the evaluation result for the fine-tuned **BERT model**:
+
+| Metric                  | Value       |
+|-------------------------|-------------|
+| Evaluation Loss         | 0.1038      |
+| Accuracy                | 0.9683      |
+| Precision               | 0.9609      |
+| Recall                  | 0.9697      |
+| F1-score                | 0.9679      |
+| Evaluation Runtime (s)  | 19.2541     |
+| Samples/sec             | 766.85      |
+| Steps/sec               | 47.94       |
+
+Here is a comparison of the BERT model vs. the Logistic Regression (TF-IDF) baseline model
 ```{python}
 import matplotlib.pyplot as plt
 
@@ -194,10 +219,16 @@ plt.tight_layout()
 plt.show()
 ```
 Key Findings:
-  Significant Accuracy Gain: BERT achieves a ~23% improvement in accuracy   compared to the baseline, indicating better overall predictions.
 
-  Balanced Precision and Recall: BERT maintains both high precision and    recall, suggesting it not only makes correct predictions but also        captures more relevant instances.
+Significant Accuracy Gain:
+BERT achieves a ~23% improvement in accuracy compared to the baseline model (TF-IDF + Logistic Regression), indicating stronger predictive capability and better overall performance.
 
-  Superior F1-score: The improvement in F1-score demonstrates better       generalization and balance between false positives and false negatives.
+Balanced Precision and Recall:
+The BERT model maintains both high precision and recall, which suggests that it not only avoids false positives but also successfully identifies relevant instances. This balance is crucial for robust sentiment classification on noisy social media data.
+
+Superior F1-Score:
+The improvement in F1-score reflects BERT’s ability to generalize across diverse sentiment classes. It achieves a better trade-off between precision and recall, minimizing both false positives and false negatives.
+
+
 
 

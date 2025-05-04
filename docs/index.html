@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jinze Shi (js6605)">
 <meta name="author" content="Xiying Mao (xm2335)">
-<meta name="dcterms.date" content="2025-05-01">
+<meta name="dcterms.date" content="2025-05-03">
 
 <title>Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
 <style>
@@ -190,8 +190,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#background-and-motivation" id="toc-background-and-motivation" class="nav-link active" data-scroll-target="#background-and-motivation"><span class="header-section-number">1</span> Background and Motivation</a></li>
   <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">2</span> Research Questions</a></li>
   <li><a href="#methodology-overview" id="toc-methodology-overview" class="nav-link" data-scroll-target="#methodology-overview"><span class="header-section-number">3</span> Methodology Overview</a></li>
-  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">4</span> Authors</a></li>
-  <li><a href="#date" id="toc-date" class="nav-link" data-scroll-target="#date"><span class="header-section-number">5</span> Date</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="header-section-number">4</span> Dataset</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">5</span> Authors</a></li>
+  <li><a href="#date" id="toc-date" class="nav-link" data-scroll-target="#date"><span class="header-section-number">6</span> Date</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -218,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 1, 2025</p>
+      <p class="date">May 3, 2025</p>
     </div>
   </div>
   
@@ -265,7 +266,9 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Comparison of SHAP-Based Interpretations Across Models</strong></li>
 </ol>
 <p>Each section examines word-level feature importance, visualizes explanation outputs, and assesses explanation robustness under input perturbations. Together, these analyses allow us to evaluate the impact of model complexity on interpretability, and compare how LIME and SHAP behave across white-box and black-box classifiers.</p>
-<p>#️ Dataset</p>
+</section>
+<section id="dataset" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Dataset</h1>
 <p>We use the <a href="https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis"><strong>Twitter Entity Sentiment Analysis</strong> dataset</a>, which includes:</p>
 <ul>
 <li>A tweet<br>
@@ -274,17 +277,18 @@ ul.task-list li input[type="checkbox"] {
 </li>
 <li>A sentiment label (<strong>Positive</strong>, <strong>Neutral</strong>, <strong>Negative, Irrelevant</strong>) reflecting public opinion</li>
 </ul>
+<p>This is an <strong>entity-level sentiment analysis</strong> dataset. Given a message and an entity, the task is to classify the <strong>sentiment of the message about the entity</strong>. Messages that are not relevant to the entity (i.e., Irrelevant) are treated as <strong>Neutral</strong> in our implementation</p>
 </section>
-<section id="authors" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Authors</h1>
+<section id="authors" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Authors</h1>
 <ul>
 <li><strong>Shi Jinze</strong> (js6605)<br>
 </li>
 <li><strong>Mao Xiying</strong> (xm2335)</li>
 </ul>
 </section>
-<section id="date" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Date</h1>
+<section id="date" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Date</h1>
 <p>April 2025</p>
 
 
