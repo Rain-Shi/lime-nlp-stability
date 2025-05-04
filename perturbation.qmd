@@ -30,13 +30,6 @@ Using:
 ### LIME - Logistic Regression
 ![](https://rain-shi.github.io/lime-nlp-stability/lime_logistics_files/figure-html/cell-5-output-1.png)
 
-### SHAP - BERT
-![](https://rain-shi.github.io/lime-nlp-stability/shap_bert_files/figure-html/cell-6-output-1.png)
-
-### SHAP - Logistic Regression
-![](https://rain-shi.github.io/lime-nlp-stability/shap_logistics_files/figure-html/cell-5-output-1.png)
-
----
 
 ## Word Cloud Comparison
 
@@ -66,6 +59,6 @@ Using:
 ## Summary
 
 - **Interpretability**: Logistic Regression highlights more literal, general words (e.g., *fix*, *sad*, *recommend*), while BERT focuses on context-dependent or emotional cues.
-- **Consistency**: Both SHAP and LIME show **reduced stability on BERT**, with Jaccard drops > 0.15 compared to logistic models.
+- **Consistency**: Both SHAP and LIME show **reduced stability on BERT**, with Jaccard drops > 0.2 compared to logistic models.
 - **Takeaway**: There is a clear **trade-off between model complexity and explanation robustness**, regardless of the explanation method used.
 
