@@ -3,7 +3,7 @@ title: "Explaining the Black Box: A Comparative Study of BERT and Logistic Regre
 format: html
 ---
 
-# Background and Motivation
+## Background and Motivation
 
 As **NLP models** are increasingly deployed in applications such as **sentiment analysis** and public opinion tracking, understanding the reasoning behind their predictions has become critical—especially for short, informal, and noisy text like tweets.
 
@@ -11,7 +11,7 @@ In this project, we explore the **interpretability** of a **fine-tuned BERT mode
 
 We apply two widely-used model explanation techniques, **LIME** and **SHAP**, to examine and contrast the reasoning processes behind these models' predictions. Our goal is to assess whether the **accuracy advantage** offered by deep models like BERT comes at a significant cost to interpretability, and to what extent this **trade-off** manifests in real-world, noisy data. By analyzing explanation stability, word importance attribution, and human interpretability, we aim to understand the practical implications of using **black-box models** in socially sensitive NLP applications.
 
-# Research Questions
+## Research Questions
 
 This project aims to answer the following research questions:
 
@@ -23,7 +23,7 @@ Our project investigates the following research questions:
 -   Does the increase in predictive accuracy offered by deep models like BERT come at a significant cost to explanation quality?
 -   How can visualizations support the comparison of interpretability across different models and explanation methods?
 
-# Methodology Overview
+## Methodology Overview
 
 Our analysis is organized into six parts:
 
@@ -36,7 +36,8 @@ Our analysis is organized into six parts:
 
 Each section examines word-level feature importance, visualizes explanation outputs, and assesses explanation robustness under input perturbations. Together, these analyses allow us to evaluate the impact of model complexity on interpretability, and compare how LIME and SHAP behave across white-box and black-box classifiers.
 
-# Dataset
+
+#️# Dataset
 
 We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis), which includes:
 
@@ -47,7 +48,7 @@ We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.co
 This is an **entity-level sentiment analysis** dataset. Given a message and an entity, the task is to classify the **sentiment of the message about the entity**.
 Messages that are not relevant to the entity (i.e., Irrelevant) are treated as **Neutral** in our implementation
 
-# Authors
+## Authors
 
 -   **Shi Jinze** (js6605)\
 -   **Mao Xiying** (xm2335)
