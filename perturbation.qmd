@@ -1,123 +1,79 @@
 ---
-title: "perturbation"
+title: "Perturbation Stability: Comparing LIME for Logistic Regression and BERT"
 format: html
 jupyter: python3
 ---
 
-## Text Perturbation for LIME Stability
+## Goal
+This notebook compares the **stability of LIME explanations** under input perturbations across two models:
 
-In this section, we evaluate how robust LIME explanations are when the input text is slightly changed.
+- **TF-IDF + Logistic Regression** (interpretable baseline)
+- **Fine-tuned BERT** (context-aware deep model)
+
+We evaluate explanation consistency by analyzing:
+- Per-class influential words
+- Overall top LIME words
+- Word clouds
+- Perturbation robustness using Jaccard similarity
 
 ---
 
-## 1. Define Perturbation Functions
+## 1. Top Words by Class
 
+### BERT Model
 ```{python}
-import pandas as pd
-from lime.lime_text import LimeTextExplainer
-import random
-random.seed(42)
-explainer = LimeTextExplainer(class_names=["negative", "neutral", "positive"])
-
-from sklearn.pipeline import make_pipeline
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-
-import pandas as pd
-col_names = ["id", "entity", "sentiment", "tweet"]
-valid = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
-
-X = valid["tweet"]
-y = valid["sentiment"]
-
-model = make_pipeline(TfidfVectorizer(), LogisticRegression())
-model.fit(X, y)
-
-def jaccard(set1, set2):
-    return len(set1 & set2) / len(set1 | set2)
-
-
-def random_deletion(text, p=0.1):
-    words = text.split()
-    if len(words) <= 1:
-        return text
-    new_words = [word for word in words if random.random() > p]
-    if len(new_words) == 0:
-        new_words = [random.choice(words)]
-    return " ".join(new_words)
-
-def random_insertion(text, p=0.1):
-    words = text.split()
-    new_words = words.copy()
-    for i in range(len(words)):
-        if random.random() < p:
-            insert_idx = random.randint(0, len(new_words))
-            new_words.insert(insert_idx, random.choice(words))
-    return " ".join(new_words)
+from IPython.display import Image, display
+# BERT class-wise LIME results
+display(Image("bert_positive.png"))
+display(Image("bert_neutral_negative_irrelevant.png"))
 ```
 
-##2. Generate Perturbed Versions
+### Logistic Regression Model
 ```{python}
-example = valid.sample(1).iloc[0]
-tweet_text = example["tweet"]
-
-num_perturbations = 5
-perturbed_texts = []
-
-for _ in range(num_perturbations):
-    text = random_deletion(tweet_text, p=0.2)
-    perturbed_texts.append(text)
+# Logistic Regression class-wise LIME results
+display(Image("log_positive_neutral.png"))
+display(Image("log_negative_irrelevant.png"))
 ```
 
-##Re-run LIME on Perturbed Samples
+## 2. Overall Top Words (Barplot)
+
+### BERT
 ```{python}
-perturbed_exps = []
-
-for p_text in perturbed_texts:
-    p_exp = explainer.explain_instance(p_text, model.predict_proba, num_features=10, top_labels=1)
-    perturbed_exps.append(p_exp)
-
+display(Image("bert_overall_bar.png"))
 ```
 
-##Measure Similarity (Jaccard Overlap)
+### Logistic Regression
 ```{python}
-# 原始 tweet 文本
-tweet_text = example["tweet"]
-
-# 原始解释器输出
-original_exp = explainer.explain_instance(
-    tweet_text,
-    model.predict_proba,
-    num_features=10,
-    top_labels=1
-)
-
-# 获取解释用的分类 label（转为 int）
-label = int(original_exp.top_labels[0])
-
-# 提取重要词
-original_words = set([w for w, _ in original_exp.as_list(label=label)])
-stability_scores = []
-
-# 遍历每个扰动样本的解释对象
-for exp in perturbed_exps:
-    # 如果当前解释对象中没有这个 label 的解释，就跳过
-    if label not in exp.available_labels():
-        continue
-    perturbed_words = set([w for w, _ in exp.as_list(label=label)])
-    score = jaccard(original_words, perturbed_words)
-    stability_scores.append(score)
-
-stability_scores
-
-
-
+display(Image("log_overall_bar.png"))
 ```
 
-##Summary
-We perturbed the input by deleting some words.
+## 3. Word Cloud Comparison
 
-We evaluated how much the top LIME tokens changed (Jaccard similarity).
+### BERT Word Cloud
+```{python}
+display(Image("bert_wordcloud.png"))
+```
 
-Next: visualize how those changes look.
+### Logistic Regression Word Cloud
+```{python}
+display(Image("log_wordcloud.png"))
+```
 
+## 4. Perturbation Stability (Jaccard Similarity)
+
+### BERT Perturbation Result
+```{python}
+display(Image("bert_stability.png"))
+```
+
+### Logistic Regression Perturbation Result
+```{python}
+display(Image("log_stability.png"))
+```
+
+## 5. Summary
+- **Interpretability**: Both models highlight important words, but Logistic Regression's top words are often more generic and interpretable.
+- **Word Importance**: BERT shows strong influence from emotionally charged or contextual terms, while Logistic Regression emphasizes literal keywords.
+- **Stability**: Logistic Regression has **higher Jaccard similarity (~0.675)** under perturbation, while BERT’s is lower (**~0.473**), confirming that simpler models offer more **stable explanations**.
+
+This comparison demonstrates the trade-off between **model complexity and explanation robustness** when using LIME on NLP models.
