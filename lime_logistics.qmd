@@ -107,7 +107,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 ```
-This global bar plot highlights the top 20 words across all tweets, regardless of class. Words like "SpeakerPelosi", "diamond", and "AWESOME" dominate, showing that they were consistently influential in driving the model's decisions. This visualization offers a high-level summary of what the model deems important overall.
+This global bar plot highlights the top 20 words across all tweets, regardless of class. Words like "SpeakerPelosi", "kid", and "AWESOME" dominate, showing that they were consistently influential in driving the model's decisions. This visualization offers a high-level summary of what the model deems important overall.
 
 ## Word Cloud of Explanations
 Visualize important words using a word cloud, where larger font size indicates higher average contribution to predictions. This is useful for presentations and high-level understanding.
@@ -169,7 +169,7 @@ print(f"Average Jaccard similarity over {len(val)} samples: {np.mean(stability_s
 
 ```
 
-##Summary
+## Summary
 We applied LIME to explain the predictions of a Logistic Regression sentiment model.
 
 Top contributing words were visualized using bar plots and word clouds.
