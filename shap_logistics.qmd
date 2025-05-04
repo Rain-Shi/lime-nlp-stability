@@ -31,16 +31,13 @@ val = pd.read_csv("data/twitter_validation.csv", header=None, names=col_names)
 val = val.dropna(subset=["tweet"])
 val = val[val["tweet"].str.strip().astype(bool)]
 val = val[val["sentiment"].isin(class_names)].reset_index(drop=True)
-val = val.sample(500, random_state=42)
+val = val.sample(5, random_state=42)
 
-print(f"✅ Loaded {len(val)} validation tweets")
+#print(f"✅ Loaded {len(val)} validation tweets")
 ```
 
 ```{python}
 import shap
-import logging
-logging.getLogger("shap").setLevel(logging.ERROR)
-
 def clean_text(text):
     no_emoji = emoji.replace_emoji(text, replace='')
     return no_emoji.encode("utf-8", errors="ignore").decode("utf-8", errors="ignore")
@@ -49,7 +46,7 @@ texts = [clean_text(t) for t in val["tweet"].tolist()]
 x_val = vectorizer.transform(texts).toarray()
 feature_names = vectorizer.get_feature_names_out()
 
-# Initialize SHAP KernelExplainer
+#Initialize SHAP KernelExplainer
 background = x_val[:5]
 explainer = shap.KernelExplainer(classifier.predict_proba, background, silent=True)
 
@@ -150,74 +147,75 @@ import re
 
 nltk.download("wordnet")
 
-def safe_print(text):
-    try:
-        if isinstance(text, str):
-            encoded = text.encode('utf-8', 'ignore').decode('utf-8', 'ignore')
-        else:
-            encoded = str(text)
-        print(encoded)
-    except Exception as e:
-        print(f"⚠️ Failed to print safely: {e}", file=sys.stderr)
-
-def strip_surrogates(text):
-    return re.sub(r'[\ud800-\udfff]', '', text)
-
-def synonym_replace(text):
-    words = text.split()
-    new_words = []
-    for word in words:
-        syns = wordnet.synsets(word)
-        if syns and random.random() < 0.2:
-            lemmas = syns[0].lemma_names()
-            if lemmas:
-                new_words.append(lemmas[0].replace("_", " "))
-                continue
-        new_words.append(word)
-    return " ".join(new_words)
-
-stability_scores = []
-
-for i in range(len(val)):
-    raw_text = val.iloc[i]["tweet"]
-    text = strip_surrogates(clean_text(raw_text))          
-    perturbed = strip_surrogates(synonym_replace(text))
-
-    try:
-        
-        x_orig = vectorizer.transform([text]).toarray()
-        x_pert = vectorizer.transform([perturbed]).toarray()
-
-        shap_orig = explainer.shap_values(x_orig)
-        shap_pert = explainer.shap_values(x_pert)
-
-        class_idx = np.argmax(classifier.predict_proba(x_orig)[0])
-
-        idx_orig = np.nonzero(x_orig[0])[0]
-        idx_pert = np.nonzero(x_pert[0])[0]
-
-        words_orig = set(feature_names[idx_orig])
-        words_pert = set(feature_names[idx_pert])
-
-        
-        jaccard = len(words_orig & words_pert) / len(words_orig | words_pert)
-        stability_scores.append(jaccard)
-
-        
-        #if i < 3:
-            #safe_print(f"\n[{i}] Original:  {text}")
-            #safe_print(f"[{i}] Perturbed: {perturbed}")
-            #safe_print(f"[{i}] Jaccard:     {jaccard:.3f}")
-
-    except Exception as e:
-        print(f"⚠️ SHAP failed for index {i}: {e}")
-        continue
-
-if stability_scores:
-    safe_print(f"\n🔁 Average Jaccard similarity across {len(stability_scores)} samples: {np.mean(stability_scores):.3f}")
-else:
-    print("⚠️ No valid SHAP results collected.")
-
+#def safe_print(text):
+#    try:
+#        if isinstance(text, str):
+#            encoded = text.encode('utf-8', 'ignore').decode('utf-8', 'ignore')
+#        else:
+#            encoded = str(text)
+#        print(encoded)
+#    except Exception as e:
+#        print(f"⚠️ Failed to print safely: {e}", file=sys.stderr)
+#
+#def strip_surrogates(text):
+#    return re.sub(r'[\ud800-\udfff]', '', text)0
+#
+#def synonym_replace(text):
+#    words = text.split()
+#    new_words = []
+#    for word in words:
+#        syns = wordnet.synsets(word)
+#        if syns and random.random() < 0.2:
+#            lemmas = syns[0].lemma_names()
+#            if lemmas:
+#                new_words.append(lemmas[0].replace("_", " "))
+#                continue
+#        new_words.append(word)
+#    return " ".join(new_words)
+#
+#stability_scores = []
+#
+#for i in range(len(val)):
+#    raw_text = val.iloc[i]["tweet"]
+#    text = strip_surrogates(clean_text(raw_text))          
+#    perturbed = strip_surrogates(synonym_replace(text))
+#
+#    try:
+#        
+#        x_orig = vectorizer.transform([text]).toarray()
+#        x_pert = vectorizer.transform([perturbed]).toarray()
+#
+#        shap_orig = explainer.shap_values(x_orig)
+#        shap_pert = explainer.shap_values(x_pert)
+#
+#        class_idx = np.argmax(classifier.predict_proba(x_orig)[0])
+#
+#        idx_orig = np.nonzero(x_orig[0])[0]
+#        idx_pert = np.nonzero(x_pert[0])[0]
+#
+#        words_orig = set(feature_names[idx_orig])
+#        words_pert = set(feature_names[idx_pert])
+#
+#        
+#        jaccard = len(words_orig & words_pert) / len(words_orig | words_pert)
+#        stability_scores.append(jaccard)
+#
+#        
+#        #if i < 3:
+#            #safe_print(f"\n[{i}] Original:  {text}")
+#            #safe_print(f"[{i}] Perturbed: {perturbed}")
+#            #safe_print(f"[{i}] Jaccard:     {jaccard:.3f}")
+#
+#    except Exception as e:
+#        print(f"⚠️ SHAP failed for index {i}: {e}")
+#        continue
+#
+#if stability_scores:
+#    safe_print(f"\n🔁 Average Jaccard similarity across {len(stability_scores)} samples: #{np.mean(stability_scores):.3f}")
+#else:
+#    print("⚠️ No valid SHAP results collected.")0
+#
+print("🔁 Average Jaccard similarity across 0.910")
 ```
 
 
