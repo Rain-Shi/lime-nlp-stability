@@ -5,75 +5,73 @@ jupyter: python3
 ---
 
 ## Goal
+
 This notebook compares the **stability of LIME explanations** under input perturbations across two models:
 
-- **TF-IDF + Logistic Regression** (interpretable baseline)
-- **Fine-tuned BERT** (context-aware deep model)
+-   **TF-IDF + Logistic Regression** (interpretable baseline)\
+-   **Fine-tuned BERT** (context-aware deep model)
 
-We evaluate explanation consistency by analyzing:
-- Per-class influential words
-- Overall top LIME words
-- Word clouds
+We evaluate explanation consistency by analyzing: - Per-class influential words\
+- Overall top LIME words\
+- Word clouds\
 - Perturbation robustness using Jaccard similarity
 
----
+------------------------------------------------------------------------
 
 ## 1. Top Words by Class
 
 ### BERT Model
-```{python}
-from IPython.display import Image, display
-# BERT class-wise LIME results
-display(Image("bert_positive.png"))
-display(Image("bert_neutral_negative_irrelevant.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_bert_files/figure-html/cell-5-output-1.png)\
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_bert_files/figure-html/cell-5-output-2.png)
 
 ### Logistic Regression Model
-```{python}
-# Logistic Regression class-wise LIME results
-display(Image("log_positive_neutral.png"))
-display(Image("log_negative_irrelevant.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_logistics_files/figure-html/cell-4-output-1.png)\
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_logistics_files/figure-html/cell-4-output-2.png)
+
+------------------------------------------------------------------------
 
 ## 2. Overall Top Words (Barplot)
 
 ### BERT
-```{python}
-display(Image("bert_overall_bar.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_bert_files/figure-html/cell-5-output-4.png)
 
 ### Logistic Regression
-```{python}
-display(Image("log_overall_bar.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_logistics_files/figure-html/cell-4-output-4.png)
+
+------------------------------------------------------------------------
 
 ## 3. Word Cloud Comparison
 
 ### BERT Word Cloud
-```{python}
-display(Image("bert_wordcloud.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_bert_files/figure-html/cell-6-output-1.png)
 
 ### Logistic Regression Word Cloud
-```{python}
-display(Image("log_wordcloud.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_logistics_files/figure-html/cell-5-output-1.png)
+
+------------------------------------------------------------------------
 
 ## 4. Perturbation Stability (Jaccard Similarity)
 
 ### BERT Perturbation Result
-```{python}
-display(Image("bert_stability.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_bert_files/figure-html/cell-7-output-1.png)
 
 ### Logistic Regression Perturbation Result
-```{python}
-display(Image("log_stability.png"))
-```
+
+![](https://rain-shi.github.io/lime-nlp-stability/docs/lime_logistics_files/figure-html/cell-6-output-1.png)
+
+------------------------------------------------------------------------
 
 ## 5. Summary
-- **Interpretability**: Both models highlight important words, but Logistic Regression's top words are often more generic and interpretable.
-- **Word Importance**: BERT shows strong influence from emotionally charged or contextual terms, while Logistic Regression emphasizes literal keywords.
-- **Stability**: Logistic Regression has **higher Jaccard similarity (~0.675)** under perturbation, while BERT’s is lower (**~0.473**), confirming that simpler models offer more **stable explanations**.
+
+-   **Interpretability**: Both models highlight important words, but Logistic Regression's top words are often more generic and interpretable.\
+-   **Word Importance**: BERT shows strong influence from emotionally charged or contextual terms, while Logistic Regression emphasizes literal keywords.\
+-   **Stability**: Logistic Regression has **higher Jaccard similarity (\~0.675)** under perturbation, while BERT’s is lower (**\~0.473**), confirming that simpler models offer more **stable explanations**.
 
 This comparison demonstrates the trade-off between **model complexity and explanation robustness** when using LIME on NLP models.
