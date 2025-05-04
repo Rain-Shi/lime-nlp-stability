@@ -6,7 +6,7 @@ execute:
   echo: true
 
 book:
-  title: "Explaining Text Classification Models with LIME:Stability and Interpretability in NLP"
+  title: "Interpreting NLP Models: A Stability and Explainability Comparison of BERT and Logistic Regression"
   author:
     - Jinze Shi (js6605)
     - Xiying  Mao (xm2335)
