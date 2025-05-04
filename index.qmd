@@ -25,19 +25,31 @@ Our project investigates the following research questions:
 
 ## Methodology Overview
 
-Our analysis is organized into six parts:
+Our analysis is organized into six components:
 
-1.  **LIME Explanations for the Linear Model**\
-2.  **LIME Explanations for the BERT Model**\
-3.  **Comparison of LIME-Based Interpretations Across Models**\
-4.  **SHAP Explanations for the Linear Model**\
-5.  **SHAP Explanations for the BERT Model**\
-6.  **Comparison of SHAP-Based Interpretations Across Models**
+1. **LIME Interpretability for Logistic Regression**  
+   Apply LIME to a transparent TF-IDF + Logistic Regression model to analyze token-level contributions and explanation clarity.
 
-Each section examines word-level feature importance, visualizes explanation outputs, and assesses explanation robustness under input perturbations. Together, these analyses allow us to evaluate the impact of model complexity on interpretability, and compare how LIME and SHAP behave across white-box and black-box classifiers.
+2. **LIME Interpretability for BERT**  
+   Use LIME on a fine-tuned BERT model to assess how local linear approximations capture deep contextual semantics.
+
+3. **SHAP Interpretability for Logistic Regression**  
+   Apply SHAP to the logistic model to examine additive, class-agnostic explanations aligned with feature weights.
+
+4. **SHAP Interpretability for BERT**  
+   Use SHAP to interpret BERT predictions and evaluate the quality and granularity of token attributions.
+
+5. **Perturbation Stability Analysis**  
+   Introduce controlled text perturbations (e.g., synonym replacement) and compute Jaccard similarity to assess explanation robustness.
+
+6. **Comparative Evaluation Across Models and Methods**  
+   Compare LIME vs. SHAP and BERT vs. Logistic Regression in terms of interpretability, stability, and visualization effectiveness.
+
+Each section examines word-level feature importance, visualizes key attributions (via bar plots and word clouds), and tests the reliability of explanations under realistic perturbations. Together, these components enable us to evaluate the interpretability-performance trade-off in modern NLP pipelines.
 
 
-#️# Dataset
+
+## Dataset
 
 We use the [**Twitter Entity Sentiment Analysis** dataset](https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis), which includes:
 
