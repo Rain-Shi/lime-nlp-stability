@@ -259,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-model-tokenizer-and-validation-set" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">5.2</span> Load Model, Tokenizer, and Validation Set</h2>
-<div id="f519b27c" class="cell" data-execution_count="1">
+<div id="d6422777" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -297,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="setup-lime-explainer-and-prediction-function" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="setup-lime-explainer-and-prediction-function"><span class="header-section-number">5.3</span> Setup LIME Explainer and Prediction Function</h2>
-<div id="8e8409cc" class="cell" data-execution_count="2">
+<div id="9a013e9e" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_text <span class="im">import</span> LimeTextExplainer</span>
@@ -320,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="run-lime-on-validation-set-and-collect-word-importances" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">5.4</span> Run LIME on Validation Set and Collect Word Importances</h2>
-<div id="8c80c809" class="cell" data-execution_count="3">
+<div id="661b8af8" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -376,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✅ All explanations completed.</code></pre>
 </div>
 </div>
-<div id="2b8cf9c8" class="cell" data-execution_count="4">
+<div id="00300513" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualize-top-words-mean-weight" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="visualize-top-words-mean-weight"><span class="header-section-number">5.5</span> 4. Visualize Top Words (Mean Weight)</h2>
-<div id="db12960b" class="cell" data-execution_count="5">
+<div id="b027aaa1" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -458,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="word-cloud-of-influential-words" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="word-cloud-of-influential-words"><span class="header-section-number">5.6</span> 5. Word Cloud of Influential Words</h2>
-<div id="7129e4a2" class="cell" data-execution_count="6">
+<div id="67137b2e" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -484,7 +484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="optional-stability-evaluation-with-minor-perturbations" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="optional-stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.7</span> 6. (Optional) Stability Evaluation with Minor Perturbations</h2>
-<div id="d3c258d4" class="cell" data-execution_count="7">
+<div id="27fb8a5f" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -543,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 1000 samples: 0.469</code></pre>
+<pre><code>Average Jaccard similarity over 1000 samples: 0.473</code></pre>
 </div>
 </div>
 <hr>
