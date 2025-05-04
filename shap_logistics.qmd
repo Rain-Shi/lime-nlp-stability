@@ -51,7 +51,7 @@ feature_names = vectorizer.get_feature_names_out()
 
 # Initialize SHAP KernelExplainer
 background = x_val[:5]
-explainer = shap.KernelExplainer(classifier.predict_proba, background)
+explainer = shap.KernelExplainer(classifier.predict_proba, background, silent=True)
 
 # Compute SHAP values
 all_shap = []
