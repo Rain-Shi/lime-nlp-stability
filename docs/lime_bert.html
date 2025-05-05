@@ -221,7 +221,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualize-top-words-by-class" id="toc-visualize-top-words-by-class" class="nav-link" data-scroll-target="#visualize-top-words-by-class"><span class="header-section-number">5.6</span> Visualize Top Words by Class</a></li>
   <li><a href="#visualize-top-words-mean-weight" id="toc-visualize-top-words-mean-weight" class="nav-link" data-scroll-target="#visualize-top-words-mean-weight"><span class="header-section-number">5.7</span> Visualize Top Words (Mean Weight)</a></li>
   <li><a href="#word-cloud-of-influential-words" id="toc-word-cloud-of-influential-words" class="nav-link" data-scroll-target="#word-cloud-of-influential-words"><span class="header-section-number">5.8</span> Word Cloud of Influential Words</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.9</span> Summary</a></li>
+  <li><a href="#stability-evaluation-with-minor-perturbations" id="toc-stability-evaluation-with-minor-perturbations" class="nav-link" data-scroll-target="#stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.9</span> Stability Evaluation with Minor Perturbations</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.10</span> Summary</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/lime_bert.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -262,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="load-model-tokenizer-and-validation-set" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="load-model-tokenizer-and-validation-set"><span class="header-section-number">5.3</span> Load Model, Tokenizer, and Validation Set</h2>
 <p>Load the fine-tuned BERT model and tokenizer, and prepare a cleaned sample of tweets from the validation set for explanation.</p>
-<div id="6e3f78ad" class="cell" data-execution_count="1">
+<div id="a592fff0" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -300,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="setup-lime-explainer-and-prediction-function" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="setup-lime-explainer-and-prediction-function"><span class="header-section-number">5.4</span> Setup LIME Explainer and Prediction Function</h2>
 <p>Define a wrapper function that returns prediction probabilities (needed by LIME), and initialize the LIME explainer with class names.</p>
-<div id="209c2b30" class="cell" data-execution_count="2">
+<div id="2669cfa9" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_text <span class="im">import</span> LimeTextExplainer</span>
@@ -323,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="run-lime-on-validation-set-and-collect-word-importances" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="run-lime-on-validation-set-and-collect-word-importances"><span class="header-section-number">5.5</span> Run LIME on Validation Set and Collect Word Importances</h2>
 <p>Word Importances Run LIME on each tweet to get top influential words and their weights. Store the results for later visualization and analysis.</p>
-<div id="47c51ecc" class="cell" data-execution_count="3">
+<div id="0dac8dbd" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emoji</span>
@@ -383,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="visualize-top-words-by-class" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="visualize-top-words-by-class"><span class="header-section-number">5.6</span> Visualize Top Words by Class</h2>
 <p>For each sentiment class, plot the average contribution of the top words that most influenced the model’s predictions for that class.</p>
-<div id="3a8b3288" class="cell" data-execution_count="4">
+<div id="fafe0b99" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -434,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualize-top-words-mean-weight" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="visualize-top-words-mean-weight"><span class="header-section-number">5.7</span> Visualize Top Words (Mean Weight)</h2>
-<div id="cbe86d7f" class="cell" data-execution_count="5">
+<div id="fe40f98f" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -464,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="word-cloud-of-influential-words" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="word-cloud-of-influential-words"><span class="header-section-number">5.8</span> Word Cloud of Influential Words</h2>
 <p>Visualize important words using a word cloud, where larger font size indicates higher average contribution to predictions. This is useful for presentations and high-level understanding.</p>
-<div id="3cb071fc" class="cell" data-execution_count="6">
+<div id="048298c2" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
@@ -486,8 +487,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>##Stability Evaluation with Minor Perturbations Slightly change each tweet by replacing some words with synonyms. Then compare the original and modified LIME explanations using Jaccard similarity to assess explanation stability.</p>
-<div id="a1891ecc" class="cell" data-execution_count="7">
+</section>
+<section id="stability-evaluation-with-minor-perturbations" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="stability-evaluation-with-minor-perturbations"><span class="header-section-number">5.9</span> Stability Evaluation with Minor Perturbations</h2>
+<p>Slightly change each tweet by replacing some words with synonyms. Then compare the original and modified LIME explanations using Jaccard similarity to assess explanation stability.</p>
+<div id="78b75771" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -546,12 +550,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package wordnet is already up-to-date!</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Average Jaccard similarity over 1000 samples: 0.471</code></pre>
+<pre><code>Average Jaccard similarity over 1000 samples: 0.465</code></pre>
 </div>
 </div>
 </section>
-<section id="summary" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.9</span> Summary</h2>
+<section id="summary" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.10</span> Summary</h2>
 <p>In summary, this section used LIME to interpret a fine-tuned BERT model on tweets, visualized top features, and tested explanation robustness under perturbations (Jaccard: 0.475).</p>
 
 
