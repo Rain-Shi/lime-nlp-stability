@@ -52,3 +52,23 @@ We aimed to assess whether model performance comes at the cost of interpretabili
   - Prefer simpler models in high-stakes or regulated contexts.
 
 > **Conclusion**: In socially sensitive NLP tasks such as sentiment analysis of public discourse, model transparency and explanation stability are not optional. Our study shows that while BERT improves classification performance, Logistic Regression—especially when interpreted with SHAP—offers the most dependable insight into model behavior.
+
+## Limitations & Future Work
+
+### Limitations
+-Single-domain, single-language dataset: experiments use only English Twitter data.
+
+-Limited model diversity: only logistic regression and BERT are evaluated.
+
+-Restricted explanation methods: LIME and SHAP only.
+
+-Narrow stability metric: Jaccard similarity ignores semantic equivalence.
+
+### Future Work
+-Cross-domain & multilingual: test on legal, medical, non-English corpora.
+
+-Expanded models & methods: include intermediate architectures (e.g. RNNs, DistilBERT).
+
+-Enhanced stability metrics: add semantic-similarity measures (e.g. embedding cosine similarity).
+
+-Interactive visualization: build a dashboard for real-time perturbation and comparison.

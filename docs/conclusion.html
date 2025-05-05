@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; Conclusion – Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</title>
+<title>10&nbsp; Conclusion – Interpreting NLP Models: A Stability and Explainability Comparison of BERT and Logistic Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Explaining Text Classification Models with LIME:Stability and Interpretability in NLP</a> 
+      <a href="./">Interpreting NLP Models: A Stability and Explainability Comparison of BERT and Logistic Regression</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/Rain-Shi/lime-nlp-stability.git" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -187,6 +187,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#visualization-as-interpretability-aid" id="toc-visualization-as-interpretability-aid" class="nav-link" data-scroll-target="#visualization-as-interpretability-aid"><span class="header-section-number">10.1.5</span> Visualization as Interpretability Aid</a></li>
   </ul></li>
   <li><a href="#final-takeaways" id="toc-final-takeaways" class="nav-link" data-scroll-target="#final-takeaways"><span class="header-section-number">10.2</span> Final Takeaways</a></li>
+  <li><a href="#limitations-future-work" id="toc-limitations-future-work" class="nav-link" data-scroll-target="#limitations-future-work"><span class="header-section-number">10.3</span> Limitations &amp; Future Work</a>
+  <ul class="collapse">
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">10.3.1</span> Limitations</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">10.3.2</span> Future Work</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/edit/main/conclusion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Rain-Shi/lime-nlp-stability.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -283,8 +288,25 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p><strong>Conclusion</strong>: In socially sensitive NLP tasks such as sentiment analysis of public discourse, model transparency and explanation stability are not optional. Our study shows that while BERT improves classification performance, Logistic Regression—especially when interpreted with SHAP—offers the most dependable insight into model behavior.</p>
 </blockquote>
+</section>
+<section id="limitations-future-work" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="limitations-future-work"><span class="header-section-number">10.3</span> Limitations &amp; Future Work</h2>
+<section id="limitations" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="limitations"><span class="header-section-number">10.3.1</span> Limitations</h3>
+<p>-Single-domain, single-language dataset: experiments use only English Twitter data.</p>
+<p>-Limited model diversity: only logistic regression and BERT are evaluated.</p>
+<p>-Restricted explanation methods: LIME and SHAP only.</p>
+<p>-Narrow stability metric: Jaccard similarity ignores semantic equivalence.</p>
+</section>
+<section id="future-work" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="future-work"><span class="header-section-number">10.3.2</span> Future Work</h3>
+<p>-Cross-domain &amp; multilingual: test on legal, medical, non-English corpora.</p>
+<p>-Expanded models &amp; methods: include intermediate architectures (e.g.&nbsp;RNNs, DistilBERT).</p>
+<p>-Enhanced stability metrics: add semantic-similarity measures (e.g.&nbsp;embedding cosine similarity).</p>
+<p>-Interactive visualization: build a dashboard for real-time perturbation and comparison.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
